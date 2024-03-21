@@ -7,7 +7,7 @@ export default function HomePage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showRegister, setShowRegister] = useState(false); // New state for register toggle
   
-    // Login status check logic (replace with your implementation)
+    // Login status check logic (replace with your implementation) 
   
     const handleRegisterToggle = () => setShowRegister(!showRegister); // Toggle register form
   
