@@ -1,40 +1,22 @@
 import React, { useState } from 'react';
-import Login from '@/components/LoginForm';
-import Register from '@/components/RegisterForm';
-import AuthLayout from '@/layouts/AuthLayout';
+// import LoginForm from '@/components/LoginForm';
+import RegisterForm from '@/components/RegisterForm'; // Assuming RegisterForm exists
+import MainHomeLayout from '@/layouts/MainHomeLayout';
 
 export default function HomePage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showRegister, setShowRegister] = useState(false); // New state for register toggle
   
-    // Login status check logic (replace with your implementation) 
+    // You might want to implement login logic here to set `isLoggedIn` state accordingly
   
     const handleRegisterToggle = () => setShowRegister(!showRegister); // Toggle register form
   
     return (
         <div className="container">
           {!isLoggedIn && (
-            <AuthLayout>
-              {showRegister ? (
-                <>
-                  <h2>Register</h2>
-                  <Register />
-                  <p>
-                    Already have an account?{' '}
-                    <button onClick={handleRegisterToggle}>Login</button>
-                  </p>
-                </>
-              ) : (
-                <>
-                  <h2>Login</h2>
-                  <Login onLoginSuccess={() => setIsLoggedIn(true)} />
-                  <p>
-                    Don't have an account?{' '}
-                    <button onClick={handleRegisterToggle}>Register</button>
-                  </p>
-                </>
-              )}
-            </AuthLayout>
+            <MainHomeLayout>
+              
+            </MainHomeLayout>
           )}
           {isLoggedIn && ( // Logged-in content
             <div>
