@@ -17,12 +17,9 @@ export default function HomePage() {
             <AuthLayout>
               {showRegister ? (
                 <>
-                  <h2>Register</h2>
+                  
                   <Register />
-                  <p>
-                    Already have an account?{' '}
-                    <button onClick={handleRegisterToggle}>Login</button>
-                  </p>
+
                 </>
               ) : (
                 <>
