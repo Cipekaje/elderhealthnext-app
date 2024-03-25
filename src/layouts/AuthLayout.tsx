@@ -7,7 +7,7 @@ interface AuthLayoutProps {
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <div className="auth-layout">
-      <h1>Login or Register</h1>
+      
       {children}
     </div>
   );
