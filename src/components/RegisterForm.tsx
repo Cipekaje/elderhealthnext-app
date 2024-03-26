@@ -166,10 +166,10 @@ function Register() {
                 <TextField
                   required
                   fullWidth
-                  name="Confirmpassword"
-                  label="Confirm Password"
-                  type="Confirmpassword"
-                  id="Confirmpassword"
+                  name="confirmPassword"
+                  label="confirm Password"
+                  type="Password"
+                  id="confirmPassword"
                   autoFocus
                 />
               </Grid>              
