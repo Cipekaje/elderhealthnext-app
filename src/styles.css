@@ -5,6 +5,24 @@ body{
 .container{
     
 }
-.testas{
-    
+.topSectionLayout{
+    max-width: xl;
+    padding-top: 20px;
+    overflow: auto;
+    padding: 0px;
 }
+.FAQSectionLayout{
+    max-width: xl;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    overflow: auto;
+    padding: 0px;
+}
+a{
+    text-decoration: none;
+    color: inherit; 
+}
+.accordionSummary:hover {
+    background-color: #E3F2FD;
+  }
+  

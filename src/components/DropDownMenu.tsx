@@ -33,6 +33,9 @@ const DropdownMenu = () => {
   const handleLoginClick = () => {
     router.push('/Login'); // Navigate to the "/Login" page
   };
+  const handleHelpClick = () => {
+    router.push('/Help'); 
+  };
 
 
   return (
@@ -51,7 +54,7 @@ const DropdownMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem onClick={handleHelpClick}>
           <ListItemIcon>
             <HelpIcon fontSize="small" />
           </ListItemIcon>
