@@ -9,6 +9,8 @@ import { Stack, Button, Box } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import LoginIcon from '@mui/icons-material/Login';
 import CheckIcon from '@mui/icons-material/Check';
+import HelpIcon from '@mui/icons-material/Help';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
@@ -33,50 +35,33 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
   };
 
   return (
-    <div style={{ overflowY: 'auto', height: '140vh', position: 'relative' }}>
-      {/* VIRSUTINE SEKCIJA */}
-      <Container maxWidth="xl">
+    <div style={{ height: '100vh', position: 'relative', display: 'flex', flexFlow: 'column' }}>
+      {/* APIE MUS SEKCIJA IR PRENUMERCIJOS IR VIRSUTINE SEKCIJA ir KOMENTARU SEKCIJA*/}
+      <Container maxWidth="xl" style={{ paddingTop: '20px', overflow: 'auto' }}>
+
+        {/* VIRSUTINE SEKCIJA */}
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Typography variant="h6" gutterBottom component="div" style={{ display: 'flex', alignItems: 'center' }}>
-              <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={26} height={26} />
+              <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={46} height={46} />
               &nbsp; ElderHealth Companion
             </Typography>
           </Grid>
           <Grid item>
-            {/* <Hidden smUp>
-              <Box
-                style={{
-                  position: 'fixed', // Fixed position
-                  bottom: 0,
-                  left: 0,
-                  width: '100%',
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  border: '0.75px solid black', // Colored border
-                  borderBottom: '1px solid black', // Apply border to bottom side
-                  borderTop: '1px solid black', // Apply border to top side
-                  borderLeft: '0px solid black', // Apply border to top side
-                  borderRadius: '2px',
-                }}
-              >
-                <IconButton>
-                  <DropdownMenu />
-                </IconButton>
-              </Box>
-            </Hidden> */}
             <Hidden smDown>
-              <Stack spacing={1} direction='row'>
+              <Stack spacing={3} direction='row'>
+                <Button endIcon={<FeedbackIcon />} onClick={handleLoginClick}>Atsiliepimai</Button>
+                <Button endIcon={<HelpIcon />} onClick={handleLoginClick}>Pagalba</Button>
                 <Button endIcon={<LoginIcon />} onClick={handleLoginClick}>Prisijungti</Button>
               </Stack>
             </Hidden>
           </Grid>
         </Grid>
+
         {/* Divider line below the entire top section */}
         <Box borderBottom="1px solid black" width="100%" marginBottom={1}></Box>
-      </Container>
 
-      {/* APIE MUS SEKCIJA IR PRENUMERCIJOS*/}
-      <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
+        {/* APIE MUS SEKCIJA */}
         <Box>
           <Typography variant="h5" color="black" paddingBottom={1.5}>
             Apie mus
@@ -88,6 +73,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
           padding: '5px',
           border: '1px solid black', // Colored border
           borderRadius: '16px', // Adjust border-radius if needed
+          boxSizing: "border-box",
         }}
         >
           <Typography variant="body1" color="gray">
@@ -100,12 +86,16 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
           padding: '5px',
           border: '1px solid black', // Colored border
           borderRadius: '16px', // Adjust border-radius if needed
+          boxSizing: "border-box",
         }}
         >
           <Typography variant="body1" color="gray">
             Trumpas aprašymas apie produktą ANTRAS PUNKTAS.
           </Typography>
         </Box>
+
+
+
         {/* PRENUMERACIJU SEKCIJA */}
         <Box marginBottom={2} paddingTop={3}>
           <Typography variant="h5">
@@ -298,11 +288,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
           </Grid>
         </Grid>
 
-
-      </Container>
-
-      {/* KOMENTARU SEKCIJA*/}
-      <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
+        
         {/* COMMENTS */}
         <Box marginTop={4} marginBottom={2}>
           <Typography variant="h5">
@@ -336,7 +322,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
           </Grid>
 
           {/* Testimonial 2 */}
-          <Grid item xs={12} sm={6} md={3} paddingBottom={15}>
+          <Grid item xs={12} sm={6} md={3} paddingBottom={2}>
             <Box style={{
               border: '1px solid black',
               borderRadius: '16px',
@@ -359,13 +345,14 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
             </Box>
           </Grid>
         </Grid>
+
       </Container>
 
       {/* APATINE SEKCIJA */}
       <Hidden smUp>
         <Box
           style={{
-            position: 'fixed',
+            position: 'static',
             bottom: 0,
             left: 0,
             width: '100%',
@@ -374,6 +361,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
             borderBottom: '1px solid black',
             borderTop: '1px solid black',
             borderLeft: '0px solid black',
+            borderRight: '0px solid black',
             borderRadius: '2px',
             zIndex: 10, // Set a high z-index value
           }}
