@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Hidden from '@mui/material/Hidden'; // Import Hidden component
-import DropdownMenu from '@/components/DropDownMenu.tsx'; // Assuming DropdownMenu is in the same directory
+import DropdownMenu from '@/components/DropDownMenu'; // Assuming DropdownMenu is in the same directory
 import { Stack, Button, Box } from '@mui/material';
 
 import IconButton from '@mui/material/IconButton';
@@ -33,6 +33,9 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
   const handleLoginClick = () => {
     router.push('/Login'); // Navigate to the "/Login" page
   };
+  const handleHelpClick = () => {
+    router.push('/Help'); // Navigate to the "/Login" page
+  };
 
   return (
     <div style={{ height: '100vh', position: 'relative', display: 'flex', flexFlow: 'column' }}>
@@ -51,7 +54,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
             <Hidden smDown>
               <Stack spacing={3} direction='row'>
                 <Button endIcon={<FeedbackIcon />} onClick={handleLoginClick}>Atsiliepimai</Button>
-                <Button endIcon={<HelpIcon />} onClick={handleLoginClick}>Pagalba</Button>
+                <Button endIcon={<HelpIcon />} onClick={handleHelpClick}>Pagalba</Button>
                 <Button endIcon={<LoginIcon />} onClick={handleLoginClick}>Prisijungti</Button>
               </Stack>
             </Hidden>
