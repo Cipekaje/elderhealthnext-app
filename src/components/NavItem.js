@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
-// project imports
-import { MENU_OPEN, SET_MENU } from 'store/actions';
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -16,12 +14,11 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 // ==============================|| SIDEBAR MENU LIST ITEMS ||============================== //
 
 const NavItem = ({ item, level }) => {
-  const theme = useTheme();
-  const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const customization = useSelector((state) => state.customization);
-  const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
-
+    const dispatch = useDispatch();
+    const { pathname } = useLocation();
+    const customization = useSelector((state) => state.customization);
+    const matchesSM = useMediaQuery('(max-width: 959px)'); // Use media query directly
+    
   const Icon = item.icon;
   const itemIcon = item?.icon ? (
     <Icon stroke={1.5} size="1.3rem" />
