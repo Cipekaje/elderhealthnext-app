@@ -22,9 +22,9 @@
     "mysql2": "^3.9.2",
     "next": "^14.1.4",
     "next-auth": "^4.24.7",
-    "react-router-dom": "^6.22.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
     "util": "^0.12.5"
   },
   "devDependencies": {
