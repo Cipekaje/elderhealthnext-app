@@ -14,6 +14,9 @@ export default function HomePage() {
     return (
         <div className="container">
           {!isLoggedIn && (
+
+
+
             <MainHomeLayout>
               
             </MainHomeLayout>
