@@ -1,3 +1,5 @@
+//Mobile only
+
 import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -39,9 +41,9 @@ const DropdownMenu = () => {
         aria-controls="dropdown-menu"
         aria-haspopup="true"
         onClick={handleMenuClick}
-        style={{ color: 'white' }} // Set color to white
+        style={{ color: 'black' }} // Set color to white
       >
-        <MenuIcon style={{ color: 'white' }} /> {/* Render Menu icon with white color */}
+        <MenuIcon style={{ color: 'black' }} /> {/* Render Menu icon with white color */}
       </IconButton>
       <Menu
         id="dropdown-menu"
