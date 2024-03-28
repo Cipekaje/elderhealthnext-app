@@ -31,7 +31,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
   const router = useRouter();
 
   const handleLoginClick = () => {
-    router.push('/Login'); // Navigate to the "/Login" page
+    router.push('/login'); // Navigate to the "/Login" page
   };
   const handleHelpClick = () => {
     router.push('/Help'); // Navigate to the "/Login" page
