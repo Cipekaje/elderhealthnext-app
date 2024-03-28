@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
+import { getServerSession } from "next-auth"
+import { useSession } from 'next-auth/react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -37,17 +39,20 @@ const ProfileSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+  const { data: session } = useSession();
+
+  const user = session?.user;
+
+
+  if (user) {
+    console.log("User's first name:", user.firstName);
+  } else {
+    console.log("User not found in session.");
+  }
 
   //If small screen, makes the popper position different 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const transformValue = isMobile ? 'translate(45px, 75px)' : 'translate(288%, 80px)';
-
-  //Dummy user (TEMPORARY)
-  const user = {
-    firstName: 'Vardenis',
-    lastName: 'Pavardenis',
-    role: 'Priziuretojas'
-  };
 
   //Logout
   const handleLogout = async () => {
@@ -64,21 +69,21 @@ const ProfileSection = () => {
   const handleListItemClick = (event, index, route = '') => {
     setSelectedIndex(index);
     handleClose(event);
-  
+
     switch (index) {
-        case 0: // Paskyros Nustatymai (Settings)
-            router.push('/Login'); // Change '/settings' to the appropriate route
-            break;
-        case 1: // Pagalba (Help)
-            router.push('/Help'); // Change '/help' to the appropriate route
-            break;
-        case 2: // Atsiliepimai (Review)
-            router.push('/Login');// Change '/review' to the appropriate route
-            break;
-        default:
-            break;
-        }
-    
+      case 0: // Paskyros Nustatymai (Settings)
+        router.push('/Login'); // Change '/settings' to the appropriate route
+        break;
+      case 1: // Pagalba (Help)
+        router.push('/Help'); // Change '/help' to the appropriate route
+        break;
+      case 2: // Atsiliepimai (Review)
+        router.push('/Login');// Change '/review' to the appropriate route
+        break;
+      default:
+        break;
+    }
+
   };
 
   const handleToggle = () => {
@@ -107,7 +112,7 @@ const ProfileSection = () => {
           '&[aria-controls="menu-list-grow"], &:hover': {
             borderColor: theme.palette.primary.main,
             background: `${theme.palette.primary.main}!important`,
-            color:"lightgray",
+            color: "lightgray",
             '& svg': {
               stroke: "#DCDCDC"
             }
@@ -138,10 +143,10 @@ const ProfileSection = () => {
         onClick={handleToggle}
         color="primary"
       />
-        <Popper
+      <Popper
         sx={{
-            position:'absolute',
-            transform: transformValue
+          position: 'absolute',
+          transform: transformValue
         }}
         placement="bottom-end"
         open={open}
@@ -149,66 +154,66 @@ const ProfileSection = () => {
         role={undefined}
         transition
         disablePortal
-        >
+      >
         {({ TransitionProps }) => (
-            <Fade {...TransitionProps} timeout={350}>
-          <Paper
-          elevation={9}
-          sx={{
-            borderRadius: '30px',
-            overflow: 'hidden',
-            transform: 'translate(-20px, 15px)'
-          }}>
-            <ClickAwayListener onClickAway={handleClose}>
-              <Card elevation={16} sx={{ boxShadow: theme.shadows[16] }}>
-                <CardContent>
-                  <Box sx={{ p: 2 }}>
-                    <Stack>
-                      <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Sveiki, </Typography>
-                        <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                        {user.firstName} {user.lastName}
-                        </Typography>
+          <Fade {...TransitionProps} timeout={350}>
+            <Paper
+              elevation={9}
+              sx={{
+                borderRadius: '30px',
+                overflow: 'hidden',
+                transform: 'translate(-20px, 15px)'
+              }}>
+              <ClickAwayListener onClickAway={handleClose}>
+                <Card elevation={16} sx={{ boxShadow: theme.shadows[16] }}>
+                  <CardContent>
+                    <Box sx={{ p: 2 }}>
+                      <Stack>
+                        <Stack direction="row" spacing={0.5} alignItems="center">
+                          <Typography variant="h4">Sveiki, </Typography>
+                          <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
+                            {user.firstName} {user.lastName}
+                          </Typography>
+                        </Stack>
+                        <Typography variant="subtitle2">{user.role}</Typography>
                       </Stack>
-                      <Typography variant="subtitle2">{user.role}</Typography>
-                    </Stack>
-                    <Divider />
-                  </Box>
-                  <Box sx={{ p: 1 }}>
-                    <List>
-                      <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0, '#')}>
-                        <ListItemIcon>
-                          <IconSettings stroke={1.5} size="1.3rem" />
-                        </ListItemIcon>
-                        <ListItemText primary={<Typography variant="body2">Paskyros Nustatymai</Typography>} />
-                      </ListItemButton>
+                      <Divider />
+                    </Box>
+                    <Box sx={{ p: 1 }}>
+                      <List>
+                        <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0, '#')}>
+                          <ListItemIcon>
+                            <IconSettings stroke={1.5} size="1.3rem" />
+                          </ListItemIcon>
+                          <ListItemText primary={<Typography variant="body2">Paskyros Nustatymai</Typography>} />
+                        </ListItemButton>
 
-                      <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1, '#')}>
-                        <ListItemIcon>
-                          <IconHelp stroke={1.5} size="1.3rem" />
-                        </ListItemIcon>
-                        <ListItemText primary={<Typography variant="body2">Pagalba</Typography>} />
-                      </ListItemButton>
+                        <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1, '#')}>
+                          <ListItemIcon>
+                            <IconHelp stroke={1.5} size="1.3rem" />
+                          </ListItemIcon>
+                          <ListItemText primary={<Typography variant="body2">Pagalba</Typography>} />
+                        </ListItemButton>
 
-                      <ListItemButton selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2, '#')}>
-                        <ListItemIcon>
-                          <IconQuote stroke={1.5} size="1.3rem" />
-                        </ListItemIcon>
-                        <ListItemText primary={<Typography variant="body2">Atsiliepimai</Typography>} />
-                      </ListItemButton>
+                        <ListItemButton selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2, '#')}>
+                          <ListItemIcon>
+                            <IconQuote stroke={1.5} size="1.3rem" />
+                          </ListItemIcon>
+                          <ListItemText primary={<Typography variant="body2">Atsiliepimai</Typography>} />
+                        </ListItemButton>
 
-                      <ListItemButton selected={selectedIndex === 3} onClick={handleLogout}>
-                        <ListItemIcon>
-                          <IconLogout stroke={1.5} size="1.3rem" />
-                        </ListItemIcon>
-                        <ListItemText primary={<Typography variant="body2">Atsijungti</Typography>} />
-                      </ListItemButton>
-                    </List>
-                  </Box>
-                </CardContent>
-              </Card>
-            </ClickAwayListener>
-          </Paper>
+                        <ListItemButton selected={selectedIndex === 3} onClick={handleLogout}>
+                          <ListItemIcon>
+                            <IconLogout stroke={1.5} size="1.3rem" />
+                          </ListItemIcon>
+                          <ListItemText primary={<Typography variant="body2">Atsijungti</Typography>} />
+                        </ListItemButton>
+                      </List>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </ClickAwayListener>
+            </Paper>
           </Fade>
         )}
       </Popper>
