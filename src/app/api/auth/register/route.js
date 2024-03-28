@@ -2,19 +2,26 @@ import { NextResponse } from "next/server";
 import util from "util";
 import bcrypt from 'bcrypt';
 import DB from '@/../util/db';
+//import { formattedDate } from './MyComponent.js';
 
 const query = util.promisify(DB.query).bind(DB);
 
 export const POST = async (req) => {
     const user = await req.json();
     console.log(user);
+    //console.log(formattedDate);
     try{
         const saltRounds = 10; 
         const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-
+        const birthdate = new Date(user.birthdate);
+        const year = birthdate.getFullYear();
+        const month = String(birthdate.getMonth() + 1).padStart(2, '0'); // Adding 1 because getMonth returns zero-based month
+        const day = String(birthdate.getDate() + 1).padStart(2, '0');
+        
+        const formattedDate = `${year}-${month}-${day}`;
         const results = await query(
-            "INSERT INTO User (username, password, email) VALUES (?, ?, ?)",
-            [user.username, hashedPassword, user.email]
+            "INSERT INTO User (firstName, lastName, password, email, birthdate) VALUES (?, ?, ?, ?, ?)",
+            [user.firstName, user.lastName, hashedPassword, user.email, formattedDate]
         );     
         
         if (results) {
