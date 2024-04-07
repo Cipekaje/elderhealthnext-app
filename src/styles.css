@@ -25,4 +25,11 @@ a{
 .accordionSummary:hover {
     background-color: #E3F2FD;
   }
+.BackgroundImageStyle {
+   
+    background-repeat: no-repeat;
+    background-attachment: fixed;  
+    background-size: cover;
+}
+
   

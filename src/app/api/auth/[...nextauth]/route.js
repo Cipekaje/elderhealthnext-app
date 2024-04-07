@@ -1,40 +1,73 @@
-import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { NextResponse } from "next/server";
-import util from "util";
-import bcrypt from 'bcrypt';
-import DB from '@/../util/db';
+import NextAuth from "next-auth"
+import { compare } from 'bcrypt'
+import pool from '@/../util/db';
 
-const query = util.promisify(DB.query).bind(DB);
-
-export const authOptions = {
-    session: {
-        strategy: 'jwt'
-    },
-    providers:[
+const authConfig = {
+    providers: [
         CredentialsProvider({
-            async authorize(credentials){
-                if (!credentials?.email || !credentials?.password){
-                    return null;
-                }
-                const user = await query('SELECT * FROM User WHERE email = ?', [credentials.email]);
-
-                if (!user) {
-                    return null;
-                }
-
-                const passwordMatch = await bcrypt.compare(credentials.password, user.password);
-
-                if (passwordMatch) {
-                    return user;
-                } else {
-                    return null;
-                }
+            name: "signIn",
+            credentials: {
+                email: {
+                    label: "Email",
+                    type: "email",
+                    placeholder: "example@example.com",
+                },
+                password: { label: "Password", type: "password" },
+                firstName: {label: "name", type: "firstName"},
             },
-        }),   
-    ],
-    secret: process.env.NEXTAUTH_SECRET
-}
+            async authorize(credentials) {
+                if (
+                    !credentials ||
+                    !credentials.email ||
+                    !credentials.password
+                ) {
+                    return null;
+                }
 
-const handler = NextAuth(authOptions);
+                try {
+                    // Query the database to find the user by email
+                    const [rows, fields] = await pool.query('SELECT id, email, firstName, password FROM User WHERE email = ?', [credentials.email]);
+
+                    // If a user is found
+                    if (rows.length > 0) {
+                        const user = rows[0];
+                        // Assuming password is stored in the database
+                        if (await compare(credentials.password, user.password)) {
+                            // Return the user information
+                            return {
+                                id: user.id.toString(),
+                                email: user.email,
+                                name: user.firstName,
+                            };
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error executing query:', error);
+                    throw error;
+                }
+
+                return null; // Return null if user not found or password doesn't match
+            },
+        }),
+    ],
+    pages: {
+        signIn: "/auth/signin",
+        error: "/auth/error",
+    },
+    callbacks: {
+        jwt({ token, user }) {
+            if (token && user) {
+                token.id = user.id;
+            }
+            return token;
+        },
+        session({ session, token }) {
+            if (token && session.user && token.id) session.user.id = token.id;
+            return session;
+        },
+    },
+};
+
+const handler = NextAuth(authConfig);
 export {handler as GET, handler as POST}
