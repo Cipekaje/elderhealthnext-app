@@ -41,6 +41,8 @@ const ProfileSection = () => {
   //If small screen, makes the popper position different 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const transformValue = isMobile ? 'translate(45px, 75px)' : 'translate(288%, 80px)';
+  const popperWidth = isMobile ? '320px' : '500px';
+  const popperHeight = isMobile ? 'auto' : 'auto';
 
   //Dummy user (TEMPORARY)
   const user = {
@@ -102,14 +104,14 @@ const ProfileSection = () => {
           alignItems: 'center',
           borderRadius: '27px',
           transition: 'all .2s ease-in-out',
-          borderColor: "#DCDCDC",
-          backgroundColor: "#DCDCDC",
+          borderColor: "#f0f4f4",
+          backgroundColor: "#f0f4f4",
           '&[aria-controls="menu-list-grow"], &:hover': {
             borderColor: theme.palette.primary.main,
             background: `${theme.palette.primary.main}!important`,
             color:"lightgray",
             '& svg': {
-              stroke: "#DCDCDC"
+              stroke: "#f0f4f4"
             }
           },
           '& .MuiChip-label': {
@@ -141,7 +143,9 @@ const ProfileSection = () => {
         <Popper
         sx={{
             position:'absolute',
-            transform: transformValue
+            transform: transformValue,
+            width: popperWidth,
+            height: popperHeight,
         }}
         placement="bottom-end"
         open={open}
@@ -165,8 +169,8 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Sveiki, </Typography>
-                        <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
+                        <Typography variant="h5">Sveiki, </Typography>
+                        <Typography component="span" variant="h5" sx={{ fontWeight: 400 }}>
                         {user.firstName} {user.lastName}
                         </Typography>
                       </Stack>

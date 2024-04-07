@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Grid, useMediaQuery } from '@mui/material';
 
 // project imports
-import { Breadcrumbs } from '@mui/material';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import Tile from '../components/Tile';
+import HeartrateTile from '../components/HeartrateTile';
+import ChartTile from '../components/ChartTile';
+import CurrentHeartrate from '../components/CurrentHrTile';
+import Footer from '../components/Footer';
 
+//DummyUserData
+const dummyUserId = '1';
+const dummyUserName = 'Tomas';
 
 // styles
 const Main = styled('main', {
@@ -24,17 +28,20 @@ const Main = styled('main', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
   }),
-  marginLeft: open ? '310px' : '15px', // Adjust margin left when sidebar is open or closed
-  width: open ? 'calc(100% - 310px)' : 'calc(100% - 15px)', // Adjust width when sidebar is open or closed
-  padding: '22px',
+  display: 'flex', // Use flexbox
+  flexDirection: 'column', // Arrange children vertically
+  flexGrow: 1, // Allow the main content to grow to fill available space
+  padding: '20px',
+  marginLeft: open ? '235px' : '8px', // Adjust margin left when sidebar is open or closed
+  marginRight: '8px', // Add margin to the right to prevent content from sticking to the edge
 }));
 
 const MainContentWrapper = styled(Box)(({ theme }) => ({
-  backgroundColor: '#DCDCDC',
+  backgroundColor: '#f0f4f4',
   borderRadius: '30px',
-  overflow: 'hidden',
   marginTop: '70px',
-  height: 'calc(100vh - 70px)', // Make the div full screen height
+  minHeight: 'calc(100vh - 70px)',
+
 }));
 
 // ==============================|| MAIN DASHBOARD LAYOUT ||============================== //
@@ -50,8 +57,21 @@ const UserDasboardLayout = () => {
     setDrawerOpen(!drawerOpen);
   };
 
+  useEffect(() => {
+    // Check if window object exists (i.e., if we're in the browser environment)
+    if (typeof window !== 'undefined') {
+      // Set overflow to 'auto' when the component mounts
+      document.body.style.overflow = 'auto';
+
+      // Optionally, you can remove the style when the component unmounts
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, []);
+
   return (
-    <Box>
+    <div>
       <CssBaseline />
       {/* header */}
       <AppBar enableColorOnDark color="inherit" elevation={0}>
@@ -60,31 +80,38 @@ const UserDasboardLayout = () => {
 
       <Sidebar drawerOpen={drawerOpen} drawerToggle={handleLeftDrawerToggle} />
 
-      <Main open={drawerOpen}>
-        {/* breadcrumb */}
+      <Main open={drawerOpen} sx={{ overflow: 'auto', }}>
         <MainContentWrapper>
-        <Breadcrumbs />
-          
-        {/* Grid container for arranging tiles */}
-        {/* Grid container for arranging tiles */}
-        <Grid container spacing={3}>
-            {/* First chart takes 2 rows and 6 columns */}
-            <Grid item xs={12} md={8} sx={{ height: '600px' }}>
-              <Tile title="Chart 1" content="Lorem ipsum dolor sit amet." color="#F5F5F5" size="large" />
+          <div style={{ padding: '22px' }}>
+            {/* Grid container for arranging tiles */}
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+              {/* First row */}
+              <Grid item xs={12} md={4}>
+                <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={dummyUserName} />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={dummyUserId} />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={dummyUserId} />
+              </Grid>
+
+              {/* Second row - chart */}
+              <Grid item xs={12}>
+                <ChartTile color="#37F051" userId={dummyUserId} isSidebarOpen={drawerOpen} />
+              </Grid>
+
+              {/* Third row 
+              <Grid item xs={12} md={4}>
+                <Tile title="Average Data" content="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." color="#603CAC" size="large" />
+              </Grid>*/}
             </Grid>
-            {/* Second chart takes 1 row and 6 columns */}
-            <Grid item xs={12} md={4}>
-              <Tile title="Chart 2" content="Consectetur adipiscing elit." color="#E0E0E0" />
-            </Grid>
-            {/* Add more Grid items as needed */}
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Tile title="Average Data" content="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." color="#D3D3D3" size="large" />
-            </Grid>
-          </Grid>
+          </div>
 
         </MainContentWrapper>
       </Main>
-    </Box>
+      <Footer />
+    </div>
   );
 };
 
