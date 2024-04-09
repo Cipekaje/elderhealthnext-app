@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { getServerSession } from "next-auth";
 import { useSession } from 'next-auth/react';
 
+import { MuiDialog } from '../components/SignOut.tsx';
+
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -42,11 +44,11 @@ const ProfileSection = () => {
 
   const { data: session } = useSession();
   const user = session?.user;
-  const { firstName, lastName, birthdate } = user?.userInfo || {};
+  const { firstName } = user?.userInfo || {};
 
-  console.log(firstName);
-  console.log(lastName);
-  console.log(birthdate);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  // console.log(firstName);
   //If small screen, makes the popper position different 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const transformValue = isMobile ? 'translate(45px, 75px)' : 'translate(288%, 80px)';
@@ -55,8 +57,13 @@ const ProfileSection = () => {
 
   //Logout
   const handleLogout = async () => {
-    console.log('Logout');
+    setOpenDialog(true);
+    // console.log('Logout');
   };
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Close the dialog
+  };
+
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -145,10 +152,10 @@ const ProfileSection = () => {
       <Popper
         sx={{
 
-            position:'absolute',
-            transform: transformValue,
-            width: popperWidth,
-            height: popperHeight,
+          position: 'absolute',
+          transform: transformValue,
+          width: popperWidth,
+          height: popperHeight,
         }}
         placement="bottom-end"
         open={open}
@@ -158,28 +165,27 @@ const ProfileSection = () => {
         disablePortal
       >
         {({ TransitionProps }) => (
-            <Fade {...TransitionProps} timeout={350}>
-          <Paper
-          elevation={9}
-          sx={{
-            borderRadius: '30px',
-            overflow: 'hidden',
-            transform: 'translate(-20px, 15px)'
-          }}>
-            <ClickAwayListener onClickAway={handleClose}>
-              <Card elevation={16} sx={{ boxShadow: theme.shadows[16] }}>
-                <CardContent>
-                  <Box sx={{ p: 2 }}>
-                    <Stack>
-                      <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h5">Sveiki, </Typography>
-                        <Typography component="span" variant="h5" sx={{ fontWeight: 400 }}>
-                        {user.firstName} {user.lastName}
-                        </Typography>
-                       </Stack>
-                       <Typography variant="subtitle2">{user.role}</Typography>
-                     </Stack>
-                     <Divider />
+          <Fade {...TransitionProps} timeout={350}>
+            <Paper
+              elevation={9}
+              sx={{
+                borderRadius: '30px',
+                overflow: 'hidden',
+                transform: 'translate(-20px, 15px)'
+              }}>
+              <ClickAwayListener onClickAway={handleClose}>
+                <Card elevation={16} sx={{ boxShadow: theme.shadows[16] }}>
+                  <CardContent>
+                    <Box sx={{ p: 2 }}>
+                      <Stack>
+                        <Stack direction="row" spacing={0.5} alignItems="center">
+                          <Typography variant="h5">Sveiki, {firstName} </Typography>
+                          <Typography component="span" variant="h5" sx={{ fontWeight: 400 }}>
+                          </Typography>
+                        </Stack>
+                        {/* <Typography variant="subtitle2">{user.role}</Typography> */}
+                      </Stack>
+                      <Divider />
                     </Box>
                     <Box sx={{ p: 1 }}>
                       <List>
@@ -203,13 +209,8 @@ const ProfileSection = () => {
                           </ListItemIcon>
                           <ListItemText primary={<Typography variant="body2">Atsiliepimai</Typography>} />
                         </ListItemButton>
-
-                        <ListItemButton selected={selectedIndex === 3} onClick={handleLogout}>
-                          <ListItemIcon>
-                            <IconLogout stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Atsijungti</Typography>} />
-                        </ListItemButton>
+                        {/* Render the MuiDialog component */}
+                        <MuiDialog open={openDialog} onClose={handleCloseDialog} />
                       </List>
                     </Box>
                   </CardContent>

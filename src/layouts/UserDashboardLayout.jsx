@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -52,6 +53,14 @@ const UserDasboardLayout = () => {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Naudotojo informacijos gavimas
+  const { data: session } = useSession();
+  const user = session?.user;
+  const userID = session?.user?.id;
+  const { firstName } = user?.userInfo || {};
+
+  // console.log(firstName);
+  // console.log(userID);
   // Toggle function for sidebar
   const handleLeftDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -86,7 +95,19 @@ const UserDasboardLayout = () => {
             {/* Grid container for arranging tiles */}
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
               {/* First row */}
+              {/* Ne dummy user paemimas */}
               <Grid item xs={12} md={4}>
+                <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={firstName} />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={userID} />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={userID} />
+              </Grid>
+
+
+              {/* <Grid item xs={12} md={4}>
                 <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={dummyUserName} />
               </Grid>
               <Grid item xs={12} md={4}>
@@ -94,17 +115,22 @@ const UserDasboardLayout = () => {
               </Grid>
               <Grid item xs={12} md={4}>
                 <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={dummyUserId} />
-              </Grid>
+              </Grid> */}
+
 
               {/* Second row - chart */}
               <Grid item xs={12}>
-                <ChartTile color="#37F051" userId={dummyUserId} isSidebarOpen={drawerOpen} />
+                <ChartTile color="#37F051" userId={userID} isSidebarOpen={drawerOpen} />
               </Grid>
 
-              {/* Third row 
-              <Grid item xs={12} md={4}>
+              {/* <Grid item xs={12}>
+                <ChartTile color="#37F051" userId={dummyUserId} isSidebarOpen={drawerOpen} />
+              </Grid> */}
+
+              {/* Third row  */}
+              {/* <Grid item xs={12} md={4}>
                 <Tile title="Average Data" content="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." color="#603CAC" size="large" />
-              </Grid>*/}
+              </Grid> */}
             </Grid>
           </div>
 
