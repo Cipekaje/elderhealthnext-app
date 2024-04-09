@@ -63,11 +63,11 @@ const UserDasboardLayout = () => {
       <Main open={drawerOpen}>
         {/* breadcrumb */}
         <MainContentWrapper>
-        <Breadcrumbs />
-          
-        {/* Grid container for arranging tiles */}
-        {/* Grid container for arranging tiles */}
-        <Grid container spacing={3}>
+          <Breadcrumbs />
+
+          {/* Grid container for arranging tiles */}
+          {/* Grid container for arranging tiles */}
+          <Grid container spacing={3}>
             {/* First chart takes 2 rows and 6 columns */}
             <Grid item xs={12} md={8} sx={{ height: '600px' }}>
               <Tile title="Chart 1" content="Lorem ipsum dolor sit amet." color="#F5F5F5" size="large" />

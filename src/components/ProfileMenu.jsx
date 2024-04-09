@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
-import { getServerSession } from "next-auth"
+import { getServerSession } from "next-auth";
 import { useSession } from 'next-auth/react';
 
 // material-ui
@@ -39,17 +39,14 @@ const ProfileSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+
   const { data: session } = useSession();
-
   const user = session?.user;
+  const { firstName, lastName, birthdate } = user?.userInfo || {};
 
-
-  if (user) {
-    console.log("User's first name:", user.firstName);
-  } else {
-    console.log("User not found in session.");
-  }
-
+  console.log(firstName);
+  console.log(lastName);
+  console.log(birthdate);
   //If small screen, makes the popper position different 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const transformValue = isMobile ? 'translate(45px, 75px)' : 'translate(288%, 80px)';
@@ -72,13 +69,13 @@ const ProfileSection = () => {
 
     switch (index) {
       case 0: // Paskyros Nustatymai (Settings)
-        router.push('/Login'); // Change '/settings' to the appropriate route
+        router.push('/login'); // Change '/settings' to the appropriate route
         break;
       case 1: // Pagalba (Help)
         router.push('/Help'); // Change '/help' to the appropriate route
         break;
       case 2: // Atsiliepimai (Review)
-        router.push('/Login');// Change '/review' to the appropriate route
+        router.push('/login');// Change '/review' to the appropriate route
         break;
       default:
         break;
@@ -172,7 +169,7 @@ const ProfileSection = () => {
                         <Stack direction="row" spacing={0.5} alignItems="center">
                           <Typography variant="h4">Sveiki, </Typography>
                           <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                            {user.firstName} {user.lastName}
+                            {user.name}
                           </Typography>
                         </Stack>
                         <Typography variant="subtitle2">{user.role}</Typography>
