@@ -26,7 +26,7 @@
     "git": "^0.1.5",
     "material-ui-popup-state": "^5.1.0",
     "mysql": "^2.18.1",
-    "mysql2": "^3.9.2",
+    "mysql2": "^3.9.4",
     "next": "^14.1.4",
     "next-auth": "^4.24.7",
     "react": "^18.2.0",

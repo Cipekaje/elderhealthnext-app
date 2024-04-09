@@ -317,7 +317,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
               {/* Avatar and Name */}
               <Box style={{ position: 'absolute', bottom: '8px', left: '16px', display: 'flex', alignItems: 'center' }}>
                 {/* Avatar */}
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" style={{ marginRight: '8px' }} />
+                <Avatar alt="Remy Sharp" style={{ marginRight: '8px' }} />
                 {/* User Name */}
                 <Typography variant="body2" style={{ fontWeight: 'bold' }}>Rokas Nemunas</Typography>
               </Box>
@@ -341,7 +341,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
               {/* Avatar and Name */}
               <Box style={{ position: 'absolute', bottom: '8px', left: '16px', display: 'flex', alignItems: 'center' }}>
                 {/* Avatar */}
-                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" style={{ marginRight: '8px' }} />
+                <Avatar alt="Travis Howard" style={{ marginRight: '8px' }} />
                 {/* User Name */}
                 <Typography variant="body2" style={{ fontWeight: 'bold' }}>Tomas Neris</Typography>
               </Box>
