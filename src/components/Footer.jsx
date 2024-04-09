@@ -2,8 +2,6 @@ import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import { IconHelp, IconQuote } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
-import Logo from '../../public/Logo.png';
-import Image from 'next/image';
 
 const Footer = () => {
     const theme = useTheme();
@@ -30,17 +28,12 @@ const Footer = () => {
             <Typography variant="body2" sx={{ marginRight: '20px', color: theme.palette.grey[500] }}>
                 {new Date().getFullYear()} &copy; <span style={{ color: theme.palette.grey[500] }}>ElderHealth Companion</span>
             </Typography>
-            <Typography variant="body2" sx={{ display: 'inline-block', marginRight: '20px' }}>
-                &bull;
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginRight: '10px' }} onClick={() => router.push('/Help')}>
+                <IconHelp sx={{ marginRight: '5px' }} /> Pagalba
             </Typography>
-            <Typography variant="body2" sx={{ display: 'inline-block', cursor: 'pointer', marginRight: '10px' }} onClick={() => router.push('/Help')}>
-                <IconHelp /> Pagalba
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginRight: '10px' }} onClick={() => router.push('/')}>
+                <IconQuote sx={{ marginRight: '5px' }} /> Atsiliepimai
             </Typography>
-            <Typography variant="body2" sx={{ display: 'inline-block', cursor: 'pointer', marginRight: '10px' }} onClick={() => router.push('/Login')}>
-                <IconQuote /> Atsiliepimai
-            </Typography>
-
-
         </Box>
     );
 };
