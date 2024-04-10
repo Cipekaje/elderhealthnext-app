@@ -15,7 +15,7 @@ const TopSection = () => {
     const router = useRouter();
 
     const handleLogoClick = () => {
-        router.push('/');
+        router.back();
     };
     return (
         <>

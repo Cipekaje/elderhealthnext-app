@@ -14,7 +14,6 @@ const authConfig = {
                     placeholder: "example@example.com",
                 },
                 password: { label: "Password", type: "password" },
-                firstName: {label: "name", type: "firstName"},
             },
             async authorize(credentials) {
                 if (
@@ -39,6 +38,12 @@ const authConfig = {
                                 id: user.id.toString(),
                                 email: user.email,
                                 name: user.firstName,
+                                // Add other user information as needed
+                                userInfo: {
+                                    firstName: user.firstName,
+                                    lastName: user.lastName,
+                                    birthdate: user.birthdate
+                                  }
                             };
                         }
                     }
@@ -56,18 +61,22 @@ const authConfig = {
         error: "/auth/error",
     },
     callbacks: {
-        jwt({ token, user }) {
-            if (token && user) {
+        async jwt({ token, user }) {
+            if (user) {
                 token.id = user.id;
+                token.userInfo = user.userInfo; // Include user information in the JWT token
             }
             return token;
         },
-        session({ session, token }) {
-            if (token && session.user && token.id) session.user.id = token.id;
+        async session({ session, token }) {
+            if (token && token.id && token.userInfo) {
+                session.user.id = token.id;
+                session.user.userInfo = token.userInfo; // Include user information in the session
+            }
             return session;
         },
     },
 };
 
 const handler = NextAuth(authConfig);
-export {handler as GET, handler as POST}
+export { handler as GET, handler as POST };
