@@ -75,7 +75,7 @@ function Register() {
       return;
     }
     else{
-      
+
       router.push('/login');
       alert('Registracija sėkminga!');
     }
