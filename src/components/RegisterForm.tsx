@@ -75,8 +75,8 @@ function Register() {
       return;
     }
     else{
-      
-      router.push('/UserDashboard');
+
+      router.push('/login');
       alert('Registracija sėkminga!');
     }
 
@@ -297,7 +297,7 @@ function Register() {
 
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/Login" variant="body2">
+                <Link href="/login" variant="body2">
                   Jau turite paskyrą? Prisijunkite
                 </Link>
               </Grid>

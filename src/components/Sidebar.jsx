@@ -16,15 +16,6 @@ const Sidebar = ({ drawerOpen, drawerToggle }) => {
 
   return (
     <Box sx={{ position: 'relative', zIndex: 1 }}>
-      <IconButton
-        color="primary"
-        aria-label="open drawer"
-        edge="start"
-        onClick={drawerToggle}
-        sx={{ position: 'absolute', top: '32px', left: '32px', zIndex: 1000 }}
-      >
-        <MenuIcon />
-      </IconButton>
       <Drawer
         variant="temporary"
         anchor="left"
@@ -32,10 +23,13 @@ const Sidebar = ({ drawerOpen, drawerToggle }) => {
         onClose={drawerToggle}
         ModalProps={{ keepMounted: true, BackdropProps: { invisible: true } }} // Make the backdrop invisible
         elevation={0}
+        PaperProps={{
+          sx: { width: "235px" },
+        }}
       >
-        <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
           <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={46} height={46} />
-          <Typography variant="h6" sx={{ ml: 1 }}>ElderHealth Companion</Typography>
+          <Typography variant="h6" sx={{ ml: 1 }}>Meniu</Typography>
         </Box>
         {/* Render the menu items using SidebarItem component */}
         {sidebarItems.map((item, index) => (

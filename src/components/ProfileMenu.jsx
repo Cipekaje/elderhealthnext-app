@@ -2,8 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
-import { getServerSession } from "next-auth"
+import { getServerSession } from "next-auth";
 import { useSession } from 'next-auth/react';
+
+import { MuiDialog } from '../components/SignOut.tsx';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -39,25 +41,29 @@ const ProfileSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+
   const { data: session } = useSession();
-
   const user = session?.user;
+  const { firstName } = user?.userInfo || {};
 
+  const [openDialog, setOpenDialog] = useState(false);
 
-  if (user) {
-    console.log("User's first name:", user.firstName);
-  } else {
-    console.log("User not found in session.");
-  }
-
+  // console.log(firstName);
   //If small screen, makes the popper position different 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const transformValue = isMobile ? 'translate(45px, 75px)' : 'translate(288%, 80px)';
+  const popperWidth = isMobile ? '320px' : '500px';
+  const popperHeight = isMobile ? 'auto' : 'auto';
 
   //Logout
   const handleLogout = async () => {
-    console.log('Logout');
+    setOpenDialog(true);
+    // console.log('Logout');
   };
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Close the dialog
+  };
+
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -72,13 +78,13 @@ const ProfileSection = () => {
 
     switch (index) {
       case 0: // Paskyros Nustatymai (Settings)
-        router.push('/Login'); // Change '/settings' to the appropriate route
+        router.push('/login'); // Change '/settings' to the appropriate route
         break;
       case 1: // Pagalba (Help)
         router.push('/Help'); // Change '/help' to the appropriate route
         break;
       case 2: // Atsiliepimai (Review)
-        router.push('/Login');// Change '/review' to the appropriate route
+        router.push('/login');// Change '/review' to the appropriate route
         break;
       default:
         break;
@@ -107,14 +113,14 @@ const ProfileSection = () => {
           alignItems: 'center',
           borderRadius: '27px',
           transition: 'all .2s ease-in-out',
-          borderColor: "#DCDCDC",
-          backgroundColor: "#DCDCDC",
+          borderColor: "#f0f4f4",
+          backgroundColor: "#f0f4f4",
           '&[aria-controls="menu-list-grow"], &:hover': {
             borderColor: theme.palette.primary.main,
             background: `${theme.palette.primary.main}!important`,
             color: "lightgray",
             '& svg': {
-              stroke: "#DCDCDC"
+              stroke: "#f0f4f4"
             }
           },
           '& .MuiChip-label': {
@@ -145,8 +151,11 @@ const ProfileSection = () => {
       />
       <Popper
         sx={{
+
           position: 'absolute',
-          transform: transformValue
+          transform: transformValue,
+          width: popperWidth,
+          height: popperHeight,
         }}
         placement="bottom-end"
         open={open}
@@ -170,12 +179,11 @@ const ProfileSection = () => {
                     <Box sx={{ p: 2 }}>
                       <Stack>
                         <Stack direction="row" spacing={0.5} alignItems="center">
-                          <Typography variant="h4">Sveiki, </Typography>
-                          <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                            {user.firstName} {user.lastName}
+                          <Typography variant="h5">Sveiki, {firstName} </Typography>
+                          <Typography component="span" variant="h5" sx={{ fontWeight: 400 }}>
                           </Typography>
                         </Stack>
-                        <Typography variant="subtitle2">{user.role}</Typography>
+                        {/* <Typography variant="subtitle2">{user.role}</Typography> */}
                       </Stack>
                       <Divider />
                     </Box>
@@ -201,13 +209,8 @@ const ProfileSection = () => {
                           </ListItemIcon>
                           <ListItemText primary={<Typography variant="body2">Atsiliepimai</Typography>} />
                         </ListItemButton>
-
-                        <ListItemButton selected={selectedIndex === 3} onClick={handleLogout}>
-                          <ListItemIcon>
-                            <IconLogout stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Atsijungti</Typography>} />
-                        </ListItemButton>
+                        {/* Render the MuiDialog component */}
+                        <MuiDialog open={openDialog} onClose={handleCloseDialog} />
                       </List>
                     </Box>
                   </CardContent>

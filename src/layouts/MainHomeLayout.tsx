@@ -80,7 +80,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
         }}
         >
           <Typography variant="body1" color="gray">
-            Trumpas aprašymas apie produktą PIRMAS PUNKTAS.
+            Mes esame inovatyvi senyvo amžiaus, sergančių ir visų susidomėjusių savo gyvensena sveikatos stebėjimo įmonė
           </Typography>
         </Box>
         <Box marginBottom={2} style={{
@@ -93,9 +93,23 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
         }}
         >
           <Typography variant="body1" color="gray">
-            Trumpas aprašymas apie produktą ANTRAS PUNKTAS.
+            Mūsų tikslas: aukštos kokybės 24/7 žmonių gyvybinių rodiklių stebėjimas ir analizė
           </Typography>
         </Box>
+        <Box marginBottom={2} style={{
+          position: 'relative', // Fixed position
+          width: '100%',
+          padding: '5px',
+          border: '1px solid black', // Colored border
+          borderRadius: '16px', // Adjust border-radius if needed
+          boxSizing: "border-box",
+        }}
+        >
+          <Typography variant="body1" color="gray">
+            Siūlome jums apyrankę suteikiančią sveikatos stebėjimo, analizės ir pagalbos iškvietimo paslaugas (Plačiau Link(Kas yra ElderHealth Companion))
+          </Typography>
+        </Box>
+
 
 
 
@@ -116,34 +130,34 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
                 backgroundColor: 'rgba(25,25,100,0.75)',
               }}>
                 <Typography variant="h6" color="rgba(255, 255, 255, 0.7)" gutterBottom>
-                  Profesinis
+                  Šeimos planas
                 </Typography>
                 <Typography variant="h4" color="white" fontWeight="bold" gutterBottom>
-                  $15.99/mėn.
+                  15 eu/mėn
                 </Typography>
                 <Divider />
                 <Box display="flex" alignItems="left" paddingTop="15px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    Gauni daug
+                    1 apyrankės prisijungimai į sistemą;
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    dark kazka gauni
+                    Iki 5 stebėtojų prisijungimų į sistemą;
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    ir dar
+                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms;
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    be ne daugiau
+                    Greitosios pagalbos iškvietimas nelaimės atveju.
                   </Typography>
                 </Box>
 
@@ -169,36 +183,37 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
                 backgroundColor: 'rgba(25,25,100,0.75)',
               }}>
                 <Typography variant="h6" color="rgba(255, 255, 255, 0.7)" gutterBottom>
-                  Profesinis
+                  Šeimos planas
                 </Typography>
                 <Typography variant="h4" color="white" fontWeight="bold" gutterBottom>
-                  $15.99/mėn.
+                  15 eu/mėn
                 </Typography>
                 <Divider />
                 <Box display="flex" alignItems="left" paddingTop="15px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    Gauni daug
+                    1 apyrankės prisijungimai į sistemą;
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    dark kazka gauni
+                    Iki 5 stebėtojų prisijungimų į sistemą;
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    ir dar
+                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms;
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    be ne daugiau
+                    Greitosios pagalbos iškvietimas nelaimės atveju.
                   </Typography>
                 </Box>
+
                 <Box paddingTop="20px" style={{ width: '100%' }}>
                   <Button
                     variant="contained"
@@ -222,22 +237,46 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
                 backgroundColor: 'white',
               }}>
                 <Typography variant="h6" gutterBottom>
-                  Enterprise
+                  Išplėstinis planas
                 </Typography>
                 <Typography variant="h4" color="black" fontWeight="bold" gutterBottom>
-                  $9,99/mėn.
+                  25 eu/men
                 </Typography>
                 <Divider />
                 <Box display="flex" alignItems="left" paddingTop="15px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    nezinau kas cia
+                    3 apyrankės prisijungimai į sistemą;
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    pigiau nebus
+                    iki 12 stebėtojų prisijungimų į sistemą;
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="left" paddingTop="10px">
+                  <CheckIcon color="primary" />
+                  <Typography variant="body1" component="span" color="black">
+                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms;
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="left" paddingTop="10px">
+                  <CheckIcon color="primary" />
+                  <Typography variant="body1" component="span" color="black">
+                    Greitosios pagalbos iškvietimas nelaimės atveju
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="left" paddingTop="10px">
+                  <CheckIcon color="primary" />
+                  <Typography variant="body1" component="span" color="black">
+                    Kažkas dar;
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="left" paddingTop="10px">
+                  <CheckIcon color="primary" />
+                  <Typography variant="body1" component="span" color="black">
+                    Kažkas dar.
                   </Typography>
                 </Box>
                 <Box paddingTop="20px" style={{ width: '100%' }}>
@@ -259,22 +298,46 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
                 backgroundColor: 'white',
               }}>
                 <Typography variant="h6" gutterBottom>
-                  Enterprise
+                  Išplėstinis planas
                 </Typography>
                 <Typography variant="h4" color="black" fontWeight="bold" gutterBottom>
-                  $9,99/mėn.
+                  25 eu/men
                 </Typography>
                 <Divider />
                 <Box display="flex" alignItems="left" paddingTop="15px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    nezinau kas cia
+                    3 apyrankės prisijungimai į sistemą;
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    pigiau nebus
+                    iki 12 stebėtojų prisijungimų į sistemą;
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="left" paddingTop="10px">
+                  <CheckIcon color="primary" />
+                  <Typography variant="body1" component="span" color="black">
+                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms;
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="left" paddingTop="10px">
+                  <CheckIcon color="primary" />
+                  <Typography variant="body1" component="span" color="black">
+                    Greitosios pagalbos iškvietimas nelaimės atveju;
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="left" paddingTop="10px">
+                  <CheckIcon color="primary" />
+                  <Typography variant="body1" component="span" color="black">
+                    Kažkas dar;
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="left" paddingTop="10px">
+                  <CheckIcon color="primary" />
+                  <Typography variant="body1" component="span" color="black">
+                    Kažkas dar.
                   </Typography>
                 </Box>
                 <Box paddingTop="20px" style={{ width: '100%' }}>
@@ -291,7 +354,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
           </Grid>
         </Grid>
 
-        
+
         {/* COMMENTS */}
         <Box marginTop={4} marginBottom={2}>
           <Typography variant="h5">
@@ -317,7 +380,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
               {/* Avatar and Name */}
               <Box style={{ position: 'absolute', bottom: '8px', left: '16px', display: 'flex', alignItems: 'center' }}>
                 {/* Avatar */}
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" style={{ marginRight: '8px' }} />
+                <Avatar alt="Remy Sharp" style={{ marginRight: '8px' }} />
                 {/* User Name */}
                 <Typography variant="body2" style={{ fontWeight: 'bold' }}>Rokas Nemunas</Typography>
               </Box>
@@ -341,7 +404,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
               {/* Avatar and Name */}
               <Box style={{ position: 'absolute', bottom: '8px', left: '16px', display: 'flex', alignItems: 'center' }}>
                 {/* Avatar */}
-                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" style={{ marginRight: '8px' }} />
+                <Avatar alt="Travis Howard" style={{ marginRight: '8px' }} />
                 {/* User Name */}
                 <Typography variant="body2" style={{ fontWeight: 'bold' }}>Tomas Neris</Typography>
               </Box>
