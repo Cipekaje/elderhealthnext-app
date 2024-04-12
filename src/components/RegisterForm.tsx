@@ -76,7 +76,7 @@ function Register() {
     }
     else{
       
-      router.push('/Login');
+      router.push('/UserDashboard');
       alert('Registracija sėkminga!');
     }
 
