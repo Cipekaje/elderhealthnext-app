@@ -1,14 +1,15 @@
-import { Box, Typography, styled, IconButton} from '@mui/material';
+import { Box, Typography, styled, IconButton } from '@mui/material';
 import Image from 'next/image';
 import emblemIcon from '../../public/Logo.png';
 import PropTypes from 'prop-types';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import ProfileMenu from './ProfileMenu';
-
-
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 // ==============================|| HEADER ||============================== //
 
 const Header = ({ handleLeftDrawerToggle }) => {
+  const router = useRouter();
   const StyledHeaderBox = styled(Box)({
     display: 'flex',
     alignItems: 'center',
@@ -18,7 +19,6 @@ const Header = ({ handleLeftDrawerToggle }) => {
       marginLeft: '16px',
     },
   });
-
   const LogoBox = styled(Box)({
     display: 'flex',
     alignItems: 'center',
@@ -34,7 +34,12 @@ const Header = ({ handleLeftDrawerToggle }) => {
       <LogoBox>
         {/* Logo */}
         <Box sx={{ display: { xs: 'none', md: 'block' }, marginRight: '16px' }}>
-          <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={46} height={46} />
+          <Link href="/UserDashboard" passHref>
+            <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+              <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={46} height={46} />
+              &nbsp;
+            </div>
+          </Link>
         </Box>
 
         <IconButton

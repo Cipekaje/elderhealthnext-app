@@ -52,12 +52,12 @@ const UserDasboardLayout = () => {
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   // Naudotojo informacijos gavimas
-  const { data: session } = useSession();
+  const { data: session} = useSession();
   const user = session?.user;
   const userID = session?.user?.id;
   const { firstName } = user?.userInfo || {};
+
 
   // console.log(firstName);
   // console.log(userID);
