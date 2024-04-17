@@ -6,6 +6,8 @@ import { render } from '@react-email/render';
 import ForgotPasswordEmail from '@/emails/ForgotPasswordEmail';
 import { sendEmail } from '@/config/mail';
 
+import bcrypt from 'bcrypt'
+
 // Create a MySQL connection pool
 const pool = mysql.createPool({
   host: 'localhost',
@@ -54,9 +56,12 @@ export async function POST(request) {
 
     // Generate a new random password
     const newPassword = generateRandomPassword(12); // Generate a 12-character long password
-
-    // Update user record with the new password
-    await connection.execute('UPDATE User SET password = ? WHERE id = ?', [newPassword, user.id]);
+    
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10); // 10 is the salt rounds
+    
+    // Update user record with the hashed password
+    await connection.execute('UPDATE User SET password = ? WHERE id = ?', [hashedPassword, user.id]);
     
     connection.release();
 
@@ -65,7 +70,7 @@ export async function POST(request) {
     );
 
     await sendEmail(payload.email, 'Reset Password', html);
-    
+
     return NextResponse.json({
       status: 200,
       message: 'Naujas slaptažodis išsiųstas į el. paštą.',
