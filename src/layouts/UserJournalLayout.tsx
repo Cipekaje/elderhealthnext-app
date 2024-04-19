@@ -362,7 +362,7 @@ const UserJournalLayout = () => {
           {/* Grid container for arranging tiles */}
           {/* Grid container for arranging tiles */}
           <Grid item xs={12} sx={{ textAlign: 'center', marginTop: '30px', marginBottom: '50px'}}>
-                <Tile title="Dienoraštis" content="Pasirinkite jums būdingą simptomą" size="large" color={'#757de8'} />
+                <h5>Pasirinkite jums būdingą simptomą</h5>
 
           </Grid>
 
