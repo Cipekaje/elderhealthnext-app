@@ -78,7 +78,7 @@ const ProfileSection = () => {
 
     switch (index) {
       case 0: // Paskyros Nustatymai (Settings)
-        router.push('/login'); // Change '/settings' to the appropriate route
+        router.push('/UserData'); // Change '/settings' to the appropriate route
         break;
       case 1: // Pagalba (Help)
         router.push('/Help'); // Change '/help' to the appropriate route

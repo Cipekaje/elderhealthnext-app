@@ -26,7 +26,7 @@ const authConfig = {
 
                 try {
                     // Query the database to find the user by email
-                    const [rows, fields] = await pool.query('SELECT id, email, firstName, password FROM User WHERE email = ?', [credentials.email]);
+                    const [rows, fields] = await pool.query('SELECT id, email, firstName, lastName, password FROM User WHERE email = ?', [credentials.email]);
 
                     // If a user is found
                     if (rows.length > 0) {
@@ -38,6 +38,7 @@ const authConfig = {
                                 id: user.id.toString(),
                                 email: user.email,
                                 name: user.firstName,
+                                lastName: user.lastName,
                                 // Add other user information as needed
                                 userInfo: {
                                     firstName: user.firstName,
@@ -64,14 +65,16 @@ const authConfig = {
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
-                token.userInfo = user.userInfo; // Include user information in the JWT token
+                token.userInfo = user.userInfo;
+                token.lastName = user.lastName; // Include user information in the JWT token
             }
             return token;
         },
         async session({ session, token }) {
             if (token && token.id && token.userInfo) {
                 session.user.id = token.id;
-                session.user.userInfo = token.userInfo; // Include user information in the session
+                session.user.userInfo = token.userInfo;
+                session.user.lastName = token.lastName; // Include user information in the session
             }
             return session;
         },

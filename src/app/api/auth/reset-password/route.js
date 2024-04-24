@@ -1,62 +1,73 @@
-import { connect } from "@/database/mysql.config";
-import Cryptr from "cryptr";
-import Env from "@/config/env";
-import bcrypt from "bcryptjs";
-import mysql from "mysql2/promise";
+import { NextResponse } from 'next/server';
+import mysql from 'mysql2/promise';
+import bcrypt from 'bcrypt';
 
-connect();
+// MySQL connection pool setup
+const pool = mysql.createPool({
+  host: 'localhost',
+  user: 'admin',
+  password: 'rlkscpvp',
+  database: 'tempDB',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
 
 export async function POST(request) {
   const payload = await request.json();
+  const { currentPassword, newPassword, userId } = payload;
 
-  // * Decrypt string
-  const crypter = new Cryptr(Env.SECRET_KEY);
-  const email = crypter.decrypt(payload.email);
+  if (!currentPassword || !newPassword) {
+    return NextResponse.json({
+      status: 400,
+      message: 'Missing required fields.',
+    });
+  }
 
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "admin",
-    password: "rlkscpvp",
-    database: "tempDB",
-  });
-
+  let connection;
   try {
-    // Find user in the database
+    connection = await pool.getConnection();
     const [rows] = await connection.execute(
-      "SELECT * FROM User WHERE email = ?",
-      [email, payload.signature]
+      'SELECT * FROM User WHERE id = ?',[userId]  
     );
 
     if (rows.length === 0) {
-      return {
-        status: 400,
-        message: "Reset URL is not correct. Please double-check it.",
-      };
+      return NextResponse.json({
+        status: 404,
+        message: 'User not found.',
+      });
     }
 
     const user = rows[0];
+    const lastName = rows[0].lastName;
 
-    // Hash the new password
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(payload.password, salt);
+    // Compare plaintext password with stored hashed password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return NextResponse.json({
+        status: 400,
+        message: 'Current password is incorrect.',
+      });
+    }
 
-    // Update user's password and reset token in the database
-    await connection.execute(
-      "UPDATE User SET password = ?, WHERE id = ?",
-      [hashedPassword, user.id]
-    );
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    await connection.execute('UPDATE User SET password = ? WHERE id = ?', [hashedNewPassword, userId]);
 
-    return {
+    return NextResponse.json({
       status: 200,
-      message: "Password changed successfully. Please login with the new password.",
-    };
+      message: 'Password changed successfully.',
+      lastName
+    });
+
   } catch (error) {
-    console.error("Error:", error);
-    return {
+    console.error('Error changing password:', error);
+    return NextResponse.json({
       status: 500,
-      message: "Something went wrong. Please try again!",
-    };
+      message: 'Internal server error. Please try again later.',
+    });
   } finally {
-    await connection.end();
+    if (connection) {
+      connection.release();
+    }
   }
 }
