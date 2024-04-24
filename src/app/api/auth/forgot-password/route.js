@@ -1,7 +1,5 @@
 import mysql from 'mysql2/promise';
 import { NextRequest, NextResponse } from 'next/server';
-import Cryptr from 'cryptr';
-import Env from '@/config/env';
 import { render } from '@react-email/render';
 import ForgotPasswordEmail from '@/emails/ForgotPasswordEmail';
 import { sendEmail } from '@/config/mail';
@@ -53,6 +51,7 @@ export async function POST(request) {
     }
 
     const user = rows[0];
+    console.log(user);
 
     // Generate a new random password
     const newPassword = generateRandomPassword(12); // Generate a 12-character long password
