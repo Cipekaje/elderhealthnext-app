@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     // Extract userId from req.body and typecast it to RequestBody
     const { userId } = body;
-
+    
     const averageHeartrateToday = await fetchAverageHeartrateFromDatabase(userId, 'today');
     const averageHeartrateWeek = await fetchAverageHeartrateFromDatabase(userId, 'week');
 

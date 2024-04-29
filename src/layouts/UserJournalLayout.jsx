@@ -19,6 +19,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 //import './styles.css';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSession } from 'next-auth/react';
+import Emoji from '../components/Emoji';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
+import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 
 
 let theme = createTheme();
@@ -55,6 +61,17 @@ const MainContentWrapper = styled(Box)(({ theme }) => ({
   //border: '2px solid red', // or any color you prefer
 }));
 
+const GridEmoji = styled(Grid)(({ theme }) => ({
+  backgroundColor: '#DCDCDC',
+  borderRadius: '8px',
+  height: '50px',
+  width: '50px',
+  marginLeft: '20px',
+  marginTop: '15px'
+  
+
+}));
+
 
 
 
@@ -65,17 +82,37 @@ const MainContentWrapper = styled(Box)(({ theme }) => ({
 
 const UserJournalLayout = () => {
   const theme = useTheme();
+ 
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   const [buttonValue, setButtonValue] = useState(" ");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showTextarea, setShowTextarea] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  
 
+  const setSelectedEmojiValue = (severityLevel) => { // Explicitly type 'date' parameter
+    if (severityLevel) {
+      //const formattedDate = date.format('YYYY-MM-DD'); // Format the date
+      setJournal({
+        ...Journal,
+        severity: severityLevel
+      });
+    }
+  };
+
+  // const { data: session } = useSession();
+  // const user = session?.user;
+  // const userID = session?.user?.id;
+
+  const [userID, setUserID] = useState(null);
   const { data: session } = useSession();
-  const user = session?.user;
-  const userID = session?.user?.id;
-  const { firstName } = user?.userInfo || {};
+  useEffect(() => {
+    // Check if session data is available
+    if (session && session.user && session.user.id) {
+      setUserID(session.user.id);
+    }
+  }, [session]);
 
 
   const [error, setError] = useState(null);
@@ -88,7 +125,8 @@ const UserJournalLayout = () => {
     symptom: '',
     description: '',
     date: dayjs(),
-    userid: userID,
+    severity: 0,
+    
 
   });
 
@@ -123,19 +161,20 @@ const UserJournalLayout = () => {
     FindDate: dayjs()
   });
 
-  const handleuserID = (userID) => { // Explicitly type 'date' parameter
-    if (userID) {
-      setFindDate({
-        userid: userID
-      });
-    }
-  };
+  // const handleuserID = (userID) => { // Explicitly type 'date' parameter
+  //   if (userID) {
+  //     setJournal({
+  //       ...Journal,
+  //       userid: userID
+  //     });
+  //   }
+  // };
 
 
   const handleApzvalgaDateChange = (tdate) => { // Explicitly type 'date' parameter
     if (tdate) {
       setFindDate({
-        FindDate: tdate
+        FindDate: tdate 
       });
     }
   };
@@ -146,11 +185,12 @@ const UserJournalLayout = () => {
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding padding if month is single digit
     const day = String(date.getDate()).padStart(2, '0'); // Adding padding if day is single digit
     return `${year}-${month}-${day}`;
-}
+  }
 
 
   const handleToggle = (boxNumber) => {
     setActiveBox(boxNumber);
+    handleFindClick();
   };
 
   const handleTextareaChange = (event) => {
@@ -164,59 +204,60 @@ const UserJournalLayout = () => {
   };
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission
-    const NewText = '';
-    if (!Journal.symptom || !Journal.description || !userID) {
-      return;
-    }
-    else {
 
+
+  const handleSubmit = async (event, userID1) => {
+    event.preventDefault(); // Prevent default form submission\
+  
+    // Wait for the userID state to update
+    console.log(userID1);
+
+    const NewText = '';
+    if (!Journal.symptom || !Journal.severity || !userID1) {
+      return;
+    } else {
       //window.location.reload();
       alert('Duomenys išsaugoti!');
     }
-    handleuserID(userID);
+    
+    
     console.log(Journal);
     handleTextareaNull(NewText);
-    if (Journal) {
+
+    if (Journal && userID1) {
       const response = await fetch('/api/auth/Journal', {
         method: "POST",
-        body: JSON.stringify(Journal)
-
+        body: JSON.stringify({Journal, userid: userID1})
       });
 
       if (response.ok) {
-
+        // Handle success response
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Duomenys neišsaugoti!');
-
       }
     }
+
     setError(null);
     setJournal({
       ...Journal,
       symptom: '',
       description: '',
       date: null,
-      userid: userID,
-
+      severity: 0
     });
 
   };
-  const [clicked, setclicked] = useState(false);
-  const [DataArray, setDataArray] = useState([]);
-  // const DataArray = [];
-  // const handleData = (data) => {
-  //   console.log(data);
 
-  // }
-  //const DataArray = data.map(obj => [obj.date, obj.symptom.toLowerCase(), obj.description]);
-  //console.log("FindDate:", FindDate);
+  const [clicked, setclicked] = useState(false);
+  const [Selected, setSelected] = useState(false);
+  const [DataArray, setDataArray] = useState([]);
+
   const handleFindClick = async () => {
+    setSelected(false);
     try {
       //const NewDate = FormatDate(FindDate); // Assuming FindDate is defined somewhere
-      const url = `/api/get/Journal?FindDate=${JSON.stringify(FindDate.FindDate)}`;
+      const url = `/api/get/Journal?FindDate=${JSON.stringify(FindDate.FindDate)}&userid=${JSON.stringify(userID)}`;
 
       const response = await fetch(url);
       if (!response.ok) {
@@ -224,7 +265,7 @@ const UserJournalLayout = () => {
       }
       const data = await response.json();
 
-      const newDataArray = Object.values(data.result).map(obj => [obj.date, obj.symptom, obj.description]);
+      const newDataArray = Object.values(data.result).map(obj => [obj.date, obj.symptom, obj.severity, obj.description]);
       console.log(newDataArray);
 
       setDataArray(newDataArray);
@@ -236,14 +277,38 @@ const UserJournalLayout = () => {
       // Handle error gracefully, show a message to the user, etc.
     }
   }
-  const useDataArrayObserver = (dataArray) => {
-    useEffect(() => {
-      // This code will run whenever dataArray changes
-      console.log("DataArray outside handleFindClick:", dataArray);
-    }, [dataArray]); // This useEffect will only trigger when dataArray changes
-  };
-  useDataArrayObserver(DataArray);
-  //console.log(DataArray);
+
+
+  const [DataArrayByDate, setDataByDateArray] = useState([]);
+  const handleFindByDateClick = async () => {
+    setSelected(true);
+    setclicked(false);
+    formatDate(FindDate.FindDate);
+    try {
+      //const NewDate = FormatDate(FindDate); // Assuming FindDate is defined somewhere
+      const url = `/api/get/ByDate?FindDate=${JSON.stringify(FindDate.FindDate)}`;
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+      const data = await response.json();
+
+      const newDataArray = Object.values(data.result).map(obj => [obj.date, obj.symptom, obj.severity, obj.description]);
+      console.log(newDataArray);
+
+      setDataByDateArray(newDataArray);
+      if (newDataArray.length > 0) {
+        setSelected(true);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error gracefully, show a message to the user, etc.
+    }
+  }
+  
+
+
   // Effect to add event listener on mount and remove it on unmount
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -266,37 +331,141 @@ const UserJournalLayout = () => {
 
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
+  
 
+  const renderCellContent = (cell, cellIndex) => {
+    // Check if the cell is in the "Simptomo stiprumas" column
+    if (cellIndex === 2) {
+      // Check the value of "Simptomo stiprumas"
+      if (cell === 5) {
+        // Render emoji and label for very strongly
+        return {
+          icon: <SentimentVeryDissatisfiedIcon color="error" />,
+          label: 'Labai stipriai',
+        };
+      } else if (cell === 4) {
+        // Render emoji and label for strongly
+        return {
+          icon: <SentimentDissatisfiedIcon color="warning" />,
+          label: 'Stipriai',
+        };
+      } else if (cell === 3) {
+        // Render emoji and label for moderately
+        return {
+          icon: <SentimentNeutralIcon style={{color: '#ffea00'}} />,
+          label: 'Vidutiniškai',
+        };
+      } else if (cell === 2) {
+        // Render emoji and label for weakly
+        return {
+          icon: <SentimentSatisfiedIcon style={{ color: '#aed581' }} />,
+          label: 'Silpnai',
+        };
+      } else if (cell === 1) {
+        // Render emoji and label for very weakly
+        return {
+          icon: <SentimentSatisfiedAltIcon color="success" />,
+          label: 'Labai silpnai',
+        };
+      } else {
+        // Render label for other cases
+        return {
+          label: 'N/A',
+        };
+      }
+    } else {
+      // Render other cells normally
+      return cell;
+    }
+  };
+  
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
   const renderRows = (data) => {
     return data.map((row, index) => (
       <TableRow key={index}>
         {row.map((cell, cellIndex) => (
-          <TableCell key={cellIndex}>{cell}</TableCell>
+          <TableCell style={{ fontSize: isSmallScreen ? '8px' : '14px' }} key={cellIndex}>
+            {/* Check if the cell is in the "Simptomo stiprumas" column */}
+            {cellIndex === 2 ? (
+              // Render emoji and label if provided
+              renderCellContent(cell, cellIndex).icon && (
+                <div style={{ fontSize: isSmallScreen ? '8px' : '14px' }}>
+                  {renderCellContent(cell, cellIndex).icon}
+                  <br></br>
+                  {renderCellContent(cell, cellIndex).label}
+                </div>
+                
+              )
+            ) : (
+              // Render other cells normally
+              cell
+            )}
+          </TableCell>
         ))}
       </TableRow>
     ));
   };
+
+
   const ArrayToTable = ({ data }) => {
     for (let i = 0; i < data.length; i++) {
       data[i][0] = formatDate(data[i][0]);
     }
-    return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell style={{ width: '30%' }}>Date</TableCell>
-            <TableCell>Symptom</TableCell>
-            <TableCell>Description</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {renderRows(data)}
-        </TableBody>
-      </Table>
-    );
+  
+    
+    if (data.length < 1) {
+      return (
+        <Table style={{ position: 'relative' , width: '100%'}}>
+          <TableHead style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#82b1ff' }}>
+            <TableRow>
+              <TableCell style={{ width: '30%', fontSize: isSmallScreen ? '8px' : '14px' }}>Data</TableCell>
+              <TableCell style={{ fontSize: isSmallScreen ? '8px' : '14px' }}>Simptomas</TableCell>
+              <TableCell style={{ fontSize: isSmallScreen ? '8px' : '14px' }}>Simptomo stiprumas</TableCell>
+              <TableCell style={{ fontSize: isSmallScreen ? '8px' : '14px' }}>Aprašymas</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody style={{ marginTop: '40px' }}>
+            <h4>Įrašų nėra</h4>
+          </TableBody>
+        </Table>
+      );
+    } else {
+      return (
+        <Table style={{ position: 'relative',width: '100%' }}>
+          <TableHead style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#82b1ff' }}>
+            <TableRow>
+              <TableCell style={{ width: '30%', fontSize: isSmallScreen ? '8px' : '14px' }}>Data</TableCell>
+              <TableCell style={{ fontSize: isSmallScreen ? '8px' : '14px' }}>Simptomas</TableCell>
+              <TableCell style={{ fontSize: isSmallScreen ? '8px' : '14px' }}>Simptomo stiprumas</TableCell>
+              <TableCell style={{ fontSize: isSmallScreen ? '8px' : '14px' }}>Aprašymas</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody style={{ marginTop: '40px' }}>
+            {renderRows(data)}
+          </TableBody>
+        </Table>
+      );
+    }
+  };
+  
+  // Render function or JSX
+const renderData = () => {
+  if (clicked) {
+    return <ArrayToTable data={DataArray} />;
+  } else if(Selected){
+    return <ArrayToTable data={DataArrayByDate} />;
+  }
+};
+
+  
+  const handleDeleteclick = async () => {
+    setDataArray([]);
+    setDataByDateArray([]);
   };
 
+  
 
+  
 
 
   //const DataArray = dataArray.map(obj => [obj.date, obj.symptom.toLowerCase(), obj.description]);
@@ -341,7 +510,7 @@ const UserJournalLayout = () => {
               <Breadcrumbs />
 
               <Grid container spacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center" sx={{ textAlign: 'center', marginTop: '20px' }}>
-                <Grid item>
+                <Grid item className='GridEmoji'>
                   <Button variant="contained" onClick={() => handleToggle(1)}>Dienoraštis</Button>
                 </Grid>
                 <Grid item >
@@ -362,7 +531,7 @@ const UserJournalLayout = () => {
 
               </Grid>
 
-              <Grid container rowSpacing={{ xs: 1, sm: 2, md: 3 }} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={'center'} justifyContent="center">
+              <Grid container rowSpacing={{ xs: 1, sm: 2, md: 3 }} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center">
 
 
                 <Button
@@ -517,9 +686,9 @@ const UserJournalLayout = () => {
                       <DatePicker
                         sx={{ backgroundColor: 'white', borderRadius: '6px', marginRight: '20px', }}
                         label="Pasirinkite datą"
-                        value={FindDate.FindDate}
+                        //value={FindDate.FindDate}
                         format="YYYY-MM-DD"
-                        defaultValue={dayjs()}
+                        
 
                         onChange={handleApzvalgaDateChange}
                         slotProps={{ textField: { required: true } }}
@@ -529,28 +698,38 @@ const UserJournalLayout = () => {
                   </Grid>
                   {/* {userID} */}
                   <Grid item>
-                    <Button variant="contained" color="success" onClick={handleFindClick}>Ieškoti</Button>
+                    <Button variant="contained" color="success"style={{ marginRight: '20px' }} onClick={handleFindByDateClick}>Ieškoti pagal datą</Button>
+                    <Button variant="contained" color="error" onClick={handleDeleteclick}>Išvalyti</Button>
                   </Grid>
 
                   <Grid item xs={12} style={{ justifyContent: 'center', marginBottom: '50px' }}>
                     <Box
                       sx={{
+                        
+
+                        
                         borderRadius: 2,
-                        // Set a high z-index value to make it appear on top
                         backgroundColor: 'white',
                         padding: '20px',
                         border: '2px solid grey',
                         textAlign: 'center',
-                        width: '750px',
+                        width: '700px',
+                        paddingTop: '0px',
+                        paddingRight: '0px',
+                        paddingLeft: '0px',
+                        marginLeft: '0px',
                         height: '332px',
-                        '@media (max-width: 600px)': { // Adjust the max-width as needed
-                          width: '90%', // Change the width for smaller screens
-                          height: 'auto' // Let the height adjust automatically
+                        overflow: 'auto', // or overflow: 'hidden'
+                        '@media (max-width: 800px)': { // Adjust the max-width as needed
+                          width: 'auto', // Change the width for smaller screens
+                          height: '300px',
+                           // Let the height adjust automatically
                         }
-                      }}>
-
-                      {clicked && <ArrayToTable data={DataArray} />}
+                      }}
+                    >
+                      {renderData()}
                     </Box>
+
 
                   </Grid>
                 </ThemeProvider>
@@ -569,7 +748,7 @@ const UserJournalLayout = () => {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={(event) => handleSubmit(event, userID)}
             ref={wrapperRef}
             sx={{
               position: 'fixed',
@@ -583,7 +762,7 @@ const UserJournalLayout = () => {
               border: '2px solid grey',
               textAlign: 'center',
               width: '500px',
-              height: '332px',
+              height: '500px',
               zIndex: 10000,
               '@media (max-width: 600px)': { // Adjust the max-width as needed
                 width: '90%', // Change the width for smaller screens
@@ -593,6 +772,7 @@ const UserJournalLayout = () => {
             alignItems="center" justifyContent="center"
           >
             {buttonValue}
+            
             <br></br>
             <br></br>
             <Box sx={{ zIndex: 10001 }}>
@@ -609,11 +789,21 @@ const UserJournalLayout = () => {
                 </Box>
               </LocalizationProvider>
             </Box>
+            <br></br>
+            <Box sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', position: 'relative'}}>
+              Pasirinkite, kaip stipriai jaučiate simptomą
+              <br></br>
 
+              <Emoji onSelect={setSelectedEmojiValue}></Emoji>
+              
+              <Grid container direction="row"  justifyContent="center" display="flex" spacing={{ xs: 1, sm: 2, md: 3 }}>
 
-            <Box sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', position: 'relative', top: '20px', maxWidth: '600px' }}>
+              </Grid>
+            </Box>
+            
+            <Box sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', position: 'relative', top: '20px', maxWidth: '600px',}}>
               <TextareaAutosize
-                style={{ width: '100%', resize: 'none' }}
+                style={{ width: '100%', resize: 'none', borderWidth: '2px'}}
                 minRows={6}
                 placeholder="Trumpas komentaras apie simptomą"
                 value={Journal.description}
