@@ -21,15 +21,16 @@ export const GET = async (req: CustomRequest, res: Response) => {
             const url = new URL (req.url);
             const params = new URLSearchParams(url.search);
             const FindDate = params.get('FindDate');
-            // Extract year, month, and day from the Date object
+            const UsID = params.get('userid' as string);
+            const UserID = UsID?.substring(1, UsID.length-1);
 
-
+            console.log(UserID);
             // Format the date parts into the desired format
             const FindDate2 = FindDate?.substring(1, 11);
             //console.log(FindDate2);
             // Assuming query is a function that correctly executes the SQL query
             const result = await connection.execute(
-                "SELECT date, symptom, description FROM Journal WHERE date = ?", [FindDate2]// Your SQL query
+                "SELECT date, symptom, severity, description FROM Journal WHERE user_id = ? ORDER BY date DESC", [UserID]// Your SQL query
                 // You can add more options here if needed, such as parameters
             );
             console.log(result);
