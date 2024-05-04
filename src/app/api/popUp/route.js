@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
 
-
-// MySQL connection pool setup
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'admin',
@@ -18,34 +16,56 @@ export async function POST(request) {
     const payload = await request.json();
     const { userEmail, additionalInfo } = payload;
 
-    // Check if userEmail is provided
     if (!userEmail) {
-      throw new Error("Klaida su (el. paštas)!");
+      throw new Error("Email is not provided"); // Ensure email is available
     }
 
-    // Execute the update based on email
-    await pool.execute(
-      'UPDATE User SET gender = ?, lastName = ?, birthdate = ?, weight = ?, height = ?, disease = ? WHERE email = ?',
-      [
-        additionalInfo.gender,
-        additionalInfo.lastName,
-        additionalInfo.birthdate,
-        additionalInfo.weight,
-        additionalInfo.height,
-        additionalInfo.disease,
-        userEmail, 
-      ]
-    );
+    // Create an array to hold SQL query parts and parameters
+    let query = 'UPDATE User SET';
+    const params = [];
+
+    // Add fields to the query and parameters only if they're defined
+    if (additionalInfo.gender) {
+      query += ' gender = ?,';
+      params.push(additionalInfo.gender);
+    }
+    if (additionalInfo.lastName) {
+      query += ' lastName = ?,';
+      params.push(additionalInfo.lastName);
+    }
+    if (additionalInfo.birthdate) {
+      query += ' birthdate = ?,';
+      params.push(additionalInfo.birthdate);
+    }
+    if (additionalInfo.weight) {
+      query += ' weight = ?,';
+      params.push(additionalInfo.weight);
+    }
+    if (additionalInfo.height) {
+      query += ' height = ?,';
+      params.push(additionalInfo.height);
+    }
+    if (additionalInfo.disease) {
+      query += ' disease = ?,';
+      params.push(additionalInfo.disease);
+    }
+
+    // Remove the trailing comma and add WHERE clause
+    query = query.replace(/,$/, ''); // Remove trailing comma
+    query += ' WHERE email = ?';
+    params.push(userEmail);
+
+    await pool.execute(query, params); // Execute the dynamically built query
 
     return NextResponse.json({
       status: 200,
-      message: 'Vartotojo informacija sėkmingai atnaujinta.',
+      message: 'User information updated successfully.',
     });
   } catch (error) {
-    console.error("Klaida atnaujinant informaciją:", error);
+    console.error("Error updating user information:", error);
     return NextResponse.json({
       status: 500,
-      message: 'Serverio klaida.',
+      message: 'Internal server error.',
     });
   }
 }

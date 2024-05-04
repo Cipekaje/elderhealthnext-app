@@ -87,14 +87,15 @@ const UserDasboardLayout = () => {
   const handleSave = async () => {
     console.log("Išsaugoma informacija");
 
-    const additionalInfo = {
-      gender,
-      lastName,
-      birthdate: birthday,
-      weight,
-      height,
-      disease
-    };
+    const additionalInfo = {};
+
+  // Only include fields that have values
+  if (gender) additionalInfo.gender = gender;
+  if (lastName) additionalInfo.lastName = lastName;
+  if (birthday) additionalInfo.birthdate = birthday;
+  if (weight) additionalInfo.weight = weight; // Don't include if it's empty
+  if (height) additionalInfo.height = height;
+  if (disease) additionalInfo.disease = disease;
 
     // Retrieve the user's email from the session or other context
     const userEmail = session?.user?.email; // Ensure email is available
