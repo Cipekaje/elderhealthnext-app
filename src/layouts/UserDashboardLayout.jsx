@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
-import { AppBar, Box, CssBaseline, Grid, useMediaQuery } from '@mui/material';
+import { AppBar, Box, CssBaseline, Grid, FormControl, Alert, Button, Snackbar, Select, InputLabel, MenuItem, TextField, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
 import Header from '../components/Header';
@@ -13,6 +13,9 @@ import HeartrateTile from '../components/HeartrateTile';
 import ChartTile from '../components/ChartTile';
 import CurrentHeartrate from '../components/CurrentHrTile';
 import Footer from '../components/Footer';
+
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 //DummyUserData
 const dummyUserId = '1';
@@ -59,12 +62,77 @@ const UserDasboardLayout = () => {
   const userID = session?.user?.id;
   const { firstName } = user?.userInfo || {};
 
-  // console.log(firstName);
-  // console.log(userID);
-  // Toggle function for sidebar
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [gender, setGender] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
+  const [disease, setDisease] = useState('');
+
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsModalOpen(true);
+    }
+  }, []);
+
   const handleLeftDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
+
+
+  const handleSave = async () => {
+    console.log("Išsaugoma informacija");
+
+    const additionalInfo = {
+      gender,
+      lastName,
+      birthdate: birthday,
+      weight,
+      height,
+      disease
+    };
+
+    // Retrieve the user's email from the session or other context
+    const userEmail = session?.user?.email; // Ensure email is available
+
+    if (!userEmail || Object.values(additionalInfo).some((val) => val === undefined)) {
+      console.error("Trūksta informacijos");
+      return;
+    }
+
+    if (!userEmail) {
+      console.error("Nėra tokio el. pašto");
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/popUp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userEmail, additionalInfo }), // Use email in the request
+      });
+
+      if (response.ok) {
+        setSnackbarMessage('Informacija sėkmingai atnaujinta!');
+        setSnackbarOpen(true); // Open the snackbar with success message
+        setIsModalOpen(false); // Close the popup upon successful update
+      } else {
+        const errorData = await response.json(); // Capture error message
+        console.error('Klaida atnaujinant informaciją:', errorData.message);
+      }
+    } catch (error) {
+      console.error('Klaida išsaugant:', error);
+    }
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
+
 
   useEffect(() => {
     // Check if window object exists (i.e., if we're in the browser environment)
@@ -136,6 +204,94 @@ const UserDasboardLayout = () => {
 
         </MainContentWrapper>
       </Main>
+
+      <Popup open={isModalOpen} closeOnDocumentClick={false}>
+        <div style={{ padding: '20px', textAlign: 'center' }}>
+          <Typography variant="h6">Papildoma informacija apie jus</Typography>
+          <FormControl fullWidth style={{ marginTop: '10px' }}>
+            <InputLabel>Lytis</InputLabel>
+            <Select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              label="Gender"
+            >
+              <MenuItem value="Vyras">Vyras</MenuItem>
+              <MenuItem value="Moteris">Moteris</MenuItem>
+              <MenuItem value="Kita">Kita</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            label="Pavardė"
+            variant="outlined"
+            fullWidth
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            style={{ marginTop: '10px' }}
+          />
+          <TextField
+            label="Gimimo diena"
+            variant="outlined"
+            fullWidth
+            type="date"
+            value={birthday}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e) => setBirthday(e.target.value)}
+            style={{ marginTop: '10px' }}
+          />
+          <TextField
+            label="Svoris (kg)"
+            variant="outlined"
+            fullWidth
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            style={{ marginTop: '10px' }}
+          />
+          <TextField
+            label="Ūgis (cm)"
+            variant="outlined"
+            fullWidth
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            style={{ marginTop: '10px' }}
+          />
+          <TextField
+            label="Liga"
+            variant="outlined"
+            fullWidth
+            value={disease}
+            onChange={(e) => setDisease(e.target.value)}
+            style={{ marginTop: '10px' }}
+          />
+          <div style={{ marginTop: '20px', textAlign: 'center' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSave}
+              style={{ marginRight: '10px' }}
+            >
+              Išsaugoti
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleClose}
+            >
+              Uždaryti
+            </Button>
+          </div>
+        </div>
+      </Popup>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000} // Snackbar will close automatically after 6 seconds
+        onClose={() => setSnackbarOpen(false)} // Close on user interaction or timeout
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       <Footer />
     </div>
   );

@@ -12,13 +12,40 @@ const UserDataForm = () => {
     const user = session?.user;
 
     const name = user?.name || '';
-    const lastName = user?.lastName || '';
+    //const lastName = user?.lastName || '';
     const email = user?.email || '';
-
-
+   
     const handleEditSettings = (): void => {
         router.push('/AccountSettings');
     };
+
+    const [lastName, setLastName] = useState(''); // State variable to hold the last name
+    const userEmail = session?.user?.email; // Get the user's email
+  
+    useEffect(() => {
+        const fetchLastName = async () => {
+          if (!userEmail) {
+            console.error("User email is missing");
+            return;
+          }
+      
+          try {
+            // Pass the email in the query parameters
+            const response = await fetch(`/api/lastName?email=${userEmail}`); // Correct the API call
+            const data = await response.json();
+      
+            if (response.ok) {
+              setLastName(data.lastName); // Set the retrieved lastName in the state
+            } else {
+              console.error("Failed to fetch last name:", data.message);
+            }
+          } catch (error) {
+            console.error("Error fetching last name:", error);
+          }
+        };
+      
+        fetchLastName(); // Fetch lastName when component mounts
+      }, [userEmail]);
     
 
     return (
