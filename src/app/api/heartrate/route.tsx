@@ -30,12 +30,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     // Extract userId from req.body and typecast it to RequestBody
     const { userId } = body;
-
+    
     const averageHeartrateToday = await fetchAverageHeartrateFromDatabase(userId, 'today');
     const averageHeartrateWeek = await fetchAverageHeartrateFromDatabase(userId, 'week');
-
+  
     const response = { averageHeartrateToday, averageHeartrateWeek };
-
+    
     // Send the response
     return NextResponse.json(response, { status: 200 });
 
@@ -62,6 +62,8 @@ async function fetchAverageHeartrateFromDatabase(userId: string, period: string)
 
   try {
     const [rows] = await DB.query(queryString, [userId]) as RowDataPacket[][];
+    //console.log(rows);
+    //console.log(rows[0]);
     if (Array.isArray(rows) && rows.length > 0) {
       const { averageHeartrate } = rows[0];
         return averageHeartrate;

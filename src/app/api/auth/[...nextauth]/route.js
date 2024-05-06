@@ -48,6 +48,7 @@ const authConfig = {
                     if (rows.length > 0) {
                         const user = rows[0];
                         // Assuming password is stored in the database
+
                         if (await compare(credentials.password, user.password)) {
                             // Return the user information
                             return {

@@ -59,8 +59,7 @@ const CurrentHrTile = ({ color, isLastInRow, userId }) => {
             <Grid container spacing={1} alignItems="center">
                 <Grid item xs={12}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', color: '#fff' }}>
-                        <UserIcon sx={{ marginRight: '10px' }} /> Naudotojo{' '}
-
+                        <UserIcon sx={{ marginRight: '10px' }} /> Naudotojo
                         <Typography
                             component="span"
                             variant="inherit"

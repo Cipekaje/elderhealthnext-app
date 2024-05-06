@@ -13,6 +13,7 @@ import HeartrateTile from '../components/HeartrateTile';
 import ChartTile from '../components/ChartTile';
 import CurrentHeartrate from '../components/CurrentHrTile';
 import Footer from '../components/Footer';
+import FirstDayHR from '../components/FirstDayHR';
 
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -55,12 +56,12 @@ const UserDasboardLayout = () => {
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   // Naudotojo informacijos gavimas
-  const { data: session } = useSession();
+  const { data: session} = useSession();
   const user = session?.user;
   const userID = session?.user?.id;
   const { firstName } = user?.userInfo || {};
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -78,6 +79,7 @@ const UserDasboardLayout = () => {
       setIsModalOpen(true);
     }
   }, []);
+
 
   const handleLeftDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -162,7 +164,7 @@ const UserDasboardLayout = () => {
         <MainContentWrapper>
           <div style={{ padding: '22px' }}>
             {/* Grid container for arranging tiles */}
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid container alignItems="center" justifyContent="center" rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
               {/* First row */}
               {/* Ne dummy user paemimas */}
               <Grid item xs={12} md={4}>
@@ -200,6 +202,9 @@ const UserDasboardLayout = () => {
               {/* <Grid item xs={12} md={4}>
                 <Tile title="Average Data" content="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." color="#603CAC" size="large" />
               </Grid> */}
+              <Grid item>
+                <FirstDayHR color="#F09537" userid={userID}/>
+              </Grid>
             </Grid>
           </div>
 

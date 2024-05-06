@@ -3,13 +3,14 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import Image from 'next/image';
 import emblemIcon from '../../public/Logo.png';
 import SidebarItem from './SidebarItem'; // Import SidebarItem component
-
+import Link from 'next/link';
 const Sidebar = ({ drawerOpen, drawerToggle }) => {
   // Define your sidebar items here
   const sidebarItems = [
     { label: 'Prietaisų skydelis', link: '/UserDashboard' },
     { label: 'Širdies ritmo ataskaitos', link: '/' },
     { label: 'Kiti pranešimai', link: '/settings' },
+    { label: 'Dienoraštis', link: '/Journal' },
     // Add more items as needed
   ];
 
@@ -27,7 +28,12 @@ const Sidebar = ({ drawerOpen, drawerToggle }) => {
         }}
       >
         <Box sx={{ p: 2, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
-          <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={46} height={46} />
+          <Link href="/UserDashboard" passHref>
+            <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+              <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={46} height={46} />
+              &nbsp;
+            </div>
+          </Link>
           <Typography variant="h6" sx={{ ml: 1 }}>Meniu</Typography>
         </Box>
         {/* Render the menu items using SidebarItem component */}

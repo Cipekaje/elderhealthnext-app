@@ -1,12 +1,12 @@
-import UserDashboardLayout from '@/layouts/UserDashboardLayout';
+import UserJournalLayout from '@/layouts/UserJournalLayout';
 import { GetSessionParams, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
-export default function UserDashboardPage() {
+export default function JournalPage() {
   return (
-    <UserDashboardLayout>
-      {/* Your UserDashboard page content */}
-    </UserDashboardLayout>
+    <div className="container" style={{ maxHeight: '100vh', overflow: 'auto'}}>
+      <UserJournalLayout />
+    </div>
   );
 }
 //ar naudotojas prisijunges

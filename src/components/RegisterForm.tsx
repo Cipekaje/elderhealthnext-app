@@ -32,27 +32,27 @@ function Copyright(props: any) {
 
 interface User {
   firstName: string;
-  lastName: string;  
-  
+  lastName: string;
+
   email: string;
   password: string;
   confirmPassword: string;
   birthdate: Dayjs | null;
 
 
-  
+
 }
 
 function Register() {
   const [user, setUser] = useState<User>({
     firstName: '',
     lastName: '',
-    
+
     email: '',
     password: '',
     confirmPassword: '',
     birthdate: null,
-    
+
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -66,35 +66,31 @@ function Register() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
 
-    if ( !user.email || !user.password || !user.confirmPassword || !user.firstName || !user.lastName || !user.birthdate) {
+    if (!user.email || !user.password || !user.confirmPassword || !user.firstName || !user.lastName || !user.birthdate) {
       setError('Prašome užpildyti visus laukus');
       return;
     }
-    if(user.password != user.confirmPassword) {
+    if (user.password != user.confirmPassword) {
       setError1('Slaptažodžiai nesutampa');
       return;
     }
-    else{
-      
+    else {
+
       router.push('/login');
       alert('Registracija sėkminga!');
     }
 
     console.log(user);
 
- 
-
-
-
     if (user) {
       const response = await fetch('/api/auth/register', {
         method: "POST",
         body: JSON.stringify(user)
-        
+
       });
-      
+
       if (response.ok) {
-        
+
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Registracija nesėkminga!');
@@ -104,20 +100,20 @@ function Register() {
     setUser({
       ...user,
       firstName: '',
-      lastName: '',      
-      
+      lastName: '',
+
       email: '',
       password: '',
       confirmPassword: '',
-     birthdate: null,
-      
+      birthdate: null,
+
     });
-    
-    
-    
+
+
+
   };
 
-  
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
@@ -145,171 +141,171 @@ function Register() {
     }
   };
   return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            maxHeight: '100vh',
-            
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxHeight: '100vh',
 
-          <Typography component="h1" variant="h5">
-            Registracija
-          </Typography>
-          {error && <div style={{ color: 'red' }}>{error}</div>}
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
 
-            <Grid container spacing={2}>
+        <Typography component="h1" variant="h5">
+          Registracija
+        </Typography>
+        {error && <div style={{ color: 'red' }}>{error}</div>}
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
 
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  //id="firstName"
-                  label="Vardas"
-                  autoFocus
-                  value={user.firstName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  //id="lastName"
-                  label="Pavardė"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={user.lastName}
-                  onChange={handleChange}
-                />
+          <Grid container spacing={2}>
 
-              </Grid>
-              
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="firstName"
+                required
+                fullWidth
+                //id="firstName"
+                label="Vardas"
+                autoFocus
+                value={user.firstName}
+                onChange={handleChange}
+              />
+            </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  //id="email"
-                  label="El. Paštas"
-                  name="email"
-                  autoComplete="email"
-                  value={user.email}
-                  onChange={handleChange}
-                />
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                //id="lastName"
+                label="Pavardė"
+                name="lastName"
+                autoComplete="family-name"
+                value={user.lastName}
+                onChange={handleChange}
+              />
 
-              </Grid>
-              
-              <Grid item xs={12}>
+            </Grid>
+
+
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                //id="email"
+                label="El. Paštas"
+                name="email"
+                autoComplete="email"
+                value={user.email}
+                onChange={handleChange}
+              />
+
+            </Grid>
+
+            <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth required>
                 <InputLabel htmlFor="outlined-adornment-password">Slaptažodis</InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
-                    onChange={handlePasswordChange}
-                    endAdornment={
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? 'text' : 'password'}
+                  onChange={handlePasswordChange}
+                  endAdornment={
                     <InputAdornment position="end">
                       <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
                       >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
-                    }
+                  }
                   label="Password"
-                  
-                  />
+
+                />
               </FormControl>
-              </Grid>
-              
-              <Grid item xs={12}>
+            </Grid>
+
+            <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth required >
                 <InputLabel htmlFor="outlined-adornment-password">Slaptažodžio patvirtinimas</InputLabel>
-                  <OutlinedInput
-                    id="confirmpassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    onChange={handleConfirmPasswordChange}
-                    endAdornment={
+                <OutlinedInput
+                  id="confirmpassword"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  onChange={handleConfirmPasswordChange}
+                  endAdornment={
                     <InputAdornment position="end">
                       <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowConfirmPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowConfirmPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
                       >
-                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
-                    }
+                  }
                   label="Confirm Password"
                   value={user.confirmPassword}
-                  />
+                />
               </FormControl>
               {error1 && <div style={{ color: 'red' }}>{error1}</div>}
-              </Grid> 
-              
-              <Grid item xs={12}>
-                <LocalizationProvider dateAdapter={AdapterDayjs} >
-                  <DatePicker
-                 
-                  label = "Gimimo data"
+            </Grid>
+
+            <Grid item xs={12}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} >
+                <DatePicker
+
+                  label="Gimimo data"
                   value={user.birthdate}
                   format="YYYY-MM-DD"
                   defaultValue={dayjs('2022-04-17')}
                   onChange={handleDateChange}
-                  slotProps={{ textField: { fullWidth: true, required: true}}}
-                  />
-                 </LocalizationProvider>
+                  slotProps={{ textField: { fullWidth: true, required: true } }}
+                />
+              </LocalizationProvider>
 
-              </Grid>
-              
-              {/* <Grid item xs={12}>
+            </Grid>
+
+            {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid> */}
 
-            </Grid>
-              <Button 
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-               >
-               Registruotis
-               </Button>            
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Registruotis
+          </Button>
 
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  Jau turite paskyrą? Prisijunkite
-                </Link>
-              </Grid>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/login" variant="body2">
+                Jau turite paskyrą? Prisijunkite
+              </Link>
             </Grid>
-          </Box>
+          </Grid>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    
-      
+      </Box>
+      <Copyright sx={{ mt: 5 }} />
+    </Container>
+
+
   );
-  
+
 }
 
 export default Register;
