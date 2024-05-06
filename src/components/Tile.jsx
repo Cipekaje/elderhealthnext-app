@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Hidden } from '@mui/material';
 import UserIcon from '@mui/icons-material/Person';
+import { useSession } from 'next-auth/react';
 
 const CurrentHrTile = ({ color, isLastInRow, userId }) => {
     const [currentHr, setCurrentHr] = useState(null);
@@ -9,6 +10,11 @@ const CurrentHrTile = ({ color, isLastInRow, userId }) => {
     const tileHeight = 'auto';
 
     const marginRight = isLastInRow ? '0px' : '20px';
+
+    const { data: session } = useSession();
+    const user = session?.user;
+
+    const name = user?.name || '';
 
     // useEffect(() => {
     //     const fetchCurrentHeartrate = async () => {
@@ -66,8 +72,9 @@ const CurrentHrTile = ({ color, isLastInRow, userId }) => {
                                 marginRight: '8px',
                             }}
                         >
-                            {userId}
-                        </Typography>
+                            {userId || name}
+
+                        </Typography>{' '}
                         <Hidden smDown>sveikatos duomenys:</Hidden>
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', color: '#fff' }}>
