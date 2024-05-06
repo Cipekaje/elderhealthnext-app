@@ -17,7 +17,7 @@ export async function POST(request) {
     const { userEmail, additionalInfo } = payload;
 
     if (!userEmail) {
-      throw new Error("Email is not provided"); // Ensure email is available
+      throw new Error("Nenurodytas el. paštas"); // Ensure email is available
     }
 
     // Create an array to hold SQL query parts and parameters
@@ -59,13 +59,13 @@ export async function POST(request) {
 
     return NextResponse.json({
       status: 200,
-      message: 'User information updated successfully.',
+      message: 'Informacija sėkmingai atnaujinta.',
     });
   } catch (error) {
-    console.error("Error updating user information:", error);
+    console.error("Klaida atnaujinant informaciją:", error);
     return NextResponse.json({
       status: 500,
-      message: 'Internal server error.',
+      message: 'Klaida.',
     });
   }
 }
