@@ -1,10 +1,26 @@
 import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google";
 import NextAuth from "next-auth"
 import { compare } from 'bcrypt'
 import pool from '@/../util/db';
 
 const authConfig = {
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            async profile(profile) {
+                // Modify the default profile returned by Google if necessary
+                return {
+                  id: profile.sub,
+                  email: profile.email,
+                  name: profile.name,
+                  firstName: profile.given_name,
+                  lastName: profile.family_name,
+                };
+            },
+          }),
+
         CredentialsProvider({
             name: "signIn",
             credentials: {
@@ -27,17 +43,18 @@ const authConfig = {
                 try {
                     // Query the database to find the user by email
                     const [userRows, userFields] = await pool.query('SELECT id, email, firstName, password FROM User WHERE email = ?', [credentials.email]);
-
                     // If a user is found
                     if (userRows.length > 0) {
                         const user = userRows[0];
                         // Assuming password is stored in the database
+
                         if (await compare(credentials.password, user.password)) {
                             // Return the user information
                             return {
                                 id: user.id.toString(),
                                 email: user.email,
                                 name: user.firstName,
+                                lastName: user.lastName,
                                 // Add other user information as needed
                                 userInfo: {
                                     firstName: user.firstName,
@@ -85,17 +102,48 @@ const authConfig = {
         error: "/auth/error",
     },
     callbacks: {
+        async signIn({ account, profile }) {
+            if (account.provider === "google") {
+              const email = profile.email;
+
+      
+              try {
+                const [rows] = await pool.query(
+                  "SELECT id FROM User WHERE email = ?",
+                  [email]
+                );
+      
+                if (rows.length === 0) {
+                  // User does not exist, insert them into the database
+                  await pool.query(
+                    "INSERT INTO User (email, firstName, lastName, password, birthdate) VALUES (?, ?, ?, ?, ?)",
+                    [email, profile.given_name, "nenurodyta", "NULL", "0000-00-00"]
+                  );
+                }
+      
+                return true; // Allow sign-in
+              } catch (error) {
+                console.error("Database error during sign-in:", error);
+                return false; // Disallow sign-in on error
+              }
+            }
+      
+            return true; // Allow sign-in for other providers
+          },
+          
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
-                token.userInfo = user.userInfo; // Include user information in the JWT token
+                token.userInfo = user.userInfo;
+                token.lastName = user.lastName; // Include user information in the JWT token
             }
             return token;
         },
         async session({ session, token }) {
             if (token && token.id && token.userInfo) {
                 session.user.id = token.id;
-                session.user.userInfo = token.userInfo; // Include user information in the session
+                session.user.userInfo = token.userInfo;
+                session.user.lastName = token.lastName; // Include user information in the session
             }
             return session;
         },

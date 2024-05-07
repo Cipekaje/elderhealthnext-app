@@ -3,10 +3,12 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button, TextField, Container, Typography, Box } from "@mui/material";
+import { useRouter } from "next/router"; // Import the useRouter hook
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter(); // Initialize the useRouter hook
 
   const submit = (event: React.FormEvent) => { // Explicitly specifying event type
     event.preventDefault();
@@ -28,6 +30,11 @@ export default function ForgotPassword() {
         setLoading(false);
         console.log("The error is", err);
       });
+  };
+
+  // Function to handle redirecting to the login page
+  const redirectToLogin = () => {
+    router.push("/login"); // Replace "/login" with the actual route to your login page
   };
 
   return (
@@ -69,6 +76,14 @@ export default function ForgotPassword() {
               disabled={loading}
             >
               {loading ? "Processing" : "Siųsti"}
+            </Button>
+            {}
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={redirectToLogin}
+            >
+              Grįžti į prisijungimo puslapį
             </Button>
           </Box>
         </Box>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { Alert } from '@mui/material';
 import Image from 'next/image';
 import emblemIcon from '../../public/Logo.png';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 import { Container, Typography, Box, TextField, Button, Grid } from '@mui/material';
 
 export default function LoginPage() {
@@ -94,7 +95,14 @@ export default function LoginPage() {
             {error && <Alert severity="error">{error}</Alert>}
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Prisijungti
-            </Button>
+            </Button>        
+            <Typography variant="contained"  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+                  Arba naudokite kitą prisijungimo būdą
+            </Typography>
+
+            <GoogleSignInButton>
+              Prisijungti naudojant Google
+            </GoogleSignInButton>
 
             <Grid container>
               <Grid item xs>

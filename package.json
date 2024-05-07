@@ -29,13 +29,13 @@
     "@tabler/icons-react": "^3.1.0",
     "@types/axios": "^0.14.0",
     "@types/react-toastify": "^4.1.0",
+    "apexcharts": "^3.48.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "chart.js": "^4.4.2",
     "crypto-random-string": "^5.0.0",
     "cryptr": "^6.3.0",
-    "apexcharts": "^3.48.0",
-    "chart.js": "^4.4.2",
     "dayjs": "^1.11.10",
     "git": "^0.1.5",
     "material-ui-popup-state": "^5.1.0",
@@ -53,7 +53,11 @@
     "react-router-dom": "^6.22.3",
     "react-toastify": "^10.0.5",
     "react-transition-components": "^4.2.0",
+
+    "reactjs-popup": "^2.0.6",
+
     "styled-components": "^6.1.8",
+
     "util": "^0.12.5"
   },
   "devDependencies": {
