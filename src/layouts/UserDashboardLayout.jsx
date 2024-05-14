@@ -14,6 +14,7 @@ import ChartTile from '../components/ChartTile';
 import CurrentHeartrate from '../components/CurrentHrTile';
 import Footer from '../components/Footer';
 import FirstDayHR from '../components/FirstDayHR';
+import DistanceStepsChart from '../components/DistanceStepsChart'
 
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -188,6 +189,9 @@ const UserDasboardLayout = () => {
                 <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={dummyUserId} />
               </Grid> */}
 
+              <Grid item xs={12}>
+                <DistanceStepsChart color="#37F051" userId={userID} isSidebarOpen={drawerOpen} />
+              </Grid>
 
               {/* Second row - chart */}
               <Grid item xs={12}>
