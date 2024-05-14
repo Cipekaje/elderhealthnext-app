@@ -63,9 +63,7 @@ const DoctorDashboardLayout = () => {
 
   // Naudotojo informacijos gavimas
   const { data: session } = useSession();
-  //const doctorID = session?.user?.id;
-
-  const doctorID = 114; //==========================ĮHARDCODINTAS USERIO ID NES NEVEIKIA SESSIONAS==========================
+  const doctorID = session?.user?.id;
 
   const handleLeftDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -115,7 +113,7 @@ const DoctorDashboardLayout = () => {
 
   useEffect(() => {
     fetchPatients();
-  }, []);
+  }, [doctorID]);
 
   useEffect(() => {
     // Check if window object exists (i.e., if we're in the browser environment)
