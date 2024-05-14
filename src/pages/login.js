@@ -6,6 +6,7 @@ import Image from 'next/image';
 import emblemIcon from '../../public/Logo.png';
 import GoogleSignInButton from '../components/GoogleSignInButton';
 import { Container, Typography, Box, TextField, Button, Grid } from '@mui/material';
+import { useSession } from 'next-auth/react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -20,6 +21,8 @@ export default function LoginPage() {
   const handleRegisterClick = () => {
     router.push('/Register');
   };
+
+  const { data: session } = useSession();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +45,16 @@ export default function LoginPage() {
       setError('Neteisingi prisijungimo duomenys');
     }
     else {
-      router.push("/UserDashboard");
+
+      const user = session?.user;
+      const { role } = user?.userInfo || {};
+
+      if (role == "user"){
+        router.push("/UserDashboard");
+      }
+      else if (role == "doctor"){
+        router.push("/DoctorDashboard");
+      }
     }
   };
 
