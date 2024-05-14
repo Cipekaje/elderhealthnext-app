@@ -19,7 +19,7 @@ const DropDownTile = ({ color, isLastInRow, userId, onUserChange }) => {
         const fetchData = async () => {
             try {
                 const dataAPI = { userID: userId };
-                console.log('Supervisor ID in frontend:', dataAPI);
+                // console.log('Supervisor ID in frontend:', dataAPI);
                 const response = await fetch('/api/user/fetch', {
                     method: 'POST',
                     headers: {
@@ -54,7 +54,17 @@ const DropDownTile = ({ color, isLastInRow, userId, onUserChange }) => {
         const selectedUserId = event.target.value;
         onUserChange(selectedUserId);
     };
-
+    // const handleUserChange = (event) => {
+    //     const selectedUserId = event.target.value;
+    //     const selectedUser = apiUsersData.find((user) => user.id === selectedUserId);
+    //     if (selectedUser) {
+    //         setSelectedUser(selectedUser.firstName); // Update the selected user name in the dropdown
+    //         onUserChange(selectedUserId, selectedUser.firstName); // Pass both userId and userName to the dashboard
+    //     } else {
+    //         console.error("Selected user not found");
+    //     }
+    // };
+    
     return (
         <Box
             sx={{

@@ -14,37 +14,50 @@ const pool = mysql.createPool({
 export const POST = async (req) => {
   try {
     const { email } = await req.json();
+    console.log('Email:', email);
     const connection = await pool.getConnection();
-    
-    const [rows] = await connection.query('SELECT role FROM supervisors WHERE email = ?', [email]);
-    
-    // Release the connection back to the pool
+
+    const [supervisorRows] = await connection.query('SELECT role FROM supervisors WHERE email = ?', [email]);
+    console.log('Rows from supervisors:', supervisorRows);
+
     connection.release();
-    
-    if (rows.length > 0) {
-      const { role } = rows[0];
-      
+
+    if (supervisorRows.length > 0) {
+      const { role } = supervisorRows[0];
+
       if (role === 'supervisor') {
         return NextResponse.json({
           status: 200,
           role: 'supervisor'
         });
+      }
+    }
+
+    const connection2 = await pool.getConnection();
+    const [userRows] = await connection2.query('SELECT role FROM User WHERE email = ?', [email]);
+    console.log('Rows from User:', userRows);
+    connection2.release();
+    
+    if (userRows.length > 0) {
+      const { role } = userRows[0];
+      if (role === 'doctor') {
+        return NextResponse.json({
+          status: 200,
+          role: 'doctor'
+        });
       } else {
-        // cia prideti kitas roles 
         return NextResponse.json({
           status: 200,
           role: 'user'
         });
       }
     } else {
-      // laikinas cia fix, cia turetu grazinti "user nera"
       return NextResponse.json({
-        status: 200,
-        role: 'user'
+        status: 404,
+        message: 'User not found'
       });
     }
   } catch (error) {
-    // error
     console.error('Error:', error);
     return NextResponse.json({
       status: 500,

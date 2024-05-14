@@ -18,7 +18,7 @@ export const POST = async (req) => {
       console.log('supervisorID in API:', userID);
 
       const [rows] = await connection.query('SELECT user_id FROM user_supervisor WHERE supervisor_id = ?', [userID]);
-      console.log('Query Result:', rows); // Log the query result
+    //   console.log('Query Result:', rows); // Log the query result
       // Release the connection back to the pool
       connection.release();
       

@@ -4,14 +4,20 @@ import Image from 'next/image';
 import emblemIcon from '../../public/Logo.png';
 import SidebarItem from './SidebarItem'; // Import SidebarItem component
 import Link from 'next/link';
-const Sidebar = ({ drawerOpen, drawerToggle }) => {
+import { useSession } from 'next-auth/react';
+
+const Sidebar = ({ drawerOpen, drawerToggle, selectedUserId }) => {
   // Define your sidebar items here
   const sidebarItems = [
     { label: 'Prietaisų skydelis', link: '/SupervisorDashboard' },
-    { label: 'Dienoraštis', link: '/Journal' },
+    { label: 'Dienoraštis', link: `/Journal?userId=${selectedUserId}` },
     // Add more items as needed
   ];
-
+  const { data: session } = useSession();
+  const user = session?.user;
+  const { role } = user?.userInfo || {};
+  // console.log("role", role);
+  console.log("testas ar yra", selectedUserId);
   return (
     <Box sx={{ position: 'relative', zIndex: 1 }}>
       <Drawer
