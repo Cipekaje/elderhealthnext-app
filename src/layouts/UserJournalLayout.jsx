@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { Breadcrumbs } from '@mui/material';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import SupervisorSidebar from '../components/SupervisorSidebar';
 import Tile from '../components/Tile';
 import Typography from '@mui/material/Typography';
 import dayjs, { Dayjs } from 'dayjs';
@@ -68,28 +69,22 @@ const GridEmoji = styled(Grid)(({ theme }) => ({
   width: '50px',
   marginLeft: '20px',
   marginTop: '15px'
-  
+
 
 }));
 
-
-
-
-
-
-
 // ==============================|| MAIN DASHBOARD LAYOUT ||============================== //
 
-const UserJournalLayout = () => {
+const UserJournalLayout = ({ userId }) => {
   const theme = useTheme();
- 
+  // console.log("journal id layout", userId);
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   const [buttonValue, setButtonValue] = useState(" ");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showTextarea, setShowTextarea] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
-  
+  const [activeBox, setActiveBox] = useState(1);
 
   const setSelectedEmojiValue = (severityLevel) => { // Explicitly type 'date' parameter
     if (severityLevel) {
@@ -102,23 +97,35 @@ const UserJournalLayout = () => {
   };
 
   // const { data: session } = useSession();
-  // const user = session?.user;
+
   // const userID = session?.user?.id;
 
   const [userID, setUserID] = useState(null);
   const { data: session } = useSession();
+  const user = session?.user;
+  const { role } = user?.userInfo || {};
   useEffect(() => {
+    if (role == "supervisor") {
+      setUserID(userId);
+      setActiveBox(2);
+    }
     // Check if session data is available
-    if (session && session.user && session.user.id) {
+    else if (session && session.user && session.user.id) {
       setUserID(session.user.id);
     }
   }, [session]);
 
+  useEffect(() => {
+    if (activeBox === 2) {
+      handleFindClick(); // Fetch data when the component mounts or when "Apžvalga" tab is selected
+    }
+  }, [activeBox]); // Call useEffect when activeBox changes
 
+  console.log("AR PAKEITE?", userID);
   const [error, setError] = useState(null);
   //const [error1, setError1] = useState(null);
 
-  const [activeBox, setActiveBox] = useState(1);
+
 
 
   const [Journal, setJournal] = useState({
@@ -126,7 +133,7 @@ const UserJournalLayout = () => {
     description: '',
     date: dayjs(),
     severity: 0,
-    
+
 
   });
 
@@ -174,7 +181,7 @@ const UserJournalLayout = () => {
   const handleApzvalgaDateChange = (tdate) => { // Explicitly type 'date' parameter
     if (tdate) {
       setFindDate({
-        FindDate: tdate 
+        FindDate: tdate
       });
     }
   };
@@ -208,7 +215,7 @@ const UserJournalLayout = () => {
 
   const handleSubmit = async (event, userID1) => {
     event.preventDefault(); // Prevent default form submission\
-  
+
     // Wait for the userID state to update
     console.log(userID1);
 
@@ -219,15 +226,15 @@ const UserJournalLayout = () => {
       //window.location.reload();
       alert('Duomenys išsaugoti!');
     }
-    
-    
+
+
     console.log(Journal);
     handleTextareaNull(NewText);
 
     if (Journal && userID1) {
       const response = await fetch('/api/auth/Journal', {
         method: "POST",
-        body: JSON.stringify({Journal, userid: userID1})
+        body: JSON.stringify({ Journal, userid: userID1 })
       });
 
       if (response.ok) {
@@ -306,7 +313,7 @@ const UserJournalLayout = () => {
       // Handle error gracefully, show a message to the user, etc.
     }
   }
-  
+
 
 
   // Effect to add event listener on mount and remove it on unmount
@@ -331,7 +338,7 @@ const UserJournalLayout = () => {
 
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
-  
+
 
   const renderCellContent = (cell, cellIndex) => {
     // Check if the cell is in the "Simptomo stiprumas" column
@@ -352,7 +359,7 @@ const UserJournalLayout = () => {
       } else if (cell === 3) {
         // Render emoji and label for moderately
         return {
-          icon: <SentimentNeutralIcon style={{color: '#ffea00'}} />,
+          icon: <SentimentNeutralIcon style={{ color: '#ffea00' }} />,
           label: 'Vidutiniškai',
         };
       } else if (cell === 2) {
@@ -378,7 +385,7 @@ const UserJournalLayout = () => {
       return cell;
     }
   };
-  
+
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const renderRows = (data) => {
     return data.map((row, index) => (
@@ -394,7 +401,7 @@ const UserJournalLayout = () => {
                   <br></br>
                   {renderCellContent(cell, cellIndex).label}
                 </div>
-                
+
               )
             ) : (
               // Render other cells normally
@@ -411,11 +418,11 @@ const UserJournalLayout = () => {
     for (let i = 0; i < data.length; i++) {
       data[i][0] = formatDate(data[i][0]);
     }
-  
-    
+
+
     if (data.length < 1) {
       return (
-        <Table style={{ position: 'relative' , width: '100%'}}>
+        <Table style={{ position: 'relative', width: '100%' }}>
           <TableHead style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#82b1ff' }}>
             <TableRow>
               <TableCell style={{ width: '30%', fontSize: isSmallScreen ? '8px' : '14px' }}>Data</TableCell>
@@ -431,7 +438,7 @@ const UserJournalLayout = () => {
       );
     } else {
       return (
-        <Table style={{ position: 'relative',width: '100%' }}>
+        <Table style={{ position: 'relative', width: '100%' }}>
           <TableHead style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#82b1ff' }}>
             <TableRow>
               <TableCell style={{ width: '30%', fontSize: isSmallScreen ? '8px' : '14px' }}>Data</TableCell>
@@ -447,25 +454,25 @@ const UserJournalLayout = () => {
       );
     }
   };
-  
-  // Render function or JSX
-const renderData = () => {
-  if (clicked) {
-    return <ArrayToTable data={DataArray} />;
-  } else if(Selected){
-    return <ArrayToTable data={DataArrayByDate} />;
-  }
-};
 
-  
+  // Render function or JSX
+  const renderData = () => {
+    if (clicked) {
+      return <ArrayToTable data={DataArray} />;
+    } else if (Selected) {
+      return <ArrayToTable data={DataArrayByDate} />;
+    }
+  };
+
+
   const handleDeleteclick = async () => {
     setDataArray([]);
     setDataByDateArray([]);
   };
 
-  
 
-  
+
+
 
 
   //const DataArray = dataArray.map(obj => [obj.date, obj.symptom.toLowerCase(), obj.description]);
@@ -500,7 +507,11 @@ const renderData = () => {
           <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
         </AppBar>
 
-        <Sidebar drawerOpen={drawerOpen} drawerToggle={handleLeftDrawerToggle} />
+        {role === 'supervisor' ? (
+          <SupervisorSidebar drawerOpen={drawerOpen} drawerToggle={handleLeftDrawerToggle} />
+        ) : (
+          <Sidebar drawerOpen={drawerOpen} drawerToggle={handleLeftDrawerToggle} />
+        )}
         {activeBox === 1 && (
           <Main open={drawerOpen}>
             {/* breadcrumb */}
@@ -510,16 +521,23 @@ const renderData = () => {
               <Breadcrumbs />
 
               <Grid container spacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center" sx={{ textAlign: 'center', marginTop: '20px' }}>
-                <Grid item className='GridEmoji'>
-                  <Button variant="contained" onClick={() => handleToggle(1)}>Dienoraštis</Button>
-                </Grid>
-                <Grid item >
-                  <Divider orientation="vertical" />
-                </Grid>
-                <Grid item>
-                  <Button variant="outlined" onClick={() => handleToggle(2)}>Apžvalga</Button>
-                </Grid>
-
+                {role === 'supervisor' ? (
+                  <Grid item>
+                    <Button variant="outlined" onClick={() => handleToggle(2)}>Apžvalga</Button>
+                  </Grid>
+                ) : (
+                  <>
+                    <Grid item className='GridEmoji'>
+                      <Button variant="contained" onClick={() => handleToggle(1)}>Dienoraštis</Button>
+                    </Grid>
+                    <Grid item >
+                      <Divider orientation="vertical" />
+                    </Grid>
+                    <Grid item>
+                      <Button variant="outlined" onClick={() => handleToggle(2)}>Apžvalga</Button>
+                    </Grid>
+                  </>
+                )}
               </Grid>
 
 
@@ -639,9 +657,9 @@ const renderData = () => {
 
                 </Button>
 
-                
+
               </Grid>
-              
+
 
             </MainContentWrapper>
 
@@ -659,16 +677,23 @@ const renderData = () => {
               <Breadcrumbs />
 
               <Grid container spacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ justifyContent: 'center', marginTop: '20px' }}>
-                <Grid item>
-                  <Button variant="outlined" onClick={() => handleToggle(1)}>Dienoraštis</Button>
-                </Grid>
-                <Grid item>
-                  <Divider orientation="vertical" />
-                </Grid>
-                <Grid item>
-                  <Button variant="contained" onClick={() => handleToggle(2)}>Apžvalga</Button>
-                </Grid>
-
+                {role === 'supervisor' ? (
+                  <Grid item>
+                    <Button variant="outlined" onClick={() => handleToggle(2)}>Apžvalga</Button>
+                  </Grid>
+                ) : (
+                  <>
+                    <Grid item>
+                      <Button variant="outlined" onClick={() => handleToggle(1)}>Dienoraštis</Button>
+                    </Grid>
+                    <Grid item>
+                      <Divider orientation="vertical" />
+                    </Grid>
+                    <Grid item>
+                      <Button variant="contained" onClick={() => handleToggle(2)}>Apžvalga</Button>
+                    </Grid>
+                  </>
+                )}
               </Grid>
 
 
@@ -689,7 +714,7 @@ const renderData = () => {
                         label="Pasirinkite datą"
                         //value={FindDate.FindDate}
                         format="YYYY-MM-DD"
-                        
+
 
                         onChange={handleApzvalgaDateChange}
                         slotProps={{ textField: { required: true } }}
@@ -699,16 +724,16 @@ const renderData = () => {
                   </Grid>
                   {/* {userID} */}
                   <Grid item>
-                    <Button variant="contained" color="success"style={{ marginRight: '20px' }} onClick={handleFindByDateClick}>Ieškoti pagal datą</Button>
+                    <Button variant="contained" color="success" style={{ marginRight: '20px' }} onClick={handleFindByDateClick}>Ieškoti pagal datą</Button>
                     <Button variant="contained" color="error" onClick={handleDeleteclick}>Išvalyti</Button>
                   </Grid>
 
                   <Grid item xs={12} style={{ justifyContent: 'center', marginBottom: '50px' }}>
                     <Box
                       sx={{
-                        
 
-                        
+
+
                         borderRadius: 2,
                         backgroundColor: 'white',
                         padding: '20px',
@@ -724,7 +749,7 @@ const renderData = () => {
                         '@media (max-width: 800px)': { // Adjust the max-width as needed
                           width: 'auto', // Change the width for smaller screens
                           height: '300px',
-                           // Let the height adjust automatically
+                          // Let the height adjust automatically
                         }
                       }}
                     >
@@ -773,7 +798,7 @@ const renderData = () => {
             alignItems="center" justifyContent="center"
           >
             {buttonValue}
-            
+
             <br></br>
             <br></br>
             <Box sx={{ zIndex: 10001 }}>
@@ -791,20 +816,20 @@ const renderData = () => {
               </LocalizationProvider>
             </Box>
             <br></br>
-            <Box sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', position: 'relative'}}>
+            <Box sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', position: 'relative' }}>
               Pasirinkite, kaip stipriai jaučiate simptomą
               <br></br>
 
               <Emoji onSelect={setSelectedEmojiValue}></Emoji>
-              
-              <Grid container direction="row"  justifyContent="center" display="flex" spacing={{ xs: 1, sm: 2, md: 3 }}>
+
+              <Grid container direction="row" justifyContent="center" display="flex" spacing={{ xs: 1, sm: 2, md: 3 }}>
 
               </Grid>
             </Box>
-            
-            <Box sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', position: 'relative', top: '20px', maxWidth: '600px',}}>
+
+            <Box sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', position: 'relative', top: '20px', maxWidth: '600px', }}>
               <TextareaAutosize
-                style={{ width: '100%', resize: 'none', borderWidth: '2px'}}
+                style={{ width: '100%', resize: 'none', borderWidth: '2px' }}
                 minRows={6}
                 placeholder="Trumpas komentaras apie simptomą"
                 value={Journal.description}

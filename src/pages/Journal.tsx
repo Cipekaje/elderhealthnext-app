@@ -3,9 +3,12 @@ import { GetSessionParams, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 export default function JournalPage() {
+  const router = useRouter();
+  const { userId } = router.query;
+  // console.log("journal id page", userId);
   return (
     <div className="container" style={{ maxHeight: '100vh', overflow: 'auto'}}>
-      <UserJournalLayout />
+       <UserJournalLayout userId={userId} />
     </div>
   );
 }

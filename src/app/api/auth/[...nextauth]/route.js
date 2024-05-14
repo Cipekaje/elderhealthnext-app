@@ -67,7 +67,7 @@ const authConfig = {
                     }
 
                     // If user is not found, check the supervisor table
-                    const [supervisorRows, superFields] = await pool.query('SELECT id, email, firstName, password FROM supervisors WHERE email = ?', [credentials.email]);
+                    const [supervisorRows, superFields] = await pool.query('SELECT id, email, firstName, password, role FROM supervisors WHERE email = ?', [credentials.email]);
 
                     // If a user is found
                     if (supervisorRows.length > 0) {
@@ -83,7 +83,8 @@ const authConfig = {
                                 userInfo: {
                                     firstName: user.firstName,
                                     lastName: user.lastName,
-                                    birthdate: user.birthdate
+                                    birthdate: user.birthdate,
+                                    role: user.role
                                 }
                             };
                         }

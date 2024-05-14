@@ -14,6 +14,8 @@ import HeartrateTile from '../components/HeartrateTile';
 import ChartTile from '../components/ChartTile';
 import CurrentHeartrate from '../components/CurrentHrTile';
 import Footer from '../components/Footer';
+import DistanceStepsChart from '../components/DistanceStepsChart'
+import FirstDayHR from '../components/FirstDayHR';
 
 //DummyUserData
 const dummyUserId = '1';
@@ -53,14 +55,37 @@ const SupervisorDashboardLayout = () => {
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   const [selectedUserId, setSelectedUserId] = useState('');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [alertTriggered, setAlertTriggered] = useState(false);
+  const [currentHr, setCurrentHr] = useState(null);
+  const [avgFirstMonthHR, setAvgFirstMonthHR] = useState(null);
+
   // Naudotojo informacijos gavimas
   const { data: session } = useSession();
   const user = session?.user;
   const userID = session?.user?.id;
-  const { firstName } = user?.userInfo || {};
+  // const { firstName } = user?.userInfo || {};
+  // const { role } = user?.userInfo || {};
 
   // console.log("Session Data:", session);
   // console.log("testas", userID);
+  // console.log("role", role);
+  
+  useEffect(() => {
+    if (currentHr && avgFirstMonthHR && currentHr > 1 * avgFirstMonthHR) {
+      setAlertTriggered(true);
+    } else {
+      setAlertTriggered(false);
+    }
+  }, [currentHr, avgFirstMonthHR]);
+
+  useEffect(() => {
+    if (alertTriggered) {
+      alert('Current heart rate is more than double the average!');
+    }
+  }, [alertTriggered]);
+
+
+
 
   // Toggle function for sidebar
   const handleLeftDrawerToggle = () => {
@@ -79,11 +104,11 @@ const SupervisorDashboardLayout = () => {
     }
   }, []);
   // Callback function to receive selected user's ID
-  const handleUserChange = (selectedUserId: any) => {
-    // Do whatever you want with the selected user's ID
+  const handleUserChange = (selectedUserId: React.SetStateAction<string>) => {
+    // Do whatever you want with the selected user's ID and name
     setSelectedUserId(selectedUserId);
     console.log("Selected user's ID:", selectedUserId);
-  };
+};
   return (
     <div>
       <CssBaseline />
@@ -92,8 +117,8 @@ const SupervisorDashboardLayout = () => {
         <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
       </AppBar>
 
-      <Sidebar drawerOpen={drawerOpen} drawerToggle={handleLeftDrawerToggle} />
-
+      {/* <Sidebar drawerOpen={drawerOpen} drawerToggle={handleLeftDrawerToggle} /> */}
+      <Sidebar drawerOpen={drawerOpen} drawerToggle={handleLeftDrawerToggle} selectedUserId={selectedUserId} />
       <Main open={drawerOpen} sx={{ overflow: 'auto', }}>
         <MainContentWrapper>
           <div style={{ padding: '22px' }}>
@@ -107,14 +132,27 @@ const SupervisorDashboardLayout = () => {
                 <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={firstName} />
               </Grid> */}
               <Grid item xs={12} md={4}>
-                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={selectedUserId} />
+                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={selectedUserId} setCurrentHr={setCurrentHr} />
               </Grid>
               <Grid item xs={12} md={4}>
                 <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={selectedUserId} />
               </Grid>
+
+              {/* JEIGU SITI ABUDU ATKOMENTUOTI SISTEMA UZLAGINA LABAI DAUG REIKIA PERKRAUTI SU NPM */}
+{/* 
+              <Grid item xs={12} md={4}>
+                <FirstDayHR color="#F09537" userid={selectedUserId} setAvgFirstMonthHR={setAvgFirstMonthHR}/>
+              </Grid> */}
+              {/* <Grid item xs={12}>
+                <DistanceStepsChart color="#37F051" userId={selectedUserId} isSidebarOpen={drawerOpen} />
+              </Grid> */}
+
+              {/* -------------------------------------------------------------------------------------- */}
+
               <Grid item xs={12}>
                 <ChartTile color="#37F051" userId={selectedUserId} isSidebarOpen={drawerOpen} />
               </Grid>
+              
             </Grid>
           </div>
 
