@@ -42,7 +42,7 @@ const authConfig = {
 
                 try {
                     // Query the database to find the user by email
-                    const [userRows, userFields] = await pool.query('SELECT id, email, firstName, password FROM User WHERE email = ?', [credentials.email]);
+                    const [userRows, userFields] = await pool.query('SELECT id, email, firstName, password, role FROM User WHERE email = ?', [credentials.email]);
                     // If a user is found
                     if (userRows.length > 0) {
                         const user = userRows[0];
@@ -59,7 +59,8 @@ const authConfig = {
                                 userInfo: {
                                     firstName: user.firstName,
                                     lastName: user.lastName,
-                                    birthdate: user.birthdate
+                                    birthdate: user.birthdate,
+                                    role: user.role
                                 }
                             };
                         }

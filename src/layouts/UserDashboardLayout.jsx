@@ -14,13 +14,10 @@ import ChartTile from '../components/ChartTile';
 import CurrentHeartrate from '../components/CurrentHrTile';
 import Footer from '../components/Footer';
 import FirstDayHR from '../components/FirstDayHR';
+import DistanceStepsChart from '../components/DistanceStepsChart'
 
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-
-//DummyUserData
-const dummyUserId = '1';
-const dummyUserName = 'Tomas';
 
 // styles
 const Main = styled('main', {
@@ -57,7 +54,7 @@ const UserDasboardLayout = () => {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   // Naudotojo informacijos gavimas
-  const { data: session} = useSession();
+  const { data: session } = useSession();
   const user = session?.user;
   const userID = session?.user?.id;
   const { firstName } = user?.userInfo || {};
@@ -75,6 +72,10 @@ const UserDasboardLayout = () => {
 
 
   useEffect(() => {
+
+    //USER ID CHECK'AS
+    //console.log("User id: ", userID);
+
     if (typeof window !== 'undefined') {
       setIsModalOpen(true);
     }
@@ -91,13 +92,13 @@ const UserDasboardLayout = () => {
 
     const additionalInfo = {};
 
-  // Only include fields that have values
-  if (gender) additionalInfo.gender = gender;
-  if (lastName) additionalInfo.lastName = lastName;
-  if (birthday) additionalInfo.birthdate = birthday;
-  if (weight) additionalInfo.weight = weight; // Don't include if it's empty
-  if (height) additionalInfo.height = height;
-  if (disease) additionalInfo.disease = disease;
+    // Only include fields that have values
+    if (gender) additionalInfo.gender = gender;
+    if (lastName) additionalInfo.lastName = lastName;
+    if (birthday) additionalInfo.birthdate = birthday;
+    if (weight) additionalInfo.weight = weight; // Don't include if it's empty
+    if (height) additionalInfo.height = height;
+    if (disease) additionalInfo.disease = disease;
 
     // Retrieve the user's email from the session or other context
     const userEmail = session?.user?.email; // Ensure email is available
@@ -188,6 +189,9 @@ const UserDasboardLayout = () => {
                 <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={dummyUserId} />
               </Grid> */}
 
+              <Grid item xs={12}>
+                <DistanceStepsChart color="#37F051" userId={userID} isSidebarOpen={drawerOpen} />
+              </Grid>
 
               {/* Second row - chart */}
               <Grid item xs={12}>
@@ -203,7 +207,7 @@ const UserDasboardLayout = () => {
                 <Tile title="Average Data" content="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." color="#603CAC" size="large" />
               </Grid> */}
               <Grid item>
-                <FirstDayHR color="#F09537" userid={userID}/>
+                <FirstDayHR color="#F09537" userid={userID} />
               </Grid>
             </Grid>
           </div>

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import emblemIcon from '../../public/Logo.png';
 import GoogleSignInButton from '../components/GoogleSignInButton';
 import { Container, Typography, Box, TextField, Button, Grid } from '@mui/material';
+import { useSession } from 'next-auth/react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -20,6 +21,8 @@ export default function LoginPage() {
   const handleRegisterClick = () => {
     router.push('/Register');
   };
+
+  const { data: session } = useSession();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,6 +61,9 @@ export default function LoginPage() {
           if (status === 200) {
             if (role === 'supervisor') {
               router.push('/SupervisorDashboard');
+            }
+            else if (role === 'doctor'){
+              router.push("/DoctorDashboard");
             }
             else {
               router.push('/UserDashboard');

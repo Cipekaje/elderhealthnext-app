@@ -4,15 +4,27 @@ import Image from 'next/image';
 import emblemIcon from '../../public/Logo.png';
 import SidebarItem from './SidebarItem'; // Import SidebarItem component
 import Link from 'next/link';
-const Sidebar = ({ drawerOpen, drawerToggle }) => {
-  // Define your sidebar items here
-  const sidebarItems = [
+
+const Sidebar = ({ drawerOpen, drawerToggle, userType }) => {
+  // Define default sidebar items
+  const defaultSidebarItems = [
     { label: 'Prietaisų skydelis', link: '/UserDashboard' },
     { label: 'Širdies ritmo ataskaitos', link: '/' },
     { label: 'Kiti pranešimai', link: '/settings' },
     { label: 'Dienoraštis', link: '/Journal' },
     // Add more items as needed
   ];
+
+  // Define doctor specific sidebar items (optional)
+  const doctorSidebarItems = [
+    // Add doctor specific items here
+    { label: 'Pagrindinis', link: '/DoctorDashboard' },
+    { label: 'Pridėti pacientus', link: '/AssignPatient' },
+    // Add more items as needed
+  ];
+
+  // Select sidebar items based on userType
+  const sidebarItems = userType === 'doctor' ? doctorSidebarItems : defaultSidebarItems;
 
   return (
     <Box sx={{ position: 'relative', zIndex: 1 }}>
