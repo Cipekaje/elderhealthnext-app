@@ -36,13 +36,36 @@ export default function LoginPage() {
       email,
       password,
     });
-
-    // Check if authentication was successful
+    const data = { email };
     if (result?.error) {
       setError('Neteisingi prisijungimo duomenys');
     }
     else {
-      router.push("/UserDashboard");
+      try {
+        const response = await fetch('/api/supervisor/getSupervisor', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data), 
+        });
+        const responseData = await response.json();
+        // console.log("is API ka gavome", responseData);
+
+        if (response.ok) {
+          const { status, role } = responseData;
+
+          if (status === 200) {
+            if (role === 'supervisor') {
+              router.push('/SupervisorDashboard');
+            }
+            else {
+              router.push('/UserDashboard');
+            }
+          }
+        }
+
+      } catch (error) { console.error('Error:', error); }
     }
   };
 
@@ -95,9 +118,9 @@ export default function LoginPage() {
             {error && <Alert severity="error">{error}</Alert>}
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Prisijungti
-            </Button>        
-            <Typography variant="contained"  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
-                  Arba naudokite kitą prisijungimo būdą
+            </Button>
+            <Typography variant="contained" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+              Arba naudokite kitą prisijungimo būdą
             </Typography>
 
             <GoogleSignInButton>
@@ -106,9 +129,9 @@ export default function LoginPage() {
 
             <Grid container>
               <Grid item xs>
-              <Typography variant="body2" style={{ cursor: 'pointer', color: 'rgba(40, 67, 135, 1)' }} onClick={handleForgotPasswordClick}>
+                <Typography variant="body2" style={{ cursor: 'pointer', color: 'rgba(40, 67, 135, 1)' }} onClick={handleForgotPasswordClick}>
                   Pamiršote slaptažodį?
-              </Typography>
+                </Typography>
               </Grid>
               <Grid item>
                 <Typography variant="body2" style={{ cursor: 'pointer' }} onClick={handleRegisterClick}>
