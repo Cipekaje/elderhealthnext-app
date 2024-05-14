@@ -6,8 +6,9 @@ import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Grid, useMediaQuery } from '@mui/material';
 
 // project imports
-import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
+import Header from '../components/HeaderSupervisor';
+import Sidebar from '../components/SupervisorSidebar';
+import DropDownTile from '../components/DropDownTile';
 import Tile from '../components/Tile';
 import HeartrateTile from '../components/HeartrateTile';
 import ChartTile from '../components/ChartTile';
@@ -45,27 +46,26 @@ const MainContentWrapper = styled(Box)(({ theme }) => ({
 
 }));
 
-// ==============================|| MAIN DASHBOARD LAYOUT ||============================== //
+// ==============================|| MAIN SUPERVISOR DASHBOARD LAYOUT ||============================== //
 
 const SupervisorDashboardLayout = () => {
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
-
+  const [selectedUserId, setSelectedUserId] = useState('');
   const [drawerOpen, setDrawerOpen] = useState(false);
   // Naudotojo informacijos gavimas
-  const { data: session} = useSession();
+  const { data: session } = useSession();
   const user = session?.user;
   const userID = session?.user?.id;
   const { firstName } = user?.userInfo || {};
 
+  // console.log("Session Data:", session);
+  // console.log("testas", userID);
 
-  // console.log(firstName);
-  // console.log(userID);
   // Toggle function for sidebar
   const handleLeftDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
-
   useEffect(() => {
     // Check if window object exists (i.e., if we're in the browser environment)
     if (typeof window !== 'undefined') {
@@ -78,7 +78,12 @@ const SupervisorDashboardLayout = () => {
       };
     }
   }, []);
-
+  // Callback function to receive selected user's ID
+  const handleUserChange = (selectedUserId: any) => {
+    // Do whatever you want with the selected user's ID
+    setSelectedUserId(selectedUserId);
+    console.log("Selected user's ID:", selectedUserId);
+  };
   return (
     <div>
       <CssBaseline />
@@ -92,45 +97,24 @@ const SupervisorDashboardLayout = () => {
       <Main open={drawerOpen} sx={{ overflow: 'auto', }}>
         <MainContentWrapper>
           <div style={{ padding: '22px' }}>
-            {/* Grid container for arranging tiles */}
+            {/* dropdown */}
+            <Grid item xs={12} md={4}>
+              <DropDownTile color="#37A0F0" isLastInRow={!matchDownMd} userId={userID} onUserChange={handleUserChange} />
+            </Grid>
+
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-              {/* First row */}
-              {/* Ne dummy user paemimas */}
-              <Grid item xs={12} md={4}>
+              {/* <Grid item xs={12} md={4}>
                 <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={firstName} />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={userID} />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={userID} />
-              </Grid>
-
-
-              {/* <Grid item xs={12} md={4}>
-                <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={dummyUserName} />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={dummyUserId} />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={dummyUserId} />
               </Grid> */}
-
-
-              {/* Second row - chart */}
+              <Grid item xs={12} md={4}>
+                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={selectedUserId} />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={selectedUserId} />
+              </Grid>
               <Grid item xs={12}>
-                <ChartTile color="#37F051" userId={userID} isSidebarOpen={drawerOpen} />
+                <ChartTile color="#37F051" userId={selectedUserId} isSidebarOpen={drawerOpen} />
               </Grid>
-
-              {/* <Grid item xs={12}>
-                <ChartTile color="#37F051" userId={dummyUserId} isSidebarOpen={drawerOpen} />
-              </Grid> */}
-
-              {/* Third row  */}
-              {/* <Grid item xs={12} md={4}>
-                <Tile title="Average Data" content="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." color="#603CAC" size="large" />
-              </Grid> */}
             </Grid>
           </div>
 

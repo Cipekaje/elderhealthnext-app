@@ -41,7 +41,7 @@ const HeartrateTile = ({ color, isLastInRow, userId }) => {
         };
 
         fetchAverageHeartrate();
-    }, [viewMode]);
+    }, [userId, viewMode]); // Add userId dependency here
 
     return (
         <Box
