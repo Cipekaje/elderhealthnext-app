@@ -31,15 +31,16 @@ export const GET = async (req: CustomRequest, res: Response) => {
     //console.log(UserID);
 
     if (UserID != null) {
-      //const averageHRFirstDay = await fetchAverageHeartrateFromDatabase(UserID, 'day');
-      //const averageHRFirstWeek = await fetchAverageHeartrateFromDatabase(UserID, 'week');
-      const averageHRFirstMonth = await fetchAverageHeartrateFromDatabase(UserID, 'month');
+    
+      const TodaySteps = await fetchAverageHeartrateFromDatabase(UserID, 'daySteps');
+      const TodayHR = await fetchAverageHeartrateFromDatabase(UserID, 'dayHR');
+      //const averageHRFirstMonth = await fetchAverageHeartrateFromDatabase(UserID, 'month');
       //const averageHRFirstMonthALL = await fetchAverageHeartrateFromDatabase(UserID, 'monthAll');
-      const result = { averageHRFirstMonth }; 
+       
       // const result = { averageHRFirstDay, averageHRFirstWeek, averageHRFirstMonth };
       connection.release();
-
-      //console.log(result);
+        const result = { TodaySteps, TodayHR };
+      console.log(result);
 
       return NextResponse.json({ Message: "OK", result: result }, { status: 200 });
     }
@@ -54,27 +55,22 @@ export const GET = async (req: CustomRequest, res: Response) => {
 async function fetchAverageHeartrateFromDatabase(userId: string, period: string) {
   let queryString: string;
   switch (period) {
-    case 'day':
-      queryString = `SELECT ROUND(AVG(heart_rate), 1) AS averageHR
-        FROM HeartRateRecord 
-        WHERE user_id = ${userId} 
-        AND date = (SELECT MIN(date) FROM HeartRateRecord WHERE user_id = ${userId})`;
-
-      break;
-    case 'week':
+    case 'daySteps':
       queryString = `
-        SELECT ROUND(AVG(heart_rate), 1) AS averageHR
-        FROM HeartRateRecord 
-        RIGHT JOIN (
-            SELECT MIN(date) AS start_date, DATE_ADD(MIN(date), INTERVAL 6 DAY) AS end_date
-            FROM HeartRateRecord 
-            WHERE user_id = ${userId}
-        ) AS date_range
-        ON HeartRateRecord.date >= date_range.start_date AND HeartRateRecord.date <= date_range.end_date
-        WHERE user_id = ${userId} 
+      SELECT hour(time) as Hour, sum(steps) as Steps
+        FROM StepRecord
+        WHERE user_id = ${userId} AND date = CURDATE()
+        GROUP BY hour(time);
         `;
 
-
+      break;
+    case 'dayHR':
+      queryString = `
+      SELECT hour(time) as Hour, ROUND(AVG(heart_rate), 1) as HR
+      FROM HeartRateRecord
+      WHERE user_id = ${userId} AND date = CURDATE()
+      GROUP BY hour(time);
+      `;
       break;
     case 'month':
       queryString = `
@@ -95,20 +91,20 @@ async function fetchAverageHeartrateFromDatabase(userId: string, period: string)
 
   try {
     const connection = await pool.getConnection();
-    const rows = await connection.execute(queryString);
+    const [rows] = await DB.query(queryString, [userId]) as RowDataPacket[][];
     //console.log(rows);
-    if (rows.length > 0) {
-      const averageHR = rows[0];
-      return averageHR;
-    }
+    if (Array.isArray(rows) && rows.length > 0) {
+        const  averageSteps  = rows;
+          return averageSteps;
+      }
 
-    throw new Error(`Failed to fetch average heartrate for ${period}`);
+    throw new Error(`Failed to fetch steps for ${period}`);
   } catch (error: any) {
-    console.error(`Error fetching average heartrate for ${period}:`, error);
+    console.error(`Error fetching steps for ${period}:`, error);
     if (error.code) {
       console.error('SQL Error Code:', error.code);
       console.error('SQL Error Message:', error.message);
     }
-    throw new Error(`Failed to fetch average heartrate for ${period}`);
+    throw new Error(`Failed to fetch steps for ${period}`);
   }
 }

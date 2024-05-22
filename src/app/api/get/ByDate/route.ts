@@ -16,9 +16,10 @@ export const GET = async (req: CustomRequest, res: Response) => {
         const url = new URL(req.url);
         const params = new URLSearchParams(url.search);
         const FindDate = params.get('FindDate');
-
+        const UserId = params.get('userid');
+        console.log(UserId);
         console.log(FindDate);
-        // Format the date parts into the desired format
+        let UserID: string | undefined = UserId?.substring(1, 11); 
         let FindDate2: string | undefined = FindDate?.substring(1, 11); // Keep the date in 'YYYY-MM-DD' format
 
         console.log(FindDate2);
@@ -31,7 +32,7 @@ export const GET = async (req: CustomRequest, res: Response) => {
             const day = parseInt(dateParts[2], 10);
 
             const nextDate = new Date(year, month, day);
-            nextDate.setDate(nextDate.getDate() + 1);
+            nextDate.setDate(nextDate.getDate());
 
             const nextYear = nextDate.getFullYear();
             const nextMonth = String(nextDate.getMonth() + 1).padStart(2, '0');
@@ -43,7 +44,7 @@ export const GET = async (req: CustomRequest, res: Response) => {
 
             // Assuming query is a function that correctly executes the SQL query
             const result = await connection.execute(
-                "SELECT date, symptom, severity, description FROM Journal WHERE date = ?", [FindDate2] // Your SQL query
+                "SELECT date, symptom, severity, description FROM Journal WHERE date = ? AND user_id = ?", [FindDate2, UserID]  // Your SQL query
                 // You can add more options here if needed, such as parameters
             );
             console.log(result);

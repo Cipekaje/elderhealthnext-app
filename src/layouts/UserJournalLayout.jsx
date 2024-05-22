@@ -271,7 +271,7 @@ const UserJournalLayout = ({ userId }) => {
         throw new Error('Failed to fetch data');
       }
       const data = await response.json();
-
+      console.log(data);
       const newDataArray = Object.values(data.result).map(obj => [obj.date, obj.symptom, obj.severity, obj.description]);
       console.log(newDataArray);
 
@@ -293,7 +293,7 @@ const UserJournalLayout = ({ userId }) => {
     formatDate(FindDate.FindDate);
     try {
       //const NewDate = FormatDate(FindDate); // Assuming FindDate is defined somewhere
-      const url = `/api/get/ByDate?FindDate=${JSON.stringify(FindDate.FindDate)}`;
+      const url = `/api/get/ByDate?FindDate=${JSON.stringify(FindDate.FindDate)}&userid=${JSON.stringify(userID)}`;
 
       const response = await fetch(url);
       if (!response.ok) {
@@ -466,8 +466,7 @@ const UserJournalLayout = ({ userId }) => {
 
 
   const handleDeleteclick = async () => {
-    setDataArray([]);
-    setDataByDateArray([]);
+    handleFindClick();
   };
 
 
@@ -712,8 +711,11 @@ const UserJournalLayout = ({ userId }) => {
                       <DatePicker
                         sx={{ backgroundColor: 'white', borderRadius: '6px', marginRight: '20px', }}
                         label="Pasirinkite datą"
-                        //value={FindDate.FindDate}
+                        value={FindDate.FindDate}
                         format="YYYY-MM-DD"
+
+                        defaultValue={dayjs()}
+
 
 
                         onChange={handleApzvalgaDateChange}
@@ -724,8 +726,12 @@ const UserJournalLayout = ({ userId }) => {
                   </Grid>
                   {/* {userID} */}
                   <Grid item>
-                    <Button variant="contained" color="success" style={{ marginRight: '20px' }} onClick={handleFindByDateClick}>Ieškoti pagal datą</Button>
-                    <Button variant="contained" color="error" onClick={handleDeleteclick}>Išvalyti</Button>
+
+                    <Button variant="contained" color="success"style={{ marginRight: '20px' }} onClick={handleFindByDateClick}>Ieškoti pagal datą</Button>
+                    <Button variant="contained"  onClick={handleDeleteclick}>Atstatyti</Button>
+
+
+
                   </Grid>
 
                   <Grid item xs={12} style={{ justifyContent: 'center', marginBottom: '50px' }}>
