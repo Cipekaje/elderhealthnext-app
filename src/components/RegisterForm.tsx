@@ -57,6 +57,7 @@ function Register() {
 
   const [error, setError] = useState<string | null>(null);
   const [error1, setError1] = useState<string | null>(null);
+  const [error2, setError2] = useState<string | null>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [event.target.name]: event.target.value });
@@ -65,7 +66,7 @@ function Register() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
-
+    var today = dayjs();
     if (!user.email || !user.password || !user.confirmPassword || !user.firstName || !user.lastName || !user.birthdate) {
       setError('Prašome užpildyti visus laukus');
       return;
@@ -74,13 +75,10 @@ function Register() {
       setError1('Slaptažodžiai nesutampa');
       return;
     }
-    else {
-
-      router.push('/login');
-      alert('Registracija sėkminga!');
+    if ((user.birthdate).isAfter(today) ) {
+      setError2('Bloga data');
+      return;
     }
-
-    console.log(user);
 
     if (user) {
       const response = await fetch('/api/auth/register', {
@@ -89,7 +87,9 @@ function Register() {
 
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
+        router.push('/login');
+        alert('Registracija sėkminga!');
 
       } else {
         const errorData = await response.json();
@@ -101,16 +101,11 @@ function Register() {
       ...user,
       firstName: '',
       lastName: '',
-
       email: '',
       password: '',
       confirmPassword: '',
       birthdate: null,
-
     });
-
-
-
   };
 
 
@@ -271,7 +266,7 @@ function Register() {
                   slotProps={{ textField: { fullWidth: true, required: true } }}
                 />
               </LocalizationProvider>
-
+              {error2 && <div style={{ color: 'red' }}>{error2}</div>}
             </Grid>
 
             {/* <Grid item xs={12}>

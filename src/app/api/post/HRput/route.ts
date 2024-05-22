@@ -23,14 +23,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
               const connection = await pool.getConnection();
               const user = await req.json();
   
-              console.log(user);
+              //console.log(user);
               // Format the date parts into the desired format
               
               //console.log(FindDate2);
               // Assuming query is a function that correctly executes the SQL query
               const existingRecord = await connection.execute(
                 "SELECT * FROM Data_averages WHERE user_id = ?",[user.userIdNumber]);
-              console.log(Object.keys(existingRecord[0]).length);
+              //console.log(Object.keys(existingRecord[0]).length);
               if(user.AvgFirstDayHR != null){
                 if (Object.keys(existingRecord[0]).length>0) {
                   // Update existing record

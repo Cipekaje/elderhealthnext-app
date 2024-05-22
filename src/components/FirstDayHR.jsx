@@ -50,7 +50,7 @@ const HeartrateAverageTile = ({color, userid}) => {
     const fetchData = async () => {
       try {
         //const NewDate = FormatDate(FindDate); // Assuming FindDate is defined somewhere
-        const url = `/api/get/HR?userid=${JSON.stringify(userIdNumber)}`;
+        const url = `/api/get/HR?userid=${JSON.stringify(userIdNumber)}&userid=${JSON.stringify(AvgFirstMonthHR)}`;
 
         const response = await fetch(url);
         if (!response.ok) {
@@ -58,8 +58,8 @@ const HeartrateAverageTile = ({color, userid}) => {
         }else{
           const Data = await response.json();
 
-          setAvgFirstDayHR(Data.result.averageHRFirstDay[0].averageHR);
-          setAvgFirstWeekHR(Data.result.averageHRFirstWeek[0].averageHR);
+          //setAvgFirstDayHR(Data.result.averageHRFirstDay[0].averageHR);
+          //setAvgFirstWeekHR(Data.result.averageHRFirstWeek[0].averageHR);
           setAvgFirstMonthHR(Data.result.averageHRFirstMonth[0].averageHR);
 
           //console.log(Data.result);
@@ -73,12 +73,12 @@ const HeartrateAverageTile = ({color, userid}) => {
     };
 
     fetchData();
-    if(AvgFirstDayHR != null && AvgFirstMonthHR != null && AvgFirstWeekHR != null){
+    if( AvgFirstMonthHR != null ){
       handleUpdate();
     }
     
 
-  });
+  }, [userIdNumber, AvgFirstMonthHR]);
 
   return (
     <Box
