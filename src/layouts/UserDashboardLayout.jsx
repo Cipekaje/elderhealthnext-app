@@ -59,7 +59,7 @@ const UserDasboardLayout = () => {
   const user = session?.user;
   const userID = session?.user?.id;
   const { firstName } = user?.userInfo || {};
-  console.log("userID", userID);
+  //console.log("userID", userID);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);

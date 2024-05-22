@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import util from "util";
-//import bcrypt from 'bcrypt';
+import util from 'util';
 import DB from '@/../util/db';
-import { ConnectingAirportsOutlined, Message } from "@mui/icons-material";
-import { QueryOptions, RowDataPacket } from 'mysql2/promise';
-//import { formattedDate } from './MyComponent.js';
 import pool from '@/../util/db';
-
+import { QueryOptions, RowDataPacket } from 'mysql2/promise';
 
 const query = util.promisify(DB.query).bind(DB);
 
@@ -19,36 +15,52 @@ interface QueryResultItem {
 }
 
 export const GET = async (req: CustomRequest, res: Response) => {
-
   try {
     const connection = await pool.getConnection();
     const url = new URL(req.url);
     const params = new URLSearchParams(url.search);
-
     const UserID = params.get('userid');
-    //const UserID = UsID?.substring(1, UsID.length-1);
 
-    //console.log(UserID);
+    console.log(UserID);
 
     if (UserID != null) {
-    
-      const TodaySteps = await fetchAverageHeartrateFromDatabase(UserID, 'daySteps');
-      const TodayHR = await fetchAverageHeartrateFromDatabase(UserID, 'dayHR');
-      //const averageHRFirstMonth = await fetchAverageHeartrateFromDatabase(UserID, 'month');
-      //const averageHRFirstMonthALL = await fetchAverageHeartrateFromDatabase(UserID, 'monthAll');
-       
-      // const result = { averageHRFirstDay, averageHRFirstWeek, averageHRFirstMonth };
-      connection.release();
-        const result = { TodaySteps, TodayHR };
-      console.log(result);
+      let TodaySteps = null;
+      let TodayHR = null;
+      let stepsError = null;
+      let hrError = null;
 
-      return NextResponse.json({ Message: "OK", result: result }, { status: 200 });
+      try {
+        TodaySteps = await fetchAverageHeartrateFromDatabase(UserID, 'daySteps');
+      } catch (error) {
+        console.error("Error fetching steps:", error);
+        stepsError = "Failed to fetch steps data";
+      }
+
+      try {
+        TodayHR = await fetchAverageHeartrateFromDatabase(UserID, 'dayHR');
+      } catch (error) {
+        console.error("Error fetching heart rate:", error);
+        hrError = "Failed to fetch heart rate data";
+      }
+
+      connection.release();
+
+      const result = { TodaySteps, TodayHR };
+      console.log(result);
+      const errorMessages = { stepsError, hrError };
+
+      if (stepsError || hrError) {
+        return NextResponse.json({ Message: "Partial data fetched", result, errors: errorMessages }, { status: 206 });
+      }
+
+      return NextResponse.json({ Message: "OK", result }, { status: 200 });
+    } else {
+      return NextResponse.json({ message: "User ID is missing" }, { status: 400 });
     }
-    else return NextResponse.json({ message: "User ID is missing" }, { status: 400 });
   } catch (error) {
     // Handle any potential errors
-    console.error("Error fetching products:", error);
-    return NextResponse.json({ error: "Error fetching products" }, { status: 500 });
+    console.error("Error in GET request:", error);
+    return NextResponse.json({ error: "Error in GET request" }, { status: 500 });
   }
 }
 
@@ -61,8 +73,7 @@ async function fetchAverageHeartrateFromDatabase(userId: string, period: string)
         FROM StepRecord
         WHERE user_id = ${userId} AND date = CURDATE()
         GROUP BY hour(time);
-        `;
-
+      `;
       break;
     case 'dayHR':
       queryString = `
@@ -72,19 +83,6 @@ async function fetchAverageHeartrateFromDatabase(userId: string, period: string)
       GROUP BY hour(time);
       `;
       break;
-    case 'month':
-      queryString = `
-        SELECT ROUND(AVG(heart_rate), 1) AS averageHR
-        FROM HeartRateRecord 
-        RIGHT JOIN (
-            SELECT MIN(date) AS start_date, DATE_ADD(MIN(date), INTERVAL 29 DAY) AS end_date
-            FROM HeartRateRecord 
-            WHERE user_id = ${userId}
-        ) AS date_range
-        ON HeartRateRecord.date >= date_range.start_date AND HeartRateRecord.date <= date_range.end_date
-        WHERE user_id = ${userId} 
-        `;
-      break;
     default:
       throw new Error('Invalid period specified');
   }
@@ -92,19 +90,15 @@ async function fetchAverageHeartrateFromDatabase(userId: string, period: string)
   try {
     const connection = await pool.getConnection();
     const [rows] = await DB.query(queryString, [userId]) as RowDataPacket[][];
-    //console.log(rows);
+    connection.release();
+    
     if (Array.isArray(rows) && rows.length > 0) {
-        const  averageSteps  = rows;
-          return averageSteps;
-      }
-
-    throw new Error(`Failed to fetch steps for ${period}`);
-  } catch (error: any) {
-    console.error(`Error fetching steps for ${period}:`, error);
-    if (error.code) {
-      console.error('SQL Error Code:', error.code);
-      console.error('SQL Error Message:', error.message);
+      return rows;
     }
-    throw new Error(`Failed to fetch steps for ${period}`);
+
+    throw new Error(`No data found for ${period}`);
+  } catch (error: any) {
+    console.error(`Error fetching data for ${period}:`, error);
+    throw new Error(`Failed to fetch data for ${period}`);
   }
 }
