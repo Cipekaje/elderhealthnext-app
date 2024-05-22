@@ -20,7 +20,7 @@ export async function POST(request) {
   if (!currentPassword || !newPassword) {
     return NextResponse.json({
       status: 400,
-      message: 'Missing required fields.',
+      message: 'Ne visi laukai užpildyti.',
     });
   }
 
@@ -34,7 +34,7 @@ export async function POST(request) {
     if (rows.length === 0) {
       return NextResponse.json({
         status: 404,
-        message: 'User not found.',
+        message: 'Vartotojas nerastas.',
       });
     }
 
@@ -46,7 +46,7 @@ export async function POST(request) {
     if (!isMatch) {
       return NextResponse.json({
         status: 400,
-        message: 'Current password is incorrect.',
+        message: 'Dabartinis slaptažodis netinka.',
       });
     }
 
@@ -55,15 +55,15 @@ export async function POST(request) {
 
     return NextResponse.json({
       status: 200,
-      message: 'Password changed successfully.',
+      message: 'Slaptažodis sėkmingai pakeistas.',
       lastName
     });
 
   } catch (error) {
-    console.error('Error changing password:', error);
+    console.error('Klaida keičiant slaptažodį:', error);
     return NextResponse.json({
       status: 500,
-      message: 'Internal server error. Please try again later.',
+      message: 'Klaida! Bandykite vėliau.',
     });
   } finally {
     if (connection) {

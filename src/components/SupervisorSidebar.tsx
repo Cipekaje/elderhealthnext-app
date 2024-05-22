@@ -4,28 +4,20 @@ import Image from 'next/image';
 import emblemIcon from '../../public/Logo.png';
 import SidebarItem from './SidebarItem'; // Import SidebarItem component
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
-const Sidebar = ({ drawerOpen, drawerToggle, userType }) => {
-  // Define default sidebar items
-  const defaultSidebarItems = [
-    { label: 'Prietaisų skydelis', link: '/UserDashboard' },
-    { label: 'Širdies ritmo ataskaitos', link: '/' },
-    { label: 'Kiti pranešimai', link: '/settings' },
-    { label: 'Dienoraštis', link: '/Journal' },
+const Sidebar = ({ drawerOpen, drawerToggle, selectedUserId }) => {
+  // Define your sidebar items here
+  const sidebarItems = [
+    { label: 'Prietaisų skydelis', link: '/SupervisorDashboard' },
+    { label: 'Dienoraštis', link: `/Journal?userId=${selectedUserId}` },
     // Add more items as needed
   ];
-
-  // Define doctor specific sidebar items (optional)
-  const doctorSidebarItems = [
-    // Add doctor specific items here
-    { label: 'Pagrindinis', link: '/DoctorDashboard' },
-    { label: 'Pridėti pacientus', link: '/AssignPatient' },
-    // Add more items as needed
-  ];
-
-  // Select sidebar items based on userType
-  const sidebarItems = userType === 'doctor' ? doctorSidebarItems : defaultSidebarItems;
-
+  const { data: session } = useSession();
+  const user = session?.user;
+  const { role } = user?.userInfo || {};
+  // console.log("role", role);
+  console.log("testas ar yra", selectedUserId);
   return (
     <Box sx={{ position: 'relative', zIndex: 1 }}>
       <Drawer
@@ -40,7 +32,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, userType }) => {
         }}
       >
         <Box sx={{ p: 2, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
-          <Link href="/UserDashboard" passHref>
+          <Link href="/SupervisorDashboard" passHref>
             <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
               <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={46} height={46} />
               &nbsp;
@@ -50,7 +42,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, userType }) => {
         </Box>
         {/* Render the menu items using SidebarItem component */}
         {sidebarItems.map((item, index) => (
-          <SidebarItem key={index} label={item.label} link={item.link} />
+          <SidebarItem key={index} label={item.label} link={item.link} selected={undefined} onClick={undefined} />
         ))}
         <Stack direction="row" justifyContent="center" sx={{ mt: 'auto', px: 2 }}>
           <Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />

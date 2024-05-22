@@ -1,15 +1,12 @@
-import UserJournalLayout from '@/layouts/UserJournalLayout';
+import SupervisorDashboardLayout from '@/layouts/SupervisorDashboardLayout';
 import { GetSessionParams, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
-export default function JournalPage() {
-  const router = useRouter();
-  const { userId } = router.query;
-  // console.log("journal id page", userId);
+export default function SupervisorDashboardPage() {
   return (
-    <div className="container" style={{ maxHeight: '100vh', overflow: 'auto'}}>
-       <UserJournalLayout userId={userId} />
-    </div>
+    <SupervisorDashboardLayout>
+      {/* Your UserDashboard page content */}
+    </SupervisorDashboardLayout>
   );
 }
 //ar naudotojas prisijunges

@@ -1,15 +1,12 @@
-import UserJournalLayout from '@/layouts/UserJournalLayout';
+import AssignPatientLayout from '@/layouts/AssignPatientLayout';
 import { GetSessionParams, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
-export default function JournalPage() {
-  const router = useRouter();
-  const { userId } = router.query;
-  // console.log("journal id page", userId);
+export default function AssignPatientPage() {
   return (
-    <div className="container" style={{ maxHeight: '100vh', overflow: 'auto'}}>
-       <UserJournalLayout userId={userId} />
-    </div>
+    <AssignPatientLayout>
+      
+    </AssignPatientLayout>
   );
 }
 //ar naudotojas prisijunges
