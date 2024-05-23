@@ -15,7 +15,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '16px 16px',
-    '& > :nth-child(2)': {
+    '& > :nth-of-type(2)': {
       marginLeft: '16px',
     },
   });

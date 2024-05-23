@@ -35,6 +35,7 @@ const Main = styled('main', {
   padding: '20px',
   marginLeft: open ? '235px' : '8px', // Adjust margin left when sidebar is open or closed
   marginRight: '8px', // Add margin to the right to prevent content from sticking to the edge
+  
 }));
 
 const MainContentWrapper = styled(Box)(({ theme }) => ({
@@ -170,13 +171,13 @@ const UserDasboardLayout = () => {
             <Grid container alignItems="center" justifyContent="center" rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
               {/* First row */}
               {/* Ne dummy user paemimas */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={12} xl={4}>
                 <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={firstName} />
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6} xl={4}>
                 <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={userID} />
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6} xl={4}>
                 <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={userID} />
               </Grid>
 
@@ -208,13 +209,13 @@ const UserDasboardLayout = () => {
               {/* <Grid item xs={12} md={4}>
                 <Tile title="Average Data" content="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." color="#603CAC" size="large" />
               </Grid> */}
-              <Grid item>
+              <Grid item xs={12} md={12} xl={6}>
                 <FirstDayHR color="#F09537" userid={userID} />
               </Grid>
-              <Grid item>
-                <DaySteps color="#603cac" userid={userID}/>
+              <Grid item xs={12} md={12} xl={6}>
+                <DaySteps color="#603cac" userid={userID} />
               </Grid>
-              
+
             </Grid>
           </div>
 
