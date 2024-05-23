@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Grid, FormControl, Alert, Button, Snackbar, Select, InputLabel, MenuItem, TextField, Typography, useMediaQuery } from '@mui/material';
-
 // project imports
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
@@ -51,14 +49,18 @@ const MainContentWrapper = styled(Box)(({ theme }) => ({
 const UserDasboardLayout = () => {
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
-
   const [drawerOpen, setDrawerOpen] = useState(false);
   // Naudotojo informacijos gavimas
   const { data: session } = useSession();
   const user = session?.user;
   const userID = session?.user?.id;
   const { firstName } = user?.userInfo || {};
-  console.log("userID", userID);
+  // const birthdate = user?.birthdate;
+  // const lastname = user?.lastname;
+  // console.log("lastname", lastname);
+  // console.log("birthdate", birthdate);
+  // console.log("userID", userID);
+  // console.log("user", user);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);

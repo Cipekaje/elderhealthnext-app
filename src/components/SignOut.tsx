@@ -4,12 +4,20 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation'
 
-export const MuiDialog = () => {
+export const SignOut = () => {
     const { data: session, status: authenticated } = useSession();
     const [open, setOpen] = useState(false);
     const router = useRouter();
     // Logout function
+
+    // if (window.location.href.match('/\d/')) {
+    //     console.log("yra");
+    // } else {
+    //     console.log("nera");
+    // }
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -19,12 +27,21 @@ export const MuiDialog = () => {
         setOpen(false);
     };
     const handleLogout = async () => {
-        try {
+      try {
+        const currentUrl = window.location.href;
+        const isLocalhost = currentUrl.includes('localhost');
+    
+        if (isLocalhost) {
           await signOut({ redirect: true, callbackUrl: '/' });
-        } catch (error) {
-          console.error('error:', error);
+        } else {
+          await signOut({ redirect: true, callbackUrl: 'http://52.158.32.0/'});
         }
-      };
+      } catch (error) {
+        console.error('error:', error);
+      }
+    };
+    
+    
     return (
         <>
             {/* List item button triggering dialog open */}
