@@ -55,6 +55,7 @@
     "react-toastify": "^10.0.5",
     "react-transition-components": "^4.2.0",
     "reactjs-popup": "^2.0.6",
+    "sharp": "^0.33.4",
     "styled-components": "^6.1.8",
     "util": "^0.12.5"
   },

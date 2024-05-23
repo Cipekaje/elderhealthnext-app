@@ -49,16 +49,27 @@ const CurrentHrTile = ({ color, isLastInRow, userId }) => {
                 padding: '30px',
                 marginBottom: '20px',
                 marginRight: marginRight,
-                width: 'calc(100%)',
-                height: 'auto',
+                width: tileWidth,
+                height: tileHeight,
                 display: 'inline-block',
                 verticalAlign: 'top',
                 flex: '1 0 auto',
+                wordWrap: 'break-word',
             }}
         >
             <Grid container spacing={1} alignItems="center">
                 <Grid item xs={12}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', color: '#fff' }}>
+                <Typography
+                        variant="h6"
+                        sx={{
+                            fontWeight: 'bold',
+                            display: 'flex',
+                            alignItems: 'center',
+                            color: '#fff',
+                            overflowWrap: 'break-word', // Ensures content wraps within its container
+                            whiteSpace: 'normal',
+                        }}
+                    >
                         <UserIcon sx={{ marginRight: '10px' }} /> Naudotojo
                         <Typography
                             component="span"
@@ -70,6 +81,7 @@ const CurrentHrTile = ({ color, isLastInRow, userId }) => {
                                 color: 'black',
                                 marginLeft: '8px', // Add margin to separate from the icon
                                 marginRight: '8px',
+                                whiteSpace: 'nowrap',
                             }}
                         >
                             {userId || name}
@@ -77,7 +89,7 @@ const CurrentHrTile = ({ color, isLastInRow, userId }) => {
                         </Typography>{' '}
                         <Hidden smDown>sveikatos duomenys:</Hidden>
                     </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', color: '#fff' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', color: '#fff', whiteSpace: 'normal' }}>
                         <Hidden smUp>sveikatos duomenys:</Hidden>
                     </Typography>
                 </Grid>

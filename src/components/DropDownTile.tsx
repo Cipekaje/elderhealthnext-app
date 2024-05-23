@@ -47,7 +47,7 @@ const DropDownTile = ({ color, isLastInRow, userId, onUserChange }) => {
         };
 
         fetchData();
-    }, [userId]);
+    }, [userId, onUserChange]);
 
     const handleUserChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setSelectedUser(event.target.value);

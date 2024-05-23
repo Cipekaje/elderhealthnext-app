@@ -25,12 +25,12 @@ const HeartrateAverageTile = ({ color, userid }) => {
           throw new Error('Failed to fetch data');
         } else {
           const Data = await response.json();
-          console.log('Fetched Data:', Data);
+          //console.log('Fetched Data:', Data);
 
           if (Data.result.TodaySteps) {
             const stepsData = findHourWithHighestSteps(Data.result.TodaySteps);
             setHRSteps(stepsData);
-            console.log('HRSteps:', stepsData);
+            //console.log('HRSteps:', stepsData);
           }
 
           if (Data.result.TodayHR) {
@@ -39,8 +39,8 @@ const HeartrateAverageTile = ({ color, userid }) => {
             
             setDataHR(hrData);
             setHighHR(findHourWithHighestHR(Data.result.TodayHR));
-            console.log('dataHR:', hrData);
-            console.log('HighHR:', findHourWithHighestHR(Data.result.TodayHR));
+            //console.log('dataHR:', hrData);
+            //console.log('HighHR:', findHourWithHighestHR(Data.result.TodayHR));
           }
           setError(null);
         }

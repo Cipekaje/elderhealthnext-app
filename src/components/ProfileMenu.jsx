@@ -4,6 +4,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
 import { getServerSession } from "next-auth";
 import { useSession } from 'next-auth/react';
+import UserIcon from '@mui/icons-material/Person';
 
 import { SignOut } from '../components/SignOut.tsx';
 
@@ -132,7 +133,7 @@ const ProfileSection = () => {
         }}
         icon={
           <Avatar
-            component={UserCircle}
+            component={UserIcon}
             sx={{
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',

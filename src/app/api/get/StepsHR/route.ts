@@ -21,7 +21,7 @@ export const GET = async (req: CustomRequest, res: Response) => {
     const params = new URLSearchParams(url.search);
     const UserID = params.get('userid');
 
-    console.log(UserID);
+    //console.log(UserID);
 
     if (UserID != null) {
       let TodaySteps = null;
@@ -46,7 +46,7 @@ export const GET = async (req: CustomRequest, res: Response) => {
       connection.release();
 
       const result = { TodaySteps, TodayHR };
-      console.log(result);
+      //console.log(result);
       const errorMessages = { stepsError, hrError };
 
       if (stepsError || hrError) {
