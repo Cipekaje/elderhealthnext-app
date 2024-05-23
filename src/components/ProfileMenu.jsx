@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { getServerSession } from "next-auth";
 import { useSession } from 'next-auth/react';
 
-import { MuiDialog } from '../components/SignOut.tsx';
+import { SignOut } from '../components/SignOut.tsx';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -82,6 +82,9 @@ const ProfileSection = () => {
         break;
       case 1: // Pagalba (Help)
         router.push('/Help'); // Change '/help' to the appropriate route
+        break;
+      case 2: // Atsiliepimai (Review)
+        router.push('/AddSupervisor');// Change '/review' to the appropriate route
         break;
       case 2: // Atsiliepimai (Review)
         router.push('/AddSupervisor');// Change '/review' to the appropriate route
@@ -210,7 +213,7 @@ const ProfileSection = () => {
                           <ListItemText primary={<Typography variant="body2">Atsiliepimai</Typography>} />
                         </ListItemButton>
                         {/* Render the MuiDialog component */}
-                        <MuiDialog open={openDialog} onClose={handleCloseDialog} />
+                        <SignOut open={openDialog} onClose={handleCloseDialog} />
                       </List>
                     </Box>
                   </CardContent>

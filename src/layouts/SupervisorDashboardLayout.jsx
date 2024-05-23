@@ -17,10 +17,6 @@ import Footer from '../components/Footer';
 import DistanceStepsChart from '../components/DistanceStepsChart'
 import FirstDayHR from '../components/FirstDayHR';
 
-//DummyUserData
-const dummyUserId = '1';
-const dummyUserName = 'Tomas';
-
 // styles
 const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'theme'
@@ -63,13 +59,14 @@ const SupervisorDashboardLayout = () => {
   const { data: session } = useSession();
   const user = session?.user;
   const userID = session?.user?.id;
+  const { firstName } = user?.userInfo || {};
   // const { firstName } = user?.userInfo || {};
   // const { role } = user?.userInfo || {};
 
   // console.log("Session Data:", session);
   // console.log("testas", userID);
   // console.log("role", role);
-  
+
   useEffect(() => {
     if (currentHr && avgFirstMonthHR && currentHr > 1 * avgFirstMonthHR) {
       setAlertTriggered(true);
@@ -104,11 +101,11 @@ const SupervisorDashboardLayout = () => {
     }
   }, []);
   // Callback function to receive selected user's ID
-  const handleUserChange = (selectedUserId: React.SetStateAction<string>) => {
+  const handleUserChange = (selectedUserId) => {
     // Do whatever you want with the selected user's ID and name
     setSelectedUserId(selectedUserId);
     console.log("Selected user's ID:", selectedUserId);
-};
+  };
   return (
     <div>
       <CssBaseline />
@@ -139,7 +136,7 @@ const SupervisorDashboardLayout = () => {
               </Grid>
 
               {/* JEIGU SITI ABUDU ATKOMENTUOTI SISTEMA UZLAGINA LABAI DAUG REIKIA PERKRAUTI SU NPM */}
-{/* 
+              {/* 
               <Grid item xs={12} md={4}>
                 <FirstDayHR color="#F09537" userid={selectedUserId} setAvgFirstMonthHR={setAvgFirstMonthHR}/>
               </Grid> */}
@@ -152,7 +149,7 @@ const SupervisorDashboardLayout = () => {
               <Grid item xs={12}>
                 <ChartTile color="#37F051" userId={selectedUserId} isSidebarOpen={drawerOpen} />
               </Grid>
-              
+
             </Grid>
           </div>
 

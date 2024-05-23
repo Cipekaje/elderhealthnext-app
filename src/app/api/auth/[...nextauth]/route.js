@@ -42,7 +42,7 @@ const authConfig = {
 
                 try {
                     // Query the database to find the user by email
-                    const [userRows, userFields] = await pool.query('SELECT id, email, firstName, password, role FROM User WHERE email = ?', [credentials.email]);
+                    const [userRows, userFields] = await pool.query('SELECT id, email, firstName, lastName, birthdate, password, role FROM User WHERE email = ?', [credentials.email]);
                     // If a user is found
                     if (userRows.length > 0) {
                         const user = userRows[0];
@@ -67,7 +67,7 @@ const authConfig = {
                     }
 
                     // If user is not found, check the supervisor table
-                    const [supervisorRows, superFields] = await pool.query('SELECT id, email, firstName, password, role FROM supervisors WHERE email = ?', [credentials.email]);
+                    const [supervisorRows, superFields] = await pool.query('SELECT id, email, firstName, lastname, birthDate, password, role FROM supervisors WHERE email = ?', [credentials.email]);
 
                     // If a user is found
                     if (supervisorRows.length > 0) {
@@ -79,6 +79,7 @@ const authConfig = {
                                 id: user.id.toString(),
                                 email: user.email,
                                 name: user.firstName,
+                                lastName: user.lastName,
                                 // Add other user information as needed
                                 userInfo: {
                                     firstName: user.firstName,

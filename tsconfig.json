@@ -27,6 +27,6 @@
       ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/[...nextauth]/route.js", "src/app/api/route.js", "src/components/Header.jsx", "src/layouts/UserDashboardLayout.jsx", "src/components/Sidebar.jsx", "src/app/api/heartrate/route.js", "src/layouts/UserJournalLayout.jsx", "src/layouts/UserJournalLayout.jsx", "src/app/api/post/HRave/route.js", "src/app/api/get/StepsHR"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/[...nextauth]/route.js", "src/app/api/route.js", "src/components/Header.jsx", "src/layouts/UserDashboardLayout.jsx", "src/components/Sidebar.jsx", "src/app/api/heartrate/route.js", "src/layouts/UserJournalLayout.jsx", "src/layouts/UserJournalLayout.jsx", "src/app/api/post/HRave/route.js", "src/layouts/SupervisorDashboardLayout.jsx"],
   "exclude": ["node_modules"]
 }
