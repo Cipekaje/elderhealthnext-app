@@ -28,17 +28,18 @@ export const GET = async (req: CustomRequest, res: Response) => {
     const UserID = params.get('userid');
     //const UserID = UsID?.substring(1, UsID.length-1);
 
-    console.log(UserID);
+    //console.log(UserID);
 
     if (UserID != null) {
-      const averageHRFirstDay = await fetchAverageHeartrateFromDatabase(UserID, 'day');
-      const averageHRFirstWeek = await fetchAverageHeartrateFromDatabase(UserID, 'week');
+      //const averageHRFirstDay = await fetchAverageHeartrateFromDatabase(UserID, 'day');
+      //const averageHRFirstWeek = await fetchAverageHeartrateFromDatabase(UserID, 'week');
       const averageHRFirstMonth = await fetchAverageHeartrateFromDatabase(UserID, 'month');
       //const averageHRFirstMonthALL = await fetchAverageHeartrateFromDatabase(UserID, 'monthAll');
-      const result = { averageHRFirstDay, averageHRFirstWeek, averageHRFirstMonth };
+      const result = { averageHRFirstMonth }; 
+      // const result = { averageHRFirstDay, averageHRFirstWeek, averageHRFirstMonth };
       connection.release();
 
-      console.log(result);
+      //console.log(result);
 
       return NextResponse.json({ Message: "OK", result: result }, { status: 200 });
     }

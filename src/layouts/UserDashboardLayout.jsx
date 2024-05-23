@@ -12,6 +12,7 @@ import ChartTile from '../components/ChartTile';
 import CurrentHeartrate from '../components/CurrentHrTile';
 import Footer from '../components/Footer';
 import FirstDayHR from '../components/FirstDayHR';
+import DaySteps from '../components/DaySteps';
 import DistanceStepsChart from '../components/DistanceStepsChart'
 
 import Popup from 'reactjs-popup';
@@ -61,7 +62,6 @@ const UserDasboardLayout = () => {
   // console.log("birthdate", birthdate);
   // console.log("userID", userID);
   // console.log("user", user);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -211,6 +211,10 @@ const UserDasboardLayout = () => {
               <Grid item>
                 <FirstDayHR color="#F09537" userid={userID} />
               </Grid>
+              <Grid item>
+                <DaySteps color="#603cac" userid={userID}/>
+              </Grid>
+              
             </Grid>
           </div>
 
