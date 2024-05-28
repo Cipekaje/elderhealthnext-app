@@ -2,18 +2,21 @@ import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button, TextField, Container, Typography, Box } from "@mui/material";
+import { Grid, Button, TextField, Container, Typography, Box } from "@mui/material";
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const SupervisorInvitation = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const { data: session} = useSession();
+  const router = useRouter();
+  const { data: session } = useSession();
   const userID = session?.user?.id;
   console.log("User ID EMAIL IVEDIME:", userID);
-  
-  const submit = (event: React.FormEvent) => { // Explicitly specifying event type
+  const handleBackButton = () => {
+    router.back();
+  };
+  const submit = (event) => { // Explicitly specifying event type
     event.preventDefault();
     setLoading(true);
     axios
@@ -48,7 +51,7 @@ const SupervisorInvitation = () => {
           }}
         >
           <Typography variant="h4" component="h1" sx={{ fontWeight: "bold" }}>
-            Pridėti prižiūrėtoja
+            Pridėti prižiūrėtoją
           </Typography>
           <Typography variant="body1" sx={{ marginTop: 2, textAlign: "center" }}>
             Įveskite asmens, kurį norite pakviesti kaip prižiūrėtoją, el. pašto adresą.
@@ -76,6 +79,11 @@ const SupervisorInvitation = () => {
               {loading ? "Apdorojama" : "Siųsti pakvietimą"}
             </Button>
           </Box>
+          <Grid item>
+            <Typography variant="body2" style={{ cursor: 'pointer', color: 'blue' }} onClick={handleBackButton}>
+              Grįžti atgal
+            </Typography>
+          </Grid>
         </Box>
       </Container>
     </>

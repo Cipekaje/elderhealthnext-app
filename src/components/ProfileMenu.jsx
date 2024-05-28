@@ -85,10 +85,7 @@ const ProfileSection = () => {
         router.push('/Help'); // Change '/help' to the appropriate route
         break;
       case 2: // Atsiliepimai (Review)
-        router.push('/AddSupervisor');// Change '/review' to the appropriate route
-        break;
-      case 2: // Atsiliepimai (Review)
-        router.push('/AddSupervisor');// Change '/review' to the appropriate route
+        // router.push('/AddSupervisor');// Change '/review' to the appropriate route
         break;
       default:
         break;
