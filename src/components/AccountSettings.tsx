@@ -76,7 +76,7 @@ const AccountSettings: React.FC = () => {
   };
 
   const handleBackButton = (): void => {
-    router.push('/UserDashboard');
+    router.back();
   };
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>

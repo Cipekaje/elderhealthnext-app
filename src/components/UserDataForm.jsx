@@ -14,41 +14,43 @@ const UserDataForm = () => {
   const name = user?.name || '';
   //const lastName = user?.lastName || '';
   const email = user?.email || '';
+  const { role, lastname } = user?.userInfo || {};
+  console.log("lastName",lastname);
 
-  const handleEditSettings = (): void => {
+  const handleEditSettings = () => {
     router.push('/AccountSettings');
   };
-  const handleSupervisorAdd = (): void => {
+  const handleSupervisorAdd = () => {
     router.push('/AddSupervisor');
   };
 
-  const [lastName, setLastName] = useState(''); // State variable to hold the last name
+  // const [lastName, setLastName] = useState(''); // State variable to hold the last name
   const userEmail = session?.user?.email; // Get the user's email
 
-  useEffect(() => {
-    const fetchLastName = async () => {
-      if (!userEmail) {
-        console.error("User email is missing");
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchLastName = async () => {
+  //     if (!userEmail) {
+  //       console.error("User email is missing");
+  //       return;
+  //     }
 
-      try {
-        // Pass the email in the query parameters
-        const response = await fetch(`/api/lastName?email=${userEmail}`); // Correct the API call
-        const data = await response.json();
+  //     try {
+  //       // Pass the email in the query parameters
+  //       const response = await fetch(`/api/lastName?email=${userEmail}`); // Correct the API call
+  //       const data = await response.json();
 
-        if (response.ok) {
-          setLastName(data.lastName); // Set the retrieved lastName in the state
-        } else {
-          console.error("Failed to fetch last name:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching last name:", error);
-      }
-    };
+  //       if (response.ok) {
+  //         setLastName(data.lastName); // Set the retrieved lastName in the state
+  //       } else {
+  //         console.error("Failed to fetch last name:", data.message);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching last name:", error);
+  //     }
+  //   };
 
-    fetchLastName(); // Fetch lastName when component mounts
-  }, [userEmail]);
+  //   fetchLastName(); // Fetch lastName when component mounts
+  // }, [userEmail]);
 
 
   return (
@@ -70,7 +72,7 @@ const UserDataForm = () => {
 
           <Grid item xs={12}>
             <Typography variant="h6">Pavardė:</Typography>
-            <Typography variant="body1">{lastName}</Typography> {/* Display user's surname */}
+            <Typography variant="body1">{lastname}</Typography> {/* Display user's surname */}
           </Grid>
 
           <Grid item xs={12}>
@@ -82,9 +84,11 @@ const UserDataForm = () => {
             <Button variant="contained" color="primary" onClick={handleEditSettings}>
               Keisti nustatymus
             </Button> { }
-            <Button variant="contained" color="primary" onClick={handleSupervisorAdd}>
-              Pridėti prižiūrėtoja
-            </Button> { }
+            {role !== 'supervisor'&& (
+              <Button variant="contained" color="primary" onClick={handleSupervisorAdd}>
+                Pridėti prižiūrėtoja
+              </Button>
+            )}
           </Grid>
         </Grid>
       </Paper>
