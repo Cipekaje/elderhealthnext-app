@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 // Dynamic import of Chart component to be rendered client side
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const ChartTile = ({ color, userId, isSidebarOpen }) => {
+const ChartTile = ({ color, userId, isSidebarOpen, onFetchComplete }) => {
   // Function to get the days of the past week
   const getPastWeekDays = () => {
     const daysOfWeek = ['S', 'P', 'A', 'T', 'K', 'Pn', 'Š'];
@@ -38,6 +38,9 @@ const ChartTile = ({ color, userId, isSidebarOpen }) => {
           const data = await response.json();
           // Update series data with fetched data
           setSeries([{ name: 'Vidutinis širdies ritmas (bpm)', data: data }]);
+          if (onFetchComplete) {
+            onFetchComplete();
+          }
         } else {
           console.error('Failed to fetch data:', response.statusText);
         }
@@ -46,7 +49,11 @@ const ChartTile = ({ color, userId, isSidebarOpen }) => {
       }
     };
     fetchData();
-  }, [userId]);
+    
+    const intervalId = setInterval(fetchData, 60000);
+    return () => clearInterval(intervalId);
+
+  }, [userId, onFetchComplete]);
 
   // Options for the chart
   const options = {

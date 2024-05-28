@@ -17,7 +17,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, selectedUserId }) => {
   const user = session?.user;
   const { role } = user?.userInfo || {};
   // console.log("role", role);
-  console.log("testas ar yra", selectedUserId);
+  // console.log("testas ar yra", selectedUserId);
   return (
     <Box sx={{ position: 'relative', zIndex: 1 }}>
       <Drawer

@@ -16,6 +16,7 @@ import CurrentHeartrate from '../components/CurrentHrTile';
 import Footer from '../components/Footer';
 import DistanceStepsChart from '../components/DistanceStepsChart'
 import FirstDayHR from '../components/FirstDayHR';
+import DaySteps from '../components/DaySteps';
 
 // styles
 const Main = styled('main', {
@@ -44,6 +45,18 @@ const MainContentWrapper = styled(Box)(({ theme }) => ({
 
 }));
 
+// query limitas
+const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
+
 // ==============================|| MAIN SUPERVISOR DASHBOARD LAYOUT ||============================== //
 
 const SupervisorDashboardLayout = () => {
@@ -53,7 +66,13 @@ const SupervisorDashboardLayout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [alertTriggered, setAlertTriggered] = useState(false);
   const [currentHr, setCurrentHr] = useState(null);
-  const [avgFirstMonthHR, setAvgFirstMonthHR] = useState(null);
+
+
+  const [fetchCurrentHr, setFetchCurrentHr] = useState(true);
+  const [fetchHeartrate, setFetchHeartrate] = useState(false);
+  const [fetchChart, setChart] = useState(false);
+  const [fetchFirstDayHR, setFetchFirstDayHR] = useState(false);
+  const [fetchDistanceStepsChart, setFetchDistanceStepsChart] = useState(false);
 
   // Naudotojo informacijos gavimas
   const { data: session } = useSession();
@@ -64,22 +83,23 @@ const SupervisorDashboardLayout = () => {
   // const { role } = user?.userInfo || {};
 
   // console.log("Session Data:", session);
+  // console.log("Session Dataxd:", user?.userInfo);
   // console.log("testas", userID);
   // console.log("role", role);
 
-  useEffect(() => {
-    if (currentHr && avgFirstMonthHR && currentHr > 1 * avgFirstMonthHR) {
-      setAlertTriggered(true);
-    } else {
-      setAlertTriggered(false);
-    }
-  }, [currentHr, avgFirstMonthHR]);
+  // useEffect(() => {
+  //   if (currentHr && avgFirstMonthHR && currentHr > 1 * avgFirstMonthHR) {
+  //     setAlertTriggered(true);
+  //   } else {
+  //     setAlertTriggered(false);
+  //   }
+  // }, [currentHr, avgFirstMonthHR]);
 
-  useEffect(() => {
-    if (alertTriggered) {
-      alert('Current heart rate is more than double the average!');
-    }
-  }, [alertTriggered]);
+  // useEffect(() => {
+  //   if (alertTriggered) {
+  //     alert('Current heart rate is more than double the average!');
+  //   }
+  // }, [alertTriggered]);
 
 
 
@@ -100,12 +120,17 @@ const SupervisorDashboardLayout = () => {
       };
     }
   }, []);
-  // Callback function to receive selected user's ID
-  const handleUserChange = (selectedUserId) => {
-    // Do whatever you want with the selected user's ID and name
+
+  // gauti pasirinkto vartotojo ID
+  const handleUserChange = debounce((selectedUserId) => {
     setSelectedUserId(selectedUserId);
-    console.log("Selected user's ID:", selectedUserId);
-  };
+    // console.log("Selected user's ID:", selectedUserId);
+  }, 900); // delay sk
+
+  // const handleUserChange = (selectedUserId) => {
+  //   setSelectedUserId(selectedUserId);
+  //   console.log("Selected user's ID:", selectedUserId);
+  // };
   return (
     <div>
       <CssBaseline />
@@ -129,27 +154,31 @@ const SupervisorDashboardLayout = () => {
                 <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={firstName} />
               </Grid> */}
               <Grid item xs={12} md={4}>
-                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={selectedUserId} setCurrentHr={setCurrentHr} />
+                <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={selectedUserId} setCurrentHr={setCurrentHr} onFetchComplete={() => setFetchHeartrate(true)} />
               </Grid>
+              {/* {fetchHeartrate && ( */}
               <Grid item xs={12} md={4}>
-                <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={selectedUserId} />
+                <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={selectedUserId} onFetchComplete={() => setChart(true)} />
               </Grid>
-
-              {/* JEIGU SITI ABUDU ATKOMENTUOTI SISTEMA UZLAGINA LABAI DAUG REIKIA PERKRAUTI SU NPM */}
-              {/* 
-              <Grid item xs={12} md={4}>
-                <FirstDayHR color="#F09537" userid={selectedUserId} setAvgFirstMonthHR={setAvgFirstMonthHR}/>
-              </Grid> */}
-              {/* <Grid item xs={12}>
-                <DistanceStepsChart color="#37F051" userId={selectedUserId} isSidebarOpen={drawerOpen} />
-              </Grid> */}
-
-              {/* -------------------------------------------------------------------------------------- */}
-
+              {/* )} */}
+              {/* {fetchChart && ( */}
               <Grid item xs={12}>
-                <ChartTile color="#37F051" userId={selectedUserId} isSidebarOpen={drawerOpen} />
+                <ChartTile color="#37F051" userId={selectedUserId} isSidebarOpen={drawerOpen} onFetchComplete={() => setFetchDistanceStepsChart(true)} />
               </Grid>
-
+              {/* )} */}
+              {/* {fetchDistanceStepsChart && ( */}
+              <Grid item xs={12}>
+                <DistanceStepsChart color="#37F051" userId={selectedUserId} isSidebarOpen={drawerOpen} onFetchComplete={() => setFetchFirstDayHR(true)} />
+              </Grid>
+              {/* )} */}
+              {/* {fetchFirstDayHR && ( */}
+              <Grid item xs={12} md={4}>
+                <FirstDayHR color="#F09537" userid={selectedUserId} />
+              </Grid>
+              <Grid item xs={12} md={12} xl={6}>
+                <DaySteps color="#603cac" userid={selectedUserId} />
+              </Grid>
+              {/* )} */}
             </Grid>
           </div>
 
