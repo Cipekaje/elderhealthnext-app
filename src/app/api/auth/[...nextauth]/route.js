@@ -79,12 +79,12 @@ const authConfig = {
                                 id: user.id.toString(),
                                 email: user.email,
                                 name: user.firstName,
-                                lastName: user.lastName,
+                                lastname: user.lastname,
                                 // Add other user information as needed
                                 userInfo: {
                                     firstName: user.firstName,
-                                    lastName: user.lastName,
-                                    birthdate: user.birthdate,
+                                    lastname: user.lastname,
+                                    birthDate: user.birthDate,
                                     role: user.role
                                 }
                             };

@@ -38,6 +38,7 @@ export const GET = async (req: CustomRequest, res: Response) => {
 
       try {
         TodayHR = await fetchAverageHeartrateFromDatabase(UserID, 'dayHR');
+        console.log("TodayHR",TodayHR);
       } catch (error) {
         console.error("Error fetching heart rate:", error);
         hrError = "Failed to fetch heart rate data";
@@ -46,7 +47,7 @@ export const GET = async (req: CustomRequest, res: Response) => {
       connection.release();
 
       const result = { TodaySteps, TodayHR };
-      //console.log(result);
+      console.log(result);
       const errorMessages = { stepsError, hrError };
 
       if (stepsError || hrError) {

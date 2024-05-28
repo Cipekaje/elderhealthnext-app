@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const DistanceStepsChart = ({ color, userId, isSidebarOpen }) => {
+const DistanceStepsChart = ({ color, userId, isSidebarOpen, onFetchComplete }) => {
   const getPastWeekDays = () => {
     const daysOfWeek = ['S', 'P', 'A', 'T', 'K', 'Pn', 'Š'];
     const currentDate = new Date();
@@ -39,6 +39,9 @@ const DistanceStepsChart = ({ color, userId, isSidebarOpen }) => {
             { name: 'Nueitas atstumas (km)', data: data.distanceWalked },
             { name: 'Žingsniai', data: data.stepsMade },
           ]);
+          if (onFetchComplete) {
+            onFetchComplete();
+          }
         } else {
           console.error('Nepavyko paimti duomenų:', response.statusText);
         }
@@ -47,7 +50,10 @@ const DistanceStepsChart = ({ color, userId, isSidebarOpen }) => {
       }
     };
     fetchData();
-  }, [userId]);
+
+    const intervalId = setInterval(fetchData, 60000);
+    return () => clearInterval(intervalId);
+  }, [userId, onFetchComplete]);
 
   const options = {
     chart: {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid } from '@mui/material';
 import HeartIcon from '@mui/icons-material/Favorite';
 
-const CurrentHrTile = ({ color, isLastInRow, userId }) => {
+const CurrentHrTile = ({ color, isLastInRow, userId, onFetchComplete }) => {
     const [currentHr, setCurrentHr] = useState(null);
 
     const tileWidth = 'calc(100%)';
@@ -24,6 +24,9 @@ const CurrentHrTile = ({ color, isLastInRow, userId }) => {
                 if (response.ok) {
                     const data = await response.json();
                     setCurrentHr(data.currentHeartrate);
+                    if (onFetchComplete) {
+                        onFetchComplete();
+                    }
                 } else {
                     console.error('Failed to fetch current heart rate:', response.status);
                 }
@@ -33,7 +36,11 @@ const CurrentHrTile = ({ color, isLastInRow, userId }) => {
         };
 
         fetchCurrentHeartrate();
-    }, [userId]);
+
+        const intervalId = setInterval(fetchCurrentHeartrate, 60000);
+        return () => clearInterval(intervalId);
+        
+    }, [userId, onFetchComplete]);
 
     return (
         <Box

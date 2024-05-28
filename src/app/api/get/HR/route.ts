@@ -26,6 +26,9 @@ export const GET = async (req: CustomRequest, res: Response) => {
     const params = new URLSearchParams(url.search);
 
     const UserID = params.get('userid');
+    const Usermonth = params.get('usermonth');
+    console.log("hr get", UserID);
+    console.log("usermonth", Usermonth);
     //const UserID = UsID?.substring(1, UsID.length-1);
 
     //console.log(UserID);
@@ -35,11 +38,12 @@ export const GET = async (req: CustomRequest, res: Response) => {
       //const averageHRFirstWeek = await fetchAverageHeartrateFromDatabase(UserID, 'week');
       const averageHRFirstMonth = await fetchAverageHeartrateFromDatabase(UserID, 'month');
       //const averageHRFirstMonthALL = await fetchAverageHeartrateFromDatabase(UserID, 'monthAll');
-      const result = { averageHRFirstMonth }; 
+      const result = { averageHRFirstMonth };
+
       // const result = { averageHRFirstDay, averageHRFirstWeek, averageHRFirstMonth };
       connection.release();
 
-      //console.log(result);
+      console.log("Ka gavom is get", result);
 
       return NextResponse.json({ Message: "OK", result: result }, { status: 200 });
     }
@@ -63,30 +67,30 @@ async function fetchAverageHeartrateFromDatabase(userId: string, period: string)
       break;
     case 'week':
       queryString = `
-        SELECT ROUND(AVG(heart_rate), 1) AS averageHR
-        FROM HeartRateRecord 
-        RIGHT JOIN (
-            SELECT MIN(date) AS start_date, DATE_ADD(MIN(date), INTERVAL 6 DAY) AS end_date
-            FROM HeartRateRecord 
-            WHERE user_id = ${userId}
-        ) AS date_range
-        ON HeartRateRecord.date >= date_range.start_date AND HeartRateRecord.date <= date_range.end_date
-        WHERE user_id = ${userId} 
+      SELECT ROUND(AVG(heart_rate), 1) AS averageHR
+      FROM HeartRateRecord 
+      INNER JOIN (
+          SELECT MIN(date) AS start_date, DATE_ADD(MIN(date), INTERVAL 6 DAY) AS end_date, user_id
+          FROM HeartRateRecord 
+          GROUP BY user_id
+      ) AS date_range
+      ON HeartRateRecord.user_id = date_range.user_id
+      WHERE HeartRateRecord.user_id = ${userId} AND HeartRateRecord.date >= date_range.start_date AND HeartRateRecord.date <= date_range.end_date
         `;
 
 
       break;
     case 'month':
       queryString = `
-        SELECT ROUND(AVG(heart_rate), 1) AS averageHR
-        FROM HeartRateRecord 
-        RIGHT JOIN (
-            SELECT MIN(date) AS start_date, DATE_ADD(MIN(date), INTERVAL 29 DAY) AS end_date
-            FROM HeartRateRecord 
-            WHERE user_id = ${userId}
-        ) AS date_range
-        ON HeartRateRecord.date >= date_range.start_date AND HeartRateRecord.date <= date_range.end_date
-        WHERE user_id = ${userId} 
+      SELECT ROUND(AVG(heart_rate), 1) AS averageHR
+      FROM HeartRateRecord 
+      INNER JOIN (
+          SELECT MIN(date) AS start_date, DATE_ADD(MIN(date), INTERVAL 29 DAY) AS end_date, user_id
+          FROM HeartRateRecord 
+          GROUP BY user_id
+      ) AS date_range
+      ON HeartRateRecord.user_id = date_range.user_id
+      WHERE HeartRateRecord.user_id = ${userId} AND HeartRateRecord.date >= date_range.start_date AND HeartRateRecord.date <= date_range.end_date
         `;
       break;
     default:

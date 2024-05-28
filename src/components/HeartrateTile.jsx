@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Grid } from '@mui/material';
 import HeartIcon from '@mui/icons-material/MonitorHeart';
 
-const HeartrateTile = ({ color, isLastInRow, userId }) => {
+const HeartrateTile = ({ color, isLastInRow, userId, onFetchComplete }) => {
     const [viewMode, setViewMode] = useState('daily');
     const [averageHeartrateDaily, setAverageHeartrateDaily] = useState(null);
     const [averageHeartrateWeekly, setAverageHeartrateWeekly] = useState(null);
@@ -32,6 +32,9 @@ const HeartrateTile = ({ color, isLastInRow, userId }) => {
                     const data = await response.json();
                     setAverageHeartrateDaily(data.averageHeartrateToday);
                     setAverageHeartrateWeekly(data.averageHeartrateWeek);
+                    if (onFetchComplete) {
+                        onFetchComplete();
+                    }
                 } else {
                     console.error('Nepavyko apskaičiuoti vidutinio širdies ritmo:', response.status);
                 }
@@ -41,7 +44,11 @@ const HeartrateTile = ({ color, isLastInRow, userId }) => {
         };
 
         fetchAverageHeartrate();
-    }, [userId, viewMode]); // Add userId dependency here
+
+        const intervalId = setInterval(fetchAverageHeartrate, 60000);
+        return () => clearInterval(intervalId);
+
+    }, [userId, onFetchComplete, viewMode]); // Add userId dependency here
 
     return (
         <Box
