@@ -55,6 +55,7 @@ const UserDasboardLayout = () => {
   const user = session?.user;
   const userID = session?.user?.id;
   const { firstName } = user?.userInfo || {};
+  const { isFirstLogin } = user?.userInfo || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -66,11 +67,12 @@ const UserDasboardLayout = () => {
   const [disease, setDisease] = useState('');
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && isFirstLogin) {
       setIsModalOpen(true);
     }
   }, []);
 
+  
   const handleLeftDrawerToggle = useCallback(() => {
     setDrawerOpen((prev) => {
       if (prev) {
@@ -82,7 +84,6 @@ const UserDasboardLayout = () => {
       return !prev;
     });
   }, [theme.transitions.duration.leavingScreen]);
-
   const handleSave = async () => {
     const additionalInfo = {};
     if (gender) additionalInfo.gender = gender;
@@ -91,9 +92,7 @@ const UserDasboardLayout = () => {
     if (weight) additionalInfo.weight = weight;
     if (height) additionalInfo.height = height;
     if (disease) additionalInfo.disease = disease;
-
-    const userEmail = session?.user?.email;
-
+    
     if (!userEmail || Object.values(additionalInfo).some((val) => val === undefined)) {
       console.error("Trūksta informacijos");
       return;
@@ -122,7 +121,6 @@ const UserDasboardLayout = () => {
   const handleClose = () => {
     setIsModalOpen(false);
   };
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
       document.body.style.overflow = 'auto';
@@ -131,7 +129,6 @@ const UserDasboardLayout = () => {
       };
     }
   }, []);
-
   return (
     <div>
       <CssBaseline />
