@@ -57,10 +57,13 @@ const DistanceStepsChart = ({ color, userId, isSidebarOpen, onFetchComplete }) =
 
   const options = {
     chart: {
-      height: 350,
+      height: '100%',
       width: '100%',
       type: 'line',
       toolbar: { show: false },
+      zoom: {
+        enabled: false
+      },
       redrawOnParentResize: true,
       redrawOnWindowResize: true,
     },
@@ -72,37 +75,66 @@ const DistanceStepsChart = ({ color, userId, isSidebarOpen, onFetchComplete }) =
     },
     xaxis: {
       categories: getPastWeekDays(),
-      labels: { style: { fontSize: '18px', fontWeight: 400, fontFamily: 'Arial, sans-serif', colors: '#666' } },
+      labels: { style: { fontSize: '12px', fontWeight: 400, fontFamily: 'Arial, sans-serif', color: '#666' } },
     },
     yaxis: [
       {
-        title: { text: 'Nueitas atstumas (km)', style: { fontSize: '18px', fontWeight: 400, fontFamily: 'Arial, sans-serif', color: '#666' } },
-        labels: { style: { fontSize: '16px', fontWeight: 400, fontFamily: 'Arial, sans-serif', colors: '#666' } },
+        title: { text: 'Nueitas atstumas (km)', style: { fontSize: '14px', fontWeight: 400, fontFamily: 'Arial, sans-serif', color: '#666' } },
+        labels: { style: { fontSize: '12px', fontWeight: 400, fontFamily: 'Arial, sans-serif', color: '#666' } },
+        min: 0,
       },
       {
         opposite: true,
-        title: { text: 'Žingsniai', style: { fontSize: '18px', fontWeight: 400, fontFamily: 'Arial, sans-serif', color: '#666' } },
-        labels: { style: { fontSize: '16px', fontWeight: 400, fontFamily: 'Arial, sans-serif', colors: '#666' } },
+        title: { text: 'Žingsniai', style: { fontSize: '14px', fontWeight: 400, fontFamily: 'Arial, sans-serif', color: '#666' } },
+        labels: { style: { fontSize: '12px', fontWeight: 400, fontFamily: 'Arial, sans-serif', color: '#666' } },
+        min: 0,
+      },
+    ],
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            height: 280,
+          },
+          title: {
+            style: { fontSize: '12px' },
+          },
+          xaxis: {
+            labels: { style: { fontSize: '10px' } },
+          },
+          yaxis: [
+            {
+              title: { style: { fontSize: '10px' } },
+              labels: { style: { fontSize: '10px' } },
+            },
+            {
+              opposite: true,
+              title: { style: { fontSize: '10px' } },
+              labels: { style: { fontSize: '10px' } },
+            },
+          ],
+        },
       },
     ],
   };
 
   return (
-    <div width={'100%'}>
+    <div style={{ width: '100%' }}>
       <Box
         sx={{
           backgroundColor: 'white',
           borderRadius: '16px',
-          padding: '30px',
+          padding: { xs: '10px', sm: '20px', md: '30px' },
           marginBottom: '20px',
           marginRight: '20px',
           width: '100%',
-          height: '400px',
+          height: { xs: '300px', sm: '350px', md: '400px' },
           overflow: 'hidden',
           verticalAlign: 'top',
         }}
       >
-        <Chart options={options} series={series} type="line" height={350} width={'100%'} />
+        <Chart options={options} series={series} type="line" height="100%" width="100%" />
       </Box>
     </div>
   );
