@@ -27,6 +27,6 @@
       ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/[...nextauth]/route.js", "src/components/Header.jsx", "src/layouts/UserDashboardLayout.jsx", "src/components/Sidebar.jsx", "src/app/api/heartrate/route.js", "src/layouts/UserJournalLayout.jsx", "src/layouts/UserJournalLayout.jsx", "src/app/api/post/HRave/route.js", "src/layouts/SupervisorDashboardLayout.jsx", "src/components/DropDownTile.jsx", "src/components/SupervisorSidebar.jsx", "src/components/AccountSettings.tsx", "src/components/UserDataForm.jsx", "src/pages/AddSupervisor.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/[...nextauth]/route.js", "src/components/Header.jsx", "src/layouts/UserDashboardLayout.jsx", "src/components/Sidebar.jsx", "src/app/api/heartrate/route.js", "src/layouts/UserJournalLayout.jsx", "src/layouts/UserJournalLayout.jsx", "src/app/api/post/HRave/route.js", "src/layouts/SupervisorDashboardLayout.jsx", "src/components/DropDownTile.jsx", "src/components/SupervisorSidebar.jsx", "src/components/AccountSettings.jsx", "src/components/UserDataForm.jsx", "src/pages/AddSupervisor.jsx"],
   "exclude": ["node_modules"]
 }

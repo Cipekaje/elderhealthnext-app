@@ -42,7 +42,7 @@ const authConfig = {
 
                 try {
                     // Query the database to find the user by email
-                    const [userRows, userFields] = await pool.query('SELECT id, email, firstName, lastName, birthdate, password, role FROM User WHERE email = ?', [credentials.email]);
+                    const [userRows, userFields] = await pool.query('SELECT id, email, firstName, lastName, birthdate, password, role, isFirstLogin FROM User WHERE email = ?', [credentials.email]);
                     // If a user is found
                     if (userRows.length > 0) {
                         const user = userRows[0];
@@ -60,7 +60,8 @@ const authConfig = {
                                     firstName: user.firstName,
                                     lastName: user.lastName,
                                     birthdate: user.birthdate,
-                                    role: user.role
+                                    role: user.role,
+                                    isFirstLogin: user.isFirstLogin
                                 }
                             };
                         }
@@ -79,11 +80,11 @@ const authConfig = {
                                 id: user.id.toString(),
                                 email: user.email,
                                 name: user.firstName,
-                                lastname: user.lastname,
+                                lastName: user.lastName,
                                 // Add other user information as needed
                                 userInfo: {
                                     firstName: user.firstName,
-                                    lastname: user.lastname,
+                                    lastName: user.lastName,
                                     birthDate: user.birthDate,
                                     role: user.role
                                 }

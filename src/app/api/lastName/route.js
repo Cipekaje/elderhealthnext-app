@@ -22,7 +22,7 @@ export async function GET(request) {
     }
 
     const [rows] = await pool.execute(
-      'SELECT lastName FROM User WHERE email = ?',
+      'SELECT lastName, isFirstLogin FROM User WHERE email = ?',
       [userEmail] // Query using email
     );
 
@@ -30,9 +30,9 @@ export async function GET(request) {
       return NextResponse.json({ status: 404, message: "Vartotojas nerastas" });
     }
 
-    const lastName = rows[0].lastName; // Retrieve the last name
+    const { lastName, isFirstLogin } = rows[0];
 
-    return NextResponse.json({ status: 200, lastName }); // Return the last name
+    return NextResponse.json({ status: 200, lastName, isFirstLogin }); // Return the last name
   } catch (error) {
     console.error("Klaida:", error); // Handle server errors
     return NextResponse.json({ status: 500, message: 'Serverio klaida.' });

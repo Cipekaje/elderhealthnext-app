@@ -14,8 +14,8 @@ const UserDataForm = () => {
   const name = user?.name || '';
   //const lastName = user?.lastName || '';
   const email = user?.email || '';
-  const { role, lastname } = user?.userInfo || {};
-  console.log("lastName",lastname);
+  const { role, lastName } = user?.userInfo || {};
+  console.log("lastName",lastName);
 
   const handleEditSettings = () => {
     router.push('/AccountSettings');
@@ -72,7 +72,7 @@ const UserDataForm = () => {
 
           <Grid item xs={12}>
             <Typography variant="h6">Pavardė:</Typography>
-            <Typography variant="body1">{lastname}</Typography> {/* Display user's surname */}
+            <Typography variant="body1">{lastName}</Typography> {/* Display user's surname */}
           </Grid>
 
           <Grid item xs={12}>
