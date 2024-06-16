@@ -115,11 +115,12 @@ const AccountSettings = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto' }}>
+      {/* <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
         <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={26} height={26} />
         <Typography variant="h5">ElderHealth Companion</Typography>
-      </Box>
+      </Box> */} 
+      <Typography variant="h5" marginTop={1} marginBottom={1}>ElderHealth Companion</Typography>
       <Paper elevation={3} sx={{ padding: '20px', maxWidth: 500, marginBottom: 4 }}>
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 3 }}>
           Paskyros nustatymai

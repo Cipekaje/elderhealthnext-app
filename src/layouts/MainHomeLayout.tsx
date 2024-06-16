@@ -53,7 +53,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
           <Grid item>
             <Hidden smDown>
               <Stack spacing={3} direction='row'>
-                <Button endIcon={<FeedbackIcon />} onClick={handleLoginClick}>Atsiliepimai</Button>
+                {/* <Button endIcon={<FeedbackIcon />} onClick={handleLoginClick}>Atsiliepimai</Button> */}
                 <Button endIcon={<HelpIcon />} onClick={handleHelpClick}>Pagalba</Button>
                 <Button endIcon={<LoginIcon />} onClick={handleLoginClick}>Prisijungti</Button>
               </Stack>
@@ -106,7 +106,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
         }}
         >
           <Typography variant="body1" color="gray">
-            Siūlome jums apyrankę suteikiančią sveikatos stebėjimo, analizės ir pagalbos iškvietimo paslaugas (Plačiau Link(Kas yra ElderHealth Companion))
+            Siūlome jums apyrankę suteikiančią sveikatos stebėjimo, analizės ir pagalbos iškvietimo paslaugas
           </Typography>
         </Box>
 
@@ -133,7 +133,7 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
                   Šeimos planas
                 </Typography>
                 <Typography variant="h4" color="white" fontWeight="bold" gutterBottom>
-                  15 eu/mėn
+                  6.99 €/mėn
                 </Typography>
                 <Divider />
                 <Box display="flex" alignItems="left" paddingTop="15px">
@@ -186,25 +186,25 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
                   Šeimos planas
                 </Typography>
                 <Typography variant="h4" color="white" fontWeight="bold" gutterBottom>
-                  15 eu/mėn
+                  6.99 €/mėn
                 </Typography>
                 <Divider />
                 <Box display="flex" alignItems="left" paddingTop="15px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    1 apyrankės prisijungimai į sistemą;
+                    1 apyrankės prisijungimai į sistemą.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    Iki 5 stebėtojų prisijungimų į sistemą;
+                    Iki 5 stebėtojų prisijungimų į sistemą.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="rgba(255, 255, 255, 0.7)">
-                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms;
+                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
@@ -240,43 +240,43 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
                   Išplėstinis planas
                 </Typography>
                 <Typography variant="h4" color="black" fontWeight="bold" gutterBottom>
-                  25 eu/men
+                  11.99 €/men
                 </Typography>
                 <Divider />
                 <Box display="flex" alignItems="left" paddingTop="15px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    3 apyrankės prisijungimai į sistemą;
+                    3 apyrankės prisijungimai į sistemą.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    iki 12 stebėtojų prisijungimų į sistemą;
+                    Iki 12 stebėtojų prisijungimų į sistemą.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms;
+                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    Greitosios pagalbos iškvietimas nelaimės atveju
+                    Greitosios pagalbos iškvietimas nelaimės atveju.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    Kažkas dar;
+                    24/7 pagalba įvykus techniniams nesklandumams.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    Kažkas dar.
+                    Greitesnė prieiga prie naujų sistemos funkcijų.
                   </Typography>
                 </Box>
                 <Box paddingTop="20px" style={{ width: '100%' }}>
@@ -301,43 +301,43 @@ const MainHomeLayout = ({ children }: MainHomeLayoutProps) => {
                   Išplėstinis planas
                 </Typography>
                 <Typography variant="h4" color="black" fontWeight="bold" gutterBottom>
-                  25 eu/men
+                  11.99 €/men
                 </Typography>
                 <Divider />
                 <Box display="flex" alignItems="left" paddingTop="15px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    3 apyrankės prisijungimai į sistemą;
+                    3 apyrankės prisijungimai į sistemą.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    iki 12 stebėtojų prisijungimų į sistemą;
+                    Iki 12 stebėtojų prisijungimų į sistemą.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms;
+                    Duomenų analizė ir ataskaitų formavimas gydymo įstaigoms.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    Greitosios pagalbos iškvietimas nelaimės atveju;
+                    Greitosios pagalbos iškvietimas nelaimės atveju.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    Kažkas dar;
+                    24/7 pagalba įvykus techniniams nesklandumams.
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="left" paddingTop="10px">
                   <CheckIcon color="primary" />
                   <Typography variant="body1" component="span" color="black">
-                    Kažkas dar.
+                    Greitesnė prieiga prie naujų sistemos funkcijų.
                   </Typography>
                 </Box>
                 <Box paddingTop="20px" style={{ width: '100%' }}>

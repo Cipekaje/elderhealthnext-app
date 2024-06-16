@@ -84,9 +84,6 @@ const ProfileSection = () => {
       case 1: // Pagalba (Help)
         router.push('/Help'); // Change '/help' to the appropriate route
         break;
-      case 2: // Atsiliepimai (Review)
-        // router.push('/AddSupervisor');// Change '/review' to the appropriate route
-        break;
       default:
         break;
     }
@@ -202,13 +199,6 @@ const ProfileSection = () => {
                             <IconHelp stroke={1.5} size="1.3rem" />
                           </ListItemIcon>
                           <ListItemText primary={<Typography variant="body2">Pagalba</Typography>} />
-                        </ListItemButton>
-
-                        <ListItemButton selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2, '#')}>
-                          <ListItemIcon>
-                            <IconQuote stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Atsiliepimai</Typography>} />
                         </ListItemButton>
                         {/* Render the MuiDialog component */}
                         <SignOut open={openDialog} onClose={handleCloseDialog} />

@@ -9,8 +9,6 @@ const Sidebar = ({ drawerOpen, drawerToggle, userType }) => {
   // Define default sidebar items
   const defaultSidebarItems = [
     { label: 'Prietaisų skydelis', link: '/UserDashboard' },
-    { label: 'Širdies ritmo ataskaitos', link: '/' },
-    { label: 'Kiti pranešimai', link: '/settings' },
     { label: 'Dienoraštis', link: '/Journal' },
     // Add more items as needed
   ];

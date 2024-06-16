@@ -5,6 +5,9 @@ body{
 .container{
     
 }
+.settings{
+    overflow: auto;
+}
 .topSectionLayout{
     max-width: xl;
     padding-top: 20px;

@@ -31,9 +31,9 @@ const Footer = () => {
             <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginRight: '10px' }} onClick={() => router.push('/Help')}>
                 <IconHelp sx={{ marginRight: '5px' }} /> Pagalba
             </Typography>
-            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginRight: '10px' }} onClick={() => router.push('/')}>
+            {/* <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginRight: '10px' }} onClick={() => router.push('/')}>
                 <IconQuote sx={{ marginRight: '5px' }} /> Atsiliepimai
-            </Typography>
+            </Typography> */}
         </Box>
     );
 };

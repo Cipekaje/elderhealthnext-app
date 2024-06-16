@@ -153,11 +153,11 @@ const SupervisorDashboardLayout = () => {
               {/* <Grid item xs={12} md={4}>
                 <Tile title="Blank Tile" content="Consectetur adipiscing elit." color="#5B5270" isLastInRow={!matchDownMd} userId={firstName} />
               </Grid> */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <CurrentHeartrate color="#F09537" isLastInRow={!matchDownMd} userId={selectedUserId} setCurrentHr={setCurrentHr} onFetchComplete={() => setFetchHeartrate(true)} />
               </Grid>
               {/* {fetchHeartrate && ( */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <HeartrateTile color="#603cac" isLastInRow={!matchDownMd} userId={selectedUserId} onFetchComplete={() => setChart(true)} />
               </Grid>
               {/* )} */}
@@ -172,7 +172,7 @@ const SupervisorDashboardLayout = () => {
               </Grid>
               {/* )} */}
               {/* {fetchFirstDayHR && ( */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <FirstDayHR color="#F09537" userid={selectedUserId} />
               </Grid>
               <Grid item xs={12} md={12} xl={6}>

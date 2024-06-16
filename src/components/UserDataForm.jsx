@@ -55,9 +55,9 @@ const UserDataForm = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
-        <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={40} height={50} />
-        <Typography variant="h4">ElderHealth Companion</Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4, marginBottom: 10 }}>
+        <Image src={emblemIcon} alt="ElderHealth Companion Emblem" width={200} height={200} />
+        {/* <Typography variant="h4">ElderHealth Companion</Typography> */}
       </Box>
       <Paper elevation={3} sx={{ padding: '20px', maxWidth: 400 }}>
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 3 }}>
@@ -84,9 +84,9 @@ const UserDataForm = () => {
             <Button variant="contained" color="primary" onClick={handleEditSettings}>
               Keisti nustatymus
             </Button> { }
-            {role !== 'supervisor'&& (
+            {role !== 'supervisor'&& role !== 'doctor' && (
               <Button variant="contained" color="primary" onClick={handleSupervisorAdd}>
-                Pridėti prižiūrėtoja
+                Pridėti prižiūrėtoją
               </Button>
             )}
           </Grid>
